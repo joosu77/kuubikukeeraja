@@ -6,21 +6,23 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
+#include <utility>
+
 #include "kuubik.h"
+#include "asend.h"
+#include "valem.h"
 
 int main(){
-	kuubik kuubik { };
+	kuubik kuubik {};
     kuubik.ekraanile("Segamata");
-    /*for(int i=0;i<6;i++){
-    kuubik.turn('R',true);
-    kuubik.turn('U',true);
-    kuubik.turn('R',false);
-    kuubik.turn('U',false);
-    }*/
+
     kuubik.ekraanile("");
-    kuubik.turn('L',true);
-    kuubik.turn('D',false);
-    kuubik.turn('B',false);
+    /*valem segu {};
+    segu.rida.push_back(std::make_pair('L', true));
+    segu.rida.push_back(std::make_pair('D', true));
+    segu.rida.push_back(std::make_pair('B', true));
+    kuubik.turn(segu);*/
+    kuubik.scramble();
     //kuubik.scramble();
     kuubik.ekraanile("Keeratud U, true");
     return 0;

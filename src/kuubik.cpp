@@ -7,13 +7,36 @@
 
 #include <chrono>
 #include <iostream>
+#include <utility>
 
 #include "kuubik.h"
 #include "engine.h"
+#include "asend.h"
+#include "valem.h"
 
 /**
  * Tee kuup ja täida iga külg eri värviga
  **/
+kuubik::kuubik(asend sisKuup) {
+	yl = 12;
+	xl = 9;
+	vroom.initScreen(xl, yl);
+
+	// taidab ekraani array tyhjusega
+	for (int y = 0; y < yl; y++) {
+		for (int x = 0; x < xl; x++) {
+			vroom.ekraan[y][x] = ground;
+		}
+	}
+
+	// loob kuubi maatriksi
+	kuup = sisKuup;
+
+	// täida indeksite massiivid
+	fillRowID();
+}
+
+//overload
 kuubik::kuubik() {
 	yl = 12;
 	xl = 9;
@@ -27,10 +50,11 @@ kuubik::kuubik() {
 	}
 
 	// loob kuubi maatriksi
+
 	for (int i = 0; i < 6; i++) {
 		for (int o = 0; o < 3; o++) {
 			for (int u = 0; u < 3; u++) {
-				kuup[i][o][u] = i;
+				kuup.kuljed[i][o][u] = i;
 			}
 		}
 	}
@@ -38,6 +62,7 @@ kuubik::kuubik() {
 	// täida indeksite massiivid
 	fillRowID();
 }
+
 
 /**
  *  Trüki kuup, aja saasi ja lahenda
@@ -55,6 +80,7 @@ void kuubik::run() {
  * Aja kuup sassi
  **/
 void kuubik::scramble() {
+	valem segu { };
 	for (int i = 0; i < 10; i++) {
 		using namespace std::chrono;
 		auto epoch = high_resolution_clock::from_time_t(0);
@@ -64,12 +90,13 @@ void kuubik::scramble() {
 
 		std::vector<char> moves = { 'U', 'L', 'F', 'R', 'D', 'B' };
 		if (mills % 22 < 11) {
-			turn(moves[mills % 6], true);
+			segu.rida.push_back(std::make_pair(moves[mills % 6], true));
 		} else {
-			turn(moves[mills % 6], false);
+			segu.rida.push_back(std::make_pair(moves[mills % 6], false));
 		}
 		std::cout << moves[mills % 6] << ((mills % 22 < 11) ? "" : "'") << " ";
 	}
+	turn(segu);
 }
 
 /**
@@ -82,12 +109,12 @@ void kuubik::lahenda() {
 void kuubik::ekraanile(char const *msg) {
 	for (int y = 0; y < 3; y++) {
 		for (int x = 0; x < 3; x++) {
-			vroom.ekraan[y][x + 3] = charof(kuup[0][y][x]);
-			vroom.ekraan[y + 3][x] = charof(kuup[1][y][x]);
-			vroom.ekraan[y + 3][x + 3] = charof(kuup[2][y][x]);
-			vroom.ekraan[y + 3][x + 6] = charof(kuup[3][y][x]);
-			vroom.ekraan[y + 6][x + 3] = charof(kuup[4][y][x]);
-			vroom.ekraan[y + 9][x + 3] = charof(kuup[5][y][x]);
+			vroom.ekraan[y][x + 3] = charof(kuup.kuljed[0][y][x]);
+			vroom.ekraan[y + 3][x] = charof(kuup.kuljed[1][y][x]);
+			vroom.ekraan[y + 3][x + 3] = charof(kuup.kuljed[2][y][x]);
+			vroom.ekraan[y + 3][x + 6] = charof(kuup.kuljed[3][y][x]);
+			vroom.ekraan[y + 6][x + 3] = charof(kuup.kuljed[4][y][x]);
+			vroom.ekraan[y + 9][x + 3] = charof(kuup.kuljed[5][y][x]);
 		}
 	}
 
@@ -96,28 +123,30 @@ void kuubik::ekraanile(char const *msg) {
 
 }
 
-void kuubik::turn(char macro, bool clock) {
-	switch (macro) {
-	case 'U':
-		turnSide(0, clock);
-		break;
-	case 'L':
-		turnSide(1, clock);
-		break;
-	case 'F':
-		turnSide(2, clock);
-		break;
-	case 'R':
-		turnSide(3, clock);
-		break;
-	case 'D':
-		turnSide(4, clock);
-		break;
-	case 'B':
-		turnSide(5, clock);
-		break;
-	default:
-		std::cout << "ERROR";
+void kuubik::turn(valem sisValem) {
+	for (unsigned int i = 0; i < sisValem.rida.size(); i++) {
+		switch (sisValem.rida[i].first) {
+		case 'U':
+			turnSide(0, sisValem.rida[i].second);
+			break;
+		case 'L':
+			turnSide(1, sisValem.rida[i].second);
+			break;
+		case 'F':
+			turnSide(2, sisValem.rida[i].second);
+			break;
+		case 'R':
+			turnSide(3, sisValem.rida[i].second);
+			break;
+		case 'D':
+			turnSide(4, sisValem.rida[i].second);
+			break;
+		case 'B':
+			turnSide(5, sisValem.rida[i].second);
+			break;
+		default:
+			std::cout << "ERROR";
+		}
 	}
 }
 
@@ -128,15 +157,15 @@ void kuubik::turnSide(int side, bool clock) {
 		for (int i = 0; i < 3; i++) {
 			for (int u = 0; u < 3; u++) {
 				if (clock) {
-					tempSide[i][u] = kuup[side][2 - u][i];
+					tempSide[i][u] = kuup.kuljed[side][2 - u][i];
 				} else {
-					tempSide[2 - i][u] = kuup[side][u][i];
+					tempSide[2 - i][u] = kuup.kuljed[side][u][i];
 				}
 			}
 		}
 		for (int i = 0; i < 3; i++) {
 			for (int u = 0; u < 3; u++) {
-				kuup[side][u][i] = tempSide[u][i];
+				kuup.kuljed[side][u][i] = tempSide[u][i];
 			}
 		}
 	}
@@ -206,21 +235,33 @@ void kuubik::fillRowID() {
 			}
 			dirTables.push_back(n);
 		}
-		rowidx[u][0] = &kuup[sides[u][0]][dirTables[0][0]][dirTables[0][3]];
-		rowidx[u][1] = &kuup[sides[u][0]][dirTables[0][1]][dirTables[0][4]];
-		rowidx[u][2] = &kuup[sides[u][0]][dirTables[0][2]][dirTables[0][5]];
+		rowidx[u][0] =
+				&kuup.kuljed[sides[u][0]][dirTables[0][0]][dirTables[0][3]];
+		rowidx[u][1] =
+				&kuup.kuljed[sides[u][0]][dirTables[0][1]][dirTables[0][4]];
+		rowidx[u][2] =
+				&kuup.kuljed[sides[u][0]][dirTables[0][2]][dirTables[0][5]];
 
-		rowidx[u][3] = &kuup[sides[u][1]][dirTables[1][0]][dirTables[1][3]];
-		rowidx[u][4] = &kuup[sides[u][1]][dirTables[1][1]][dirTables[1][4]];
-		rowidx[u][5] = &kuup[sides[u][1]][dirTables[1][2]][dirTables[1][5]];
+		rowidx[u][3] =
+				&kuup.kuljed[sides[u][1]][dirTables[1][0]][dirTables[1][3]];
+		rowidx[u][4] =
+				&kuup.kuljed[sides[u][1]][dirTables[1][1]][dirTables[1][4]];
+		rowidx[u][5] =
+				&kuup.kuljed[sides[u][1]][dirTables[1][2]][dirTables[1][5]];
 
-		rowidx[u][6] = &kuup[sides[u][2]][dirTables[2][0]][dirTables[2][3]];
-		rowidx[u][7] = &kuup[sides[u][2]][dirTables[2][1]][dirTables[2][4]];
-		rowidx[u][8] = &kuup[sides[u][2]][dirTables[2][2]][dirTables[2][5]];
+		rowidx[u][6] =
+				&kuup.kuljed[sides[u][2]][dirTables[2][0]][dirTables[2][3]];
+		rowidx[u][7] =
+				&kuup.kuljed[sides[u][2]][dirTables[2][1]][dirTables[2][4]];
+		rowidx[u][8] =
+				&kuup.kuljed[sides[u][2]][dirTables[2][2]][dirTables[2][5]];
 
-		rowidx[u][9] = &kuup[sides[u][3]][dirTables[3][0]][dirTables[3][3]];
-		rowidx[u][10] = &kuup[sides[u][3]][dirTables[3][1]][dirTables[3][4]];
-		rowidx[u][11] = &kuup[sides[u][3]][dirTables[3][2]][dirTables[3][5]];
+		rowidx[u][9] =
+				&kuup.kuljed[sides[u][3]][dirTables[3][0]][dirTables[3][3]];
+		rowidx[u][10] =
+				&kuup.kuljed[sides[u][3]][dirTables[3][1]][dirTables[3][4]];
+		rowidx[u][11] =
+				&kuup.kuljed[sides[u][3]][dirTables[3][2]][dirTables[3][5]];
 	}
 }
 

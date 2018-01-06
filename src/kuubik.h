@@ -7,6 +7,8 @@
 
 #include <vector>
 #include "engine.h"
+#include "asend.h"
+#include "valem.h"
 
 #ifndef KUUBIK_H
 #define KUUBIK_H
@@ -27,7 +29,7 @@ class kuubik {
 		// 2 -- rida vastaval küljel
 		// 3 -- veerg vastavas reas
 		// massiivi salvestava väärtus on ruudu värv vahemikus 0-5
-		int kuup[6][3][3];
+		 //int kuup[6][3][3]; - asendatud asend objectiga
 		// indeks kus on pointerid igat külge ääristavatele kleepsudele
 		int * rowidx[6][12];
 
@@ -36,10 +38,12 @@ class kuubik {
 		int* c [3];
 		int* d [3];
 	public:
-		kuubik();
+		asend kuup;
+		kuubik(asend);
+		kuubik();     //overload
 		void ekraanile(char const*);
 		void run();
-		void turn(char, bool);
+		void turn(valem);
 		void scramble();
 		void lahenda();
 };
