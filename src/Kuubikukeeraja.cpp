@@ -11,6 +11,7 @@
 #include "kuubik.h"
 #include "asend.h"
 #include "valem.h"
+#include "IDAlahendaja.h"
 
 int main(){
 	kuubik kuubik {};
@@ -23,6 +24,7 @@ int main(){
     segu.rida.push_back(std::make_pair('B', true));
     kuubik.turn(segu);*/
     kuubik.scramble();
+    kuubik = IDAlahendaja(kuubik);
     //kuubik.scramble();
     kuubik.ekraanile("Keeratud U, true");
     return 0;

@@ -5,7 +5,8 @@
  *      Author: joosep
  */
 
-#include <chrono>
+#include <stdlib.h>
+#include <time.h>
 #include <iostream>
 #include <utility>
 
@@ -40,6 +41,7 @@ kuubik::kuubik(asend sisKuup) {
 kuubik::kuubik() {
 	yl = 12;
 	xl = 9;
+	ground = ' ';
 	vroom.initScreen(xl, yl);
 
 	// taidab ekraani array tyhjusega
@@ -55,6 +57,7 @@ kuubik::kuubik() {
 		for (int o = 0; o < 3; o++) {
 			for (int u = 0; u < 3; u++) {
 				kuup.kuljed[i][o][u] = i;
+				lahendatud.kuljed[i][o][u] = i;
 			}
 		}
 	}
@@ -80,30 +83,19 @@ void kuubik::run() {
  * Aja kuup sassi
  **/
 void kuubik::scramble() {
+	srand(time(NULL));
 	valem segu { };
-	for (int i = 0; i < 10; i++) {
-		using namespace std::chrono;
-		auto epoch = high_resolution_clock::from_time_t(0);
-		auto now = high_resolution_clock::now();
-		auto seconds = duration_cast<milliseconds>(now - epoch).count();
-		long mills = seconds;
-
+	for (int i = 0; i < 100; i++) {
 		std::vector<char> moves = { 'U', 'L', 'F', 'R', 'D', 'B' };
-		if (mills % 22 < 11) {
-			segu.rida.push_back(std::make_pair(moves[mills % 6], true));
+		int num { rand() % 12 };
+		if (num < 6) {
+			segu.rida.push_back(std::make_pair(moves[num], true));
 		} else {
-			segu.rida.push_back(std::make_pair(moves[mills % 6], false));
+			segu.rida.push_back(std::make_pair(moves[num-6], false));
 		}
-		std::cout << moves[mills % 6] << ((mills % 22 < 11) ? "" : "'") << " ";
+		std::cout << num;
 	}
 	turn(segu);
-}
-
-/**
- * Keera kuupi niikaua kuni iga külg on ise värvi
- */
-void kuubik::lahenda() {
-
 }
 
 void kuubik::ekraanile(char const *msg) {
@@ -148,6 +140,10 @@ void kuubik::turn(valem sisValem) {
 			std::cout << "ERROR";
 		}
 	}
+}
+
+bool kuubik::check(){
+	return kuup.kuljed==lahendatud.kuljed;
 }
 
 void kuubik::turnSide(int side, bool clock) {
