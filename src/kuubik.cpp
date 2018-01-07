@@ -18,19 +18,12 @@
 /**
  * Tee kuup ja täida iga külg eri värviga
  **/
-kuubik::kuubik(asend sisKuup) {
+kuubik::kuubik(asend &sisKuup) {
 	yl = 12;
 	xl = 9;
 	vroom.initScreen(xl, yl);
 
-	// taidab ekraani array tyhjusega
-	for (int y = 0; y < yl; y++) {
-		for (int x = 0; x < xl; x++) {
-			vroom.ekraan[y][x] = ground;
-		}
-	}
-
-	// loob kuubi maatriksi
+	// koopia algandmetest
 	kuup = sisKuup;
 
 	// täida indeksite massiivid
@@ -41,26 +34,7 @@ kuubik::kuubik(asend sisKuup) {
 kuubik::kuubik() {
 	yl = 12;
 	xl = 9;
-	ground = ' ';
 	vroom.initScreen(xl, yl);
-
-	// taidab ekraani array tyhjusega
-	for (int y = 0; y < yl; y++) {
-		for (int x = 0; x < xl; x++) {
-			vroom.ekraan[y][x] = ground;
-		}
-	}
-
-	// loob kuubi maatriksi
-
-	for (int i = 0; i < 6; i++) {
-		for (int o = 0; o < 3; o++) {
-			for (int u = 0; u < 3; u++) {
-				kuup.kuljed[i][o][u] = i;
-				lahendatud.kuljed[i][o][u] = i;
-			}
-		}
-	}
 
 	// täida indeksite massiivid
 	fillRowID();
@@ -72,9 +46,8 @@ kuubik::kuubik() {
  **/
 void kuubik::run() {
 	while (true) {
-		scramble();
+		scramble(100);
 		ekraanile("Sassis");
-		lahenda();
 		ekraanile("Lahendatud");
 	}
 }
@@ -82,10 +55,10 @@ void kuubik::run() {
 /**
  * Aja kuup sassi
  **/
-void kuubik::scramble() {
+void kuubik::scramble(int korrad) {
 	srand(time(NULL));
 	valem segu { };
-	for (int i = 0; i < 100; i++) {
+	for (int i = 0; i < korrad; i++) {
 		std::vector<char> moves = { 'U', 'L', 'F', 'R', 'D', 'B' };
 		int num { rand() % 12 };
 		if (num < 6) {

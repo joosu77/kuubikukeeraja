@@ -18,7 +18,6 @@ class kuubik {
 		engine vroom;
 		int xl;
 		int yl;
-		char ground;
 
 		void turnSide(int,bool);
 		void fillRowID();
@@ -40,12 +39,12 @@ class kuubik {
 	public:
 		asend lahendatud;
 		asend kuup;
-		kuubik(asend);
+		kuubik(asend&);
 		kuubik();     //overload
 		void ekraanile(char const*);
 		void run();
 		void turn(valem);
-		void scramble();
+		void scramble(int);
 		bool check();
 };
 

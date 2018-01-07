@@ -12,7 +12,6 @@
 
 class engine{
     public:
-        void getInput();
         void printScreen();
         void initScreen(int, int);
 

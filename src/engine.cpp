@@ -5,7 +5,6 @@
  *      Author: root
  */
 
-#include <allegro.h>
 #include <iostream>
 #include <chrono>
 
@@ -26,14 +25,6 @@ engine::engine(){
 	ylen = 0;
 
 	score = 0;
-
-	allegro_init();
-	/*if (install_joystick(JOY_TYPE_AUTODETECT) == 0){
-	install_keyboard();
-	joyst = false;
-	}*/
-	install_joystick(JOY_TYPE_AUTODETECT);
-	set_gfx_mode(GFX_SAFE, 10,10,10,10);
 }
 
 void engine::initScreen (int wid, int hei){
@@ -41,6 +32,13 @@ void engine::initScreen (int wid, int hei){
     ylen = hei;
     ekraan.resize(ylen, std::vector <char>(xlen));
 
+
+	// taidab ekraani array tyhjusega
+	for (int y = 0; y < ylen; y++) {
+		for (int x = 0; x < xlen; x++) {
+			ekraan[y][x] = ' ';
+		}
+	}
 }
 
 void engine::printScreen(){
@@ -67,22 +65,4 @@ void engine::printScreen(){
         std::cout << "-";
     }
     std::cout << std::endl << std::endl << std::endl;
-}
-
-void engine::getInput(){
-    if (joyst){
-        poll_joystick();
-        for (int i=0;i<NUM_BUTTONS; i++){
-            if (joy[0].button[i].b){
-                buttons[i] = true;
-            } else {
-                buttons[i] = false;
-            }
-        }
-    }
-    poll_keyboard();
-
-
-    xstick = joy[0].stick[0].axis[0].pos;
-    ystick = joy[0].stick[0].axis[1].pos;
 }
