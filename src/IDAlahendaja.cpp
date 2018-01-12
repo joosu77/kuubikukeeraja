@@ -44,7 +44,7 @@ valem IDAlahendaja::lahenda(asend sisAsend) {
 					valem kaik { };
 					kaik.rida.push_back(paar);
 					uus.turn(kaik);
-					if (uus.check()) {
+					if (uus.isSolved()) {
 						min = val.rida.size();
 						std::cout << "Kokku katseid: " << attempts << std::endl;
 						std::cout << "Lahendamiseks kulus " << val.rida.size() << " kaiku" << std::endl;

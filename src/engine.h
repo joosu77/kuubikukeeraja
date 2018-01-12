@@ -16,6 +16,7 @@ class engine{
         void initScreen(int, int);
 
         engine();
+        engine (int wid, int hei);
 
         static int const NUM_BUTTONS =10;
         bool buttons [NUM_BUTTONS];

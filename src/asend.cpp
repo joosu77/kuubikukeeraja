@@ -52,3 +52,22 @@ asend& asend::operator=(const asend& other) {
     return *this;
 }
 
+/**
+ * copy assignment
+ */
+bool asend::operator==(const asend& other) {
+    if (this != &other) { // self-assignment check expected
+    	for (int i = 0; i < 6; i++) {
+    		for (int j = 0; j < 3; j++) {
+    			for (int k = 0; k < 3; k++) {
+    				if (this->kuljed[i][j][k] != other.kuljed[i][j][k]) {
+    					return false;
+    				}
+    			}
+    		}
+    	}
+    }
+
+    return true;
+}
+

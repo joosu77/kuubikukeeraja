@@ -21,6 +21,9 @@ public:
 
 	// koopiaga omistamine
 	asend& operator=(const asend& other);
+
+	// kahe asendi võrdlus
+	bool operator==(const asend& other);
 };
 
 #endif /* ASEND_H_ */

@@ -5,26 +5,21 @@
  *      Author: joosep
  */
 
+#include "kuubik.h"
+
 #include <stdlib.h>
-#include <time.h>
+#include <initializer_list>
+#include <ios>
 #include <iostream>
 #include <utility>
 
-#include "kuubik.h"
-#include "engine.h"
-#include "asend.h"
-#include "valem.h"
 
 /**
  * Tee kuup ja täida iga külg eri värviga
  **/
-kuubik::kuubik(asend &sisKuup) {
-	yl = 12;
-	xl = 9;
-	vroom.initScreen(xl, yl);
-
+kuubik::kuubik(const asend &sisKuup) {
 	// koopia algandmetest
-	kuup = sisKuup;
+	kuup = new asend {sisKuup};
 
 	// täida indeksite massiivid
 	fillRowID();
@@ -32,23 +27,20 @@ kuubik::kuubik(asend &sisKuup) {
 
 //overload
 kuubik::kuubik() {
-	yl = 12;
-	xl = 9;
-	vroom.initScreen(xl, yl);
+	// segamata kuup
+	kuup = new asend {};
 
 	// täida indeksite massiivid
 	fillRowID();
 }
 
-
-/**
- *  Trüki kuup, aja sassi ja lahenda
- **/
-void kuubik::run() {
-	while (true) {
-		scramble(100);
-		ekraanile("Sassis");
-		ekraanile("Lahendatud");
+/*
+ *
+ */
+kuubik::~kuubik() {
+	if (kuup != NULL) {
+		// delete kuup;
+		kuup = NULL;
 	}
 }
 
@@ -71,15 +63,15 @@ void kuubik::scramble(int korrad) {
 	turn(segu);
 }
 
-void kuubik::ekraanile(char const *msg) {
+void kuubik::ekraanile(engine &vroom, char const *msg) {
 	for (int y = 0; y < 3; y++) {
 		for (int x = 0; x < 3; x++) {
-			vroom.ekraan[y][x + 3] = charof(kuup.kuljed[0][y][x]);
-			vroom.ekraan[y + 3][x] = charof(kuup.kuljed[1][y][x]);
-			vroom.ekraan[y + 3][x + 3] = charof(kuup.kuljed[2][y][x]);
-			vroom.ekraan[y + 3][x + 6] = charof(kuup.kuljed[3][y][x]);
-			vroom.ekraan[y + 6][x + 3] = charof(kuup.kuljed[4][y][x]);
-			vroom.ekraan[y + 9][x + 3] = charof(kuup.kuljed[5][y][x]);
+			vroom.ekraan[y][x + 3] = charof(kuup->kuljed[0][y][x]);
+			vroom.ekraan[y + 3][x] = charof(kuup->kuljed[1][y][x]);
+			vroom.ekraan[y + 3][x + 3] = charof(kuup->kuljed[2][y][x]);
+			vroom.ekraan[y + 3][x + 6] = charof(kuup->kuljed[3][y][x]);
+			vroom.ekraan[y + 6][x + 3] = charof(kuup->kuljed[4][y][x]);
+			vroom.ekraan[y + 9][x + 3] = charof(kuup->kuljed[5][y][x]);
 		}
 	}
 
@@ -116,22 +108,12 @@ void kuubik::turn(valem sisValem) {
 }
 
 /**
- * kontrollib kas
+ * kontrollib kas kuup on lahendatud
  */
-bool kuubik::check(){
-	bool sama = true;
+bool kuubik::isSolved(){
+	static const asend lahendatud {};
 
-	for (int i=0;i<6;i++){
-		for(int o=0;o<3;o++){
-			for(int e=0;e<3;e++){
-				if (!(kuup.kuljed[i][o][e]==lahendatud.kuljed[i][o][e])){
-					sama= false;
-				}
-			}
-		}
-	}
-
-	return sama;
+	return (*kuup == lahendatud);
 }
 
 void kuubik::turnSide(int side, bool clock) {
@@ -141,15 +123,15 @@ void kuubik::turnSide(int side, bool clock) {
 		for (int i = 0; i < 3; i++) {
 			for (int u = 0; u < 3; u++) {
 				if (clock) {
-					tempSide[i][u] = kuup.kuljed[side][2 - u][i];
+					tempSide[i][u] = kuup->kuljed[side][2 - u][i];
 				} else {
-					tempSide[2 - i][u] = kuup.kuljed[side][u][i];
+					tempSide[2 - i][u] = kuup->kuljed[side][u][i];
 				}
 			}
 		}
 		for (int i = 0; i < 3; i++) {
 			for (int u = 0; u < 3; u++) {
-				kuup.kuljed[side][u][i] = tempSide[u][i];
+				kuup->kuljed[side][u][i] = tempSide[u][i];
 			}
 		}
 	}
@@ -220,32 +202,32 @@ void kuubik::fillRowID() {
 			dirTables.push_back(n);
 		}
 		rowidx[u][0] =
-				&kuup.kuljed[sides[u][0]][dirTables[0][0]][dirTables[0][3]];
+				&kuup->kuljed[sides[u][0]][dirTables[0][0]][dirTables[0][3]];
 		rowidx[u][1] =
-				&kuup.kuljed[sides[u][0]][dirTables[0][1]][dirTables[0][4]];
+				&kuup->kuljed[sides[u][0]][dirTables[0][1]][dirTables[0][4]];
 		rowidx[u][2] =
-				&kuup.kuljed[sides[u][0]][dirTables[0][2]][dirTables[0][5]];
+				&kuup->kuljed[sides[u][0]][dirTables[0][2]][dirTables[0][5]];
 
 		rowidx[u][3] =
-				&kuup.kuljed[sides[u][1]][dirTables[1][0]][dirTables[1][3]];
+				&kuup->kuljed[sides[u][1]][dirTables[1][0]][dirTables[1][3]];
 		rowidx[u][4] =
-				&kuup.kuljed[sides[u][1]][dirTables[1][1]][dirTables[1][4]];
+				&kuup->kuljed[sides[u][1]][dirTables[1][1]][dirTables[1][4]];
 		rowidx[u][5] =
-				&kuup.kuljed[sides[u][1]][dirTables[1][2]][dirTables[1][5]];
+				&kuup->kuljed[sides[u][1]][dirTables[1][2]][dirTables[1][5]];
 
 		rowidx[u][6] =
-				&kuup.kuljed[sides[u][2]][dirTables[2][0]][dirTables[2][3]];
+				&kuup->kuljed[sides[u][2]][dirTables[2][0]][dirTables[2][3]];
 		rowidx[u][7] =
-				&kuup.kuljed[sides[u][2]][dirTables[2][1]][dirTables[2][4]];
+				&kuup->kuljed[sides[u][2]][dirTables[2][1]][dirTables[2][4]];
 		rowidx[u][8] =
-				&kuup.kuljed[sides[u][2]][dirTables[2][2]][dirTables[2][5]];
+				&kuup->kuljed[sides[u][2]][dirTables[2][2]][dirTables[2][5]];
 
 		rowidx[u][9] =
-				&kuup.kuljed[sides[u][3]][dirTables[3][0]][dirTables[3][3]];
+				&kuup->kuljed[sides[u][3]][dirTables[3][0]][dirTables[3][3]];
 		rowidx[u][10] =
-				&kuup.kuljed[sides[u][3]][dirTables[3][1]][dirTables[3][4]];
+				&kuup->kuljed[sides[u][3]][dirTables[3][1]][dirTables[3][4]];
 		rowidx[u][11] =
-				&kuup.kuljed[sides[u][3]][dirTables[3][2]][dirTables[3][5]];
+				&kuup->kuljed[sides[u][3]][dirTables[3][2]][dirTables[3][5]];
 	}
 }
 

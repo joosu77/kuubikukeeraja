@@ -6,6 +6,7 @@
  */
 
 #include <vector>
+#include <cstddef>
 #include "engine.h"
 #include "asend.h"
 #include "valem.h"
@@ -15,10 +16,6 @@
 
 class kuubik {
 	private:
-		engine vroom;
-		int xl;
-		int yl;
-
 		void turnSide(int,bool);
 		void fillRowID();
 		char charof(int);
@@ -37,15 +34,19 @@ class kuubik {
 		int* c [3];
 		int* d [3];
 	public:
-		asend lahendatud;
-		asend kuup;
-		kuubik(asend&);
-		kuubik();     //overload
-		void ekraanile(char const*);
-		void run();
+		asend *kuup = NULL;
+		// engine *vroom = NULL;
+
+		// kuubik argumendis antud asendiga
+		kuubik(const asend&);
+		// kuubuk vaikimisi asendiga (lahendatud)
+		kuubik();
+		~kuubik();
+
+		void ekraanile(engine &vroom, char const*);
 		void turn(valem);
 		void scramble(int);
-		bool check();
+		bool isSolved();
 };
 
 #endif /* KUUBIK_H_ */

@@ -27,6 +27,12 @@ engine::engine(){
 	score = 0;
 }
 
+engine::engine (int wid, int hei) {
+	engine();
+
+	initScreen(wid, hei);
+}
+
 void engine::initScreen (int wid, int hei){
     xlen = wid;
     ylen = hei;
