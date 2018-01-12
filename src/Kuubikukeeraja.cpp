@@ -35,6 +35,6 @@ int main(){
     lahendaja *masin = &IDA;
     sihtKuup.turn(masin->lahenda(sihtKuup.kuup));
     //sihtKuup.scramble();
-    sihtKuup.ekraanile("Keeratud U, true");
+    sihtKuup.ekraanile("lahendatud");
     return 0;
 }

@@ -42,7 +42,7 @@ kuubik::kuubik() {
 
 
 /**
- *  Trüki kuup, aja saasi ja lahenda
+ *  Trüki kuup, aja sassi ja lahenda
  **/
 void kuubik::run() {
 	while (true) {
@@ -115,8 +115,23 @@ void kuubik::turn(valem sisValem) {
 	}
 }
 
+/**
+ * kontrollib kas
+ */
 bool kuubik::check(){
-	return kuup.kuljed==lahendatud.kuljed;
+	bool sama = true;
+
+	for (int i=0;i<6;i++){
+		for(int o=0;o<3;o++){
+			for(int e=0;e<3;e++){
+				if (!(kuup.kuljed[i][o][e]==lahendatud.kuljed[i][o][e])){
+					sama= false;
+				}
+			}
+		}
+	}
+
+	return sama;
 }
 
 void kuubik::turnSide(int side, bool clock) {

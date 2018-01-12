@@ -42,7 +42,7 @@ void engine::initScreen (int wid, int hei){
 }
 
 void engine::printScreen(){
-    for (int i=0;i<50;i++){
+    for (int i=0;i<2;i++){
         std::cout << std::endl;
     }
 

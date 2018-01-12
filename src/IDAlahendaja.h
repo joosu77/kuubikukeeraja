@@ -15,7 +15,7 @@
 class IDAlahendaja: public lahendaja {
 	public:
 		valem lahenda(asend);
-		~IDAlahendaja(){};
+		virtual ~IDAlahendaja(){};
 };
 
 #endif /* IDALAHENDAJA_H_ */
