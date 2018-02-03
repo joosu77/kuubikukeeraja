@@ -24,30 +24,60 @@ void testAlgolek() {
 /**
  * Kontrolli, et IDAlahendaja saab ühe sammu segatud kuubi lahendatud
  */
+void testBruteForce2Step() {
+    engine vroom {9, 12};
+
+	kuubik sihtKuup {};
+    /*sihtKuup.ekraanile(vroom, "Segamata");
+    std::cout << "Lahendatud: " << sihtKuup.isSolved() << std::endl;
+*/
+    sihtKuup.scramble(2);
+  /*  sihtKuup.ekraanile(vroom, "Segatud");
+    std::cout << "Lahendatud: " << sihtKuup.isSolved() << std::endl;
+*/
+	IDAlahendaja IDA { };
+    lahendaja *masin = &IDA;
+
+  //  std::cout << "Alustan lahendamist ..." << std::endl;
+    valem lahendusvalem = masin->lahenda(sihtKuup.kuup);
+    sihtKuup.turn(lahendusvalem);
+    //sihtKuup.ekraanile(vroom, "Peale lahendamist");
+    bool solved = sihtKuup.isSolved();
+    //std::cout << "Lahendatud: " << solved << std::endl;
+
+    ASSERTM("Lahendamine ei õnnestunud", solved);
+    ASSERTM("Käske ei tohiks olla rohkem, kui 2",
+    		lahendusvalem.rida.size() == 2);
+}
+
 void testBruteForce1Step() {
     engine vroom {9, 12};
 
 	kuubik sihtKuup {};
-    sihtKuup.ekraanile(vroom, "Segamata");
-    std::cout << "Lahendatud: " << sihtKuup.isSolved() << std::endl;
-
     sihtKuup.scramble(1);
-    sihtKuup.ekraanile(vroom, "Segatud");
-    std::cout << "Lahendatud: " << sihtKuup.isSolved() << std::endl;
-
 	IDAlahendaja IDA { };
     lahendaja *masin = &IDA;
-
-    std::cout << "Alustan lahendamist ..." << std::endl;
     valem lahendusvalem = masin->lahenda(sihtKuup.kuup);
     sihtKuup.turn(lahendusvalem);
-    sihtKuup.ekraanile(vroom, "Peale lahendamist");
     bool solved = sihtKuup.isSolved();
-    std::cout << "Lahendatud: " << solved << std::endl;
-
     ASSERTM("Lahendamine ei õnnestunud", solved);
     ASSERTM("Käske ei tohiks olla rohkem, kui 1",
-    		lahendusvalem.rida.size() == 1));
+    		lahendusvalem.rida.size() == 1);
+}
+
+void testBruteForce3Step() {
+    engine vroom {9, 12};
+
+	kuubik sihtKuup {};
+    sihtKuup.scramble(3);
+	IDAlahendaja IDA { };
+    lahendaja *masin = &IDA;
+    valem lahendusvalem = masin->lahenda(sihtKuup.kuup);
+    sihtKuup.turn(lahendusvalem);
+    bool solved = sihtKuup.isSolved();
+    ASSERTM("Lahendamine ei õnnestunud", solved);
+    ASSERTM("Käske ei tohiks olla rohkem, kui 3",
+    		lahendusvalem.rida.size() == 3);
 }
 
 /**
@@ -58,7 +88,11 @@ void runAllTests(int argc, char const *argv[]){
 	//TODO add your test here
 
 	s.push_back(CUTE(testAlgolek));
-	s.push_back(CUTE(testBruteForce1Step));
+	for (int i=0;i<5;i++){
+		s.push_back(CUTE(testBruteForce1Step));
+		s.push_back(CUTE(testBruteForce2Step));
+		s.push_back(CUTE(testBruteForce3Step));
+	}
 
 	cute::xml_file_opener xmlfile(argc,argv);
 	cute::xml_listener<cute::ide_listener<> >  lis(xmlfile.out);

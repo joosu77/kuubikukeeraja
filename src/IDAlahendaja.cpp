@@ -21,8 +21,27 @@ valem IDAlahendaja::lahenda(asend sisAsend) {
 	char kaigud[6] = { 'F', 'B', 'L', 'R', 'U', 'D' };
 	kuubik sisKuup(sisAsend);
 	valem tyhi {};
-	rivi.push_back(tyhi);
-	long attempts { 0 };
+	if (sisKuup.isSolved()) {
+		std::cout << "kuup on juba lahendatud" << std::endl;
+		valem kord;
+		return kord;
+	}
+	for (int i=0;i<6;i++){
+		for (int o=0;o<2;o++){
+			valem kord;
+			kord.rida.push_back(std::make_pair(kaigud[i],o));
+			rivi.push_back(kord);
+			sisKuup.turn(kord);
+			if (sisKuup.isSolved()) {
+				std::cout << "Lahendati 1 kaiguga" << std::endl;
+				std::cout << kord.rida[0].first << ((kord.rida[0].second)?('*'):(' ')) << std::endl;
+				return kord;
+			}
+			sisKuup.rewind();
+		}
+	}
+
+	long attempts = 0;
 	while (rivi.size()) {
 		valem val = rivi.back();
 
@@ -36,10 +55,10 @@ valem IDAlahendaja::lahenda(asend sisAsend) {
 					std::pair<char,bool> eelviimane = val.rida[val.rida.size()-2];
 					if (!(viimane == eelviimane && viimane == paar)){
 						if (!(viimane.first == paar.first && viimane.second != paar.second)){
-							for (unsigned int e=0;e<val.rida.size();e++){
+							/*for (unsigned int e=0;e<val.rida.size();e++){
 								std::cout << val.rida[e].first << ((val.rida[e].second)?('*'):(' '));
 							}
-							std::cout << std::endl;
+							std::cout << std::endl;*/
 							sama = false;
 						}
 					}
@@ -55,7 +74,9 @@ valem IDAlahendaja::lahenda(asend sisAsend) {
 					attempts++;
 					val.rida.push_back(paar);
 					sisKuup.turn(val);
-					if (sisKuup.isSolved()) {
+					if (*sisKuup.kuup==sisAsend){
+						sisKuup.rewind();
+					} else if (sisKuup.isSolved()) {
 						min = val.rida.size();
 						std::cout << "Kokku katseid: " << attempts << std::endl;
 						std::cout << "Lahendamiseks kulus " << val.rida.size() << " kaiku" << std::endl;
@@ -64,12 +85,11 @@ valem IDAlahendaja::lahenda(asend sisAsend) {
 						}
 						std::cout << std::endl;
 						return val;
-					}
-					if (!((min-1)==val.rida.size()) ){
-						val.rida.push_back(paar);
+					} else if (!((min-1)<val.rida.size()) ){
 						//muuta tagasi push_backiks et saada depth-first
 						rivi.push_front(val);
 						sisKuup.rewind();
+						val.rida.pop_back();
 					}
 				}
 			}
