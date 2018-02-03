@@ -14,7 +14,8 @@
 #include "lahendaja.h"
 #include "valem.h"
 #include "IDAlahendaja.h"
-int main(){
+
+int run(){
     engine vroom {9, 12};
 
 	kuubik sihtKuup {};
