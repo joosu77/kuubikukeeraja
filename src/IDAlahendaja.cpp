@@ -16,23 +16,36 @@
 #include "valem.h"
 
 valem IDAlahendaja::lahenda(asend sisAsend) {
-	std::deque<std::pair<kuubik, valem> > rivi { };
+	std::deque<valem> rivi { };
 	unsigned int min { 21 };
 	char kaigud[6] = { 'F', 'B', 'L', 'R', 'U', 'D' };
 	kuubik sisKuup(sisAsend);
 	valem tyhi {};
-	rivi.push_back(std::make_pair(sisKuup, tyhi));
+	rivi.push_back(tyhi);
 	long attempts { 0 };
 	while (rivi.size()) {
-		kuubik prgKuup(rivi.back().first.kuup);
-		valem val = rivi.back().second;
+		valem val = rivi.back();
+
 		rivi.pop_back();
 		for (int i = 0; i < 6; i++) {
 			for (int o = 0; o < 2; o++) {
 				std::pair<char,bool> paar = std::make_pair(kaigud[i],o);
 				bool sama { true };
-				if (val.rida.size()>2){
-					if (!(val.rida[-1] == val.rida[-2] && val.rida[-1] == paar)){
+				if (val.rida.size()>1){
+					std::pair<char,bool> viimane = val.rida[val.rida.size()-1];
+					std::pair<char,bool> eelviimane = val.rida[val.rida.size()-2];
+					if (!(viimane == eelviimane && viimane == paar)){
+						if (!(viimane.first == paar.first && viimane.second != paar.second)){
+							for (unsigned int e=0;e<val.rida.size();e++){
+								std::cout << val.rida[e].first << ((val.rida[e].second)?('*'):(' '));
+							}
+							std::cout << std::endl;
+							sama = false;
+						}
+					}
+				} else if (val.rida.size()>0){
+					std::pair<char,bool> viimane = val.rida[val.rida.size()-1];
+					if (!(viimane.first == paar.first && viimane.second != paar.second)){
 						sama = false;
 					}
 				} else {
@@ -40,11 +53,9 @@ valem IDAlahendaja::lahenda(asend sisAsend) {
 				}
 				if (!sama){
 					attempts++;
-					kuubik uus(prgKuup.kuup);
-					valem kaik { };
-					kaik.rida.push_back(paar);
-					uus.turn(kaik);
-					if (uus.isSolved()) {
+					val.rida.push_back(paar);
+					sisKuup.turn(val);
+					if (sisKuup.isSolved()) {
 						min = val.rida.size();
 						std::cout << "Kokku katseid: " << attempts << std::endl;
 						std::cout << "Lahendamiseks kulus " << val.rida.size() << " kaiku" << std::endl;
@@ -57,7 +68,8 @@ valem IDAlahendaja::lahenda(asend sisAsend) {
 					if (!((min-1)==val.rida.size()) ){
 						val.rida.push_back(paar);
 						//muuta tagasi push_backiks et saada depth-first
-						rivi.push_front(std::make_pair(uus, val));
+						rivi.push_front(val);
+						sisKuup.rewind();
 					}
 				}
 			}
@@ -65,5 +77,6 @@ valem IDAlahendaja::lahenda(asend sisAsend) {
 	}
 
 	std::cout << "Kokku katseid: " << attempts;
+	std::cout << "ei saanud lahendatud" << std::endl;
 	return tyhi;
 }

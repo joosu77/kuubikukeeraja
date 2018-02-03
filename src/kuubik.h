@@ -20,6 +20,12 @@ class kuubik {
 		void fillRowID();
 		char charof(int);
 
+		// rakendab valemit ja võimaldab öelda kas jätta meelde või mitte
+		void turn(valem, bool);
+
+		// rakendab ühe käigu, ei jäta meelde
+		void turn(char, bool);
+
 		// kuubi värvide kirjeldus kus dimensioonid on järgmised
 		// 1 -- kuubi külg
 		// 2 -- rida vastaval küljel
@@ -28,6 +34,9 @@ class kuubik {
 		 //int kuup[6][3][3]; - asendatud asend objectiga
 		// indeks kus on pointerid igat külge ääristavatele kleepsudele
 		int * rowidx[6][12];
+
+		// meelde jäetud valem, kasutatakse rewindis et tagasi pöörata
+		valem meeles;
 
 		int* a [3];
 		int* b [3];
@@ -43,9 +52,16 @@ class kuubik {
 		kuubik();
 		~kuubik();
 
+		// trükib kogu kuubiku välja
 		void ekraanile(engine &vroom, char const*);
+		// rakendab valemit ja jätab selle meelde
 		void turn(valem);
+		// võtab viimase valemi tagasi
+		//
+		void rewind();
+		// ajab kuubiku segamini
 		void scramble(int);
+		// tagastab true, kui kuubik
 		bool isSolved();
 };
 

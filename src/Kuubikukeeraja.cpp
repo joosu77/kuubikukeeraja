@@ -21,12 +21,7 @@ int main(){
     sihtKuup.ekraanile(vroom, "Segamata");
     std::cout << "Lahendatud: " << sihtKuup.isSolved() << std::endl;
 
-    /*valem segu {};
-    segu.rida.push_back(std::make_pair('L', true));
-    segu.rida.push_back(std::make_pair('D', true));
-    segu.rida.push_back(std::make_pair('B', true));
-    kuubik.turn(segu);*/
-    sihtKuup.scramble(5);
+    sihtKuup.scramble(1);
     sihtKuup.ekraanile(vroom, "Segatud");
     std::cout << "Lahendatud: " << sihtKuup.isSolved() << std::endl;
 
@@ -34,7 +29,8 @@ int main(){
     lahendaja *masin = &IDA;
 
     std::cout << "Alustan lahendamist ..." << std::endl;
-    sihtKuup.turn(masin->lahenda(sihtKuup.kuup));
+    valem lahendusvalem = masin->lahenda(sihtKuup.kuup);
+    sihtKuup.turn(lahendusvalem);
     sihtKuup.ekraanile(vroom, "Peale lahendamist");
     std::cout << "Lahendatud: " << sihtKuup.isSolved() << std::endl;
 

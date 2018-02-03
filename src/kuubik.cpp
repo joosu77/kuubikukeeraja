@@ -60,7 +60,8 @@ void kuubik::scramble(int korrad) {
 		}
 		std::cout << num;
 	}
-	turn(segu);
+
+	turn(segu, false);
 }
 
 void kuubik::ekraanile(engine &vroom, char const *msg) {
@@ -81,7 +82,20 @@ void kuubik::ekraanile(engine &vroom, char const *msg) {
 }
 
 void kuubik::turn(valem sisValem) {
+	turn (sisValem, true);
+}
+
+void kuubik::turn(char kylg, bool suund){
+	valem sisend {};
+	sisend.rida.push_back(std::make_pair(kylg,suund));
+	turn (sisend, false);
+}
+
+void kuubik::turn(valem sisValem, bool memorize) {
 	for (unsigned int i = 0; i < sisValem.rida.size(); i++) {
+		if (memorize){
+			meeles.rida.push_back(std::make_pair(sisValem.rida[i].first,sisValem.rida[i].second));
+		}
 		switch (sisValem.rida[i].first) {
 		case 'U':
 			turnSide(0, sisValem.rida[i].second);
@@ -105,6 +119,13 @@ void kuubik::turn(valem sisValem) {
 			std::cout << "ERROR";
 		}
 	}
+}
+
+void kuubik::rewind(){
+	for(std::vector< std::pair<char,bool> >::reverse_iterator iter = meeles.rida.rbegin(); iter != meeles.rida.rend(); ++iter){
+		turn(iter->first,!(iter->second));
+	}
+	meeles.rida.clear();
 }
 
 /**
