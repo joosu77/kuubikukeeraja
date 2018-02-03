@@ -63,6 +63,8 @@ class kuubik {
 		void scramble(int);
 		// tagastab true, kui kuubik
 		bool isSolved();
+
+		bool operator==(const kuubik& other);
 };
 
 #endif /* KUUBIK_H_ */

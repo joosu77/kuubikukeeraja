@@ -10,18 +10,21 @@
 #include "../src/kuubik.h"
 #include "../src/IDAlahendaja.h"
 
-void thisIsATest() {
-	ASSERTM("start writing tests", true);
-}
-
+/**
+ * Kontrolli, et kuup tehakse alati sama algolekuga
+ */
 void testAlgolek() {
+	engine vroom {9, 12};
 	kuubik k1 {};
 	kuubik k2 {};
 
-	ASSERTM("Kuubikud pole võrdsed", k1.kuup == k2.kuup);
+	ASSERTM("Kuubikud pole võrdsed", k1 == k2);
 }
 
-void testBruteForce() {
+/**
+ * Kontrolli, et IDAlahendaja saab ühe sammu segatud kuubi lahendatud
+ */
+void testBruteForce1Step() {
     engine vroom {9, 12};
 
 	kuubik sihtKuup {};
@@ -43,21 +46,28 @@ void testBruteForce() {
     std::cout << "Lahendatud: " << solved << std::endl;
 
     ASSERTM("Lahendamine ei õnnestunud", solved);
+    ASSERTM("Käske ei tohiks olla rohkem, kui 1",
+    		lahendusvalem.rida.size() == 1));
 }
 
+/**
+ *
+ */
 void runAllTests(int argc, char const *argv[]){
 	cute::suite s {};
 	//TODO add your test here
 
-	s.push_back(CUTE(thisIsATest));
 	s.push_back(CUTE(testAlgolek));
-	s.push_back(CUTE(testBruteForce));
+	s.push_back(CUTE(testBruteForce1Step));
 
 	cute::xml_file_opener xmlfile(argc,argv);
 	cute::xml_listener<cute::ide_listener<> >  lis(xmlfile.out);
 	cute::makeRunner(lis,argc,argv)(s, "AllTests");
 }
 
+/**
+ *
+ */
 int main(int argc, char const *argv[]){
     runAllTests(argc,argv);
     return 0;

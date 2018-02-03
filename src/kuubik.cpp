@@ -137,6 +137,20 @@ bool kuubik::isSolved(){
 	return (*kuup == lahendatud);
 }
 
+/**
+ * equals
+ */
+bool kuubik::operator==(const kuubik& other) {
+	if (kuup == NULL || other.kuup == NULL) {
+		return false;
+	}
+
+	return (*kuup == *(other.kuup));
+}
+
+/**
+ *
+ */
 void kuubik::turnSide(int side, bool clock) {
 	/* transponeeri keeratav kylg */
 	{

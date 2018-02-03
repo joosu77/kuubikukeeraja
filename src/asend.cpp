@@ -53,7 +53,7 @@ asend& asend::operator=(const asend& other) {
 }
 
 /**
- * copy assignment
+ * equals
  */
 bool asend::operator==(const asend& other) {
     if (this != &other) { // self-assignment check expected
