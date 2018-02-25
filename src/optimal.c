@@ -4277,7 +4277,7 @@ return;
 
 
 /* ========================================================================= */
-   int  main(void)
+   int  optimalLahendaja(char inp_string[])
 /* ------------------------------------------------------------------------- */
 
 {
@@ -4292,11 +4292,12 @@ init_globals();
 
 signal(SIGINT, SIG_IGN);
 
-while (1)
+/*while (1)*/
       {
-      stat = user_enters_cube(&cube_struct);
+      /*stat = user_enters_cube(&cube_struct);
       if (stat < 0)
-         break;
+         break;*/
+      stat = string_to_cube(inp_string, &cube_struct, 1);
 
       if (stat == 0)
          {

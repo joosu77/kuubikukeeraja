@@ -6,9 +6,11 @@
 #include <ide_listener.h>
 #include <xml_listener.h>
 #include <vector>
+#include <string.h>
 
 #include "../src/kuubik.h"
 #include "../src/IDAlahendaja.h"
+#include "../src/ReidLahendaja.h"
 
 /**
  * Kontrolli, et kuup tehakse alati sama algolekuga
@@ -19,6 +21,18 @@ void testAlgolek() {
 	kuubik k2 {};
 
 	ASSERTM("Kuubikud pole võrdsed", k1 == k2);
+}
+/*
+ * Kontrolli, et kuubik teisendatakse korrektselt minu struktuurist stringiks
+ */
+void testConversion(){
+	asend algne;
+	ReidLahendaja lah;
+	char* string = lah.asend2string(algne);
+	char* lahendatud = "UF UR UB UL DF DR DB DL FR FL BR BL UFR URB UBL ULF DRF DFL DLB DBR";
+	//std::cout << "Tulemus: " << string << std::endl;
+	//std::cout << "Tulemus: " << lahendatud << std::endl;
+	ASSERTM("Asendit ei teisendatud õigesti", strcmp(string, lahendatud)==0);
 }
 
 /**
@@ -88,11 +102,12 @@ void runAllTests(int argc, char const *argv[]){
 	//TODO add your test here
 
 	s.push_back(CUTE(testAlgolek));
-	for (int i=0;i<5;i++){
+	/*for (int i=0;i<5;i++)*/{
 		s.push_back(CUTE(testBruteForce1Step));
 		s.push_back(CUTE(testBruteForce2Step));
 		s.push_back(CUTE(testBruteForce3Step));
 	}
+	s.push_back(CUTE(testConversion));
 
 	cute::xml_file_opener xmlfile(argc,argv);
 	cute::xml_listener<cute::ide_listener<> >  lis(xmlfile.out);
