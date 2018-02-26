@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <cstddef>
+#include <string>
 #include "engine.h"
 #include "asend.h"
 #include "valem.h"
@@ -57,6 +58,7 @@ class kuubik {
 		// rakendab valemit ja jätab selle meelde
 		void turn(valem);
 		// võtab viimase valemi tagasi
+		void turn(std::string);
 		//
 		void rewind();
 		// ajab kuubiku segamini

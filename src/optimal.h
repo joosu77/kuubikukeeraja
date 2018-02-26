@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-int  solve_optimal (void);
+int  optimalLahendaja (char*);
 
 #ifdef __cplusplus
 }

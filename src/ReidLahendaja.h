@@ -15,7 +15,7 @@ class ReidLahendaja: public lahendaja {
 public:
 	ReidLahendaja();
 	//virtual ~ReidLahendaja();
-	// valem lahenda(asend sisAsend);
+	valem lahenda(asend sisAsend);
 	char* asend2string(asend &);
 };
 

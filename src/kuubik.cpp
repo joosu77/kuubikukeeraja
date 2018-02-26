@@ -91,6 +91,14 @@ void kuubik::turn(char kylg, bool suund){
 	turn (sisend, false);
 }
 
+void kuubik::turn(std::string sisend){
+	valem val {};
+	for(int i=0;i<sisend.size()/2;i++){
+		val.rida.push_back(std::make_pair(sisend[i*2],(sisend[i*2+1]==' ')));
+	}
+	turn (val);
+}
+
 void kuubik::turn(valem sisValem, bool memorize) {
 	for (unsigned int i = 0; i < sisValem.rida.size(); i++) {
 		if (memorize){

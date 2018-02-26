@@ -4,6 +4,9 @@
 /*  malloc.h removed, long string fixed  */
 
 
+char* val;
+int first = 1;
+
 #define  USE_METRIC        QUARTER_TURN_METRIC
 #define  SEARCH_LIMIT                        0
 #define  USE_SYMMETRY                        1
@@ -3877,14 +3880,22 @@ for (p_node = node_arr; p_node->remain_depth > 0; p_node++)
 
 q_length = f_length = 0;
 
+
 for (ii = 0; ii < count; ii++)
     {
     q_length += metric_q_length(turn_list[ii]);
     f_length += metric_f_length(turn_list[ii]);
     }
 
-for (ii = 0; ii < count; ii++)
+int cursor = 0;
+
+for (ii = 0; ii < count; ii++){
     printf(" %s", twist_string[turn_list[ii]]);
+	if (first){
+		cursor += sprintf(val+cursor, " %s", twist_string[turn_list[ii]]);
+	}
+}
+first = 0;
 
 if (p_current_metric->metric == QUARTER_TURN_METRIC)
    printf("  (%dq*, %df)\n", q_length, f_length);
@@ -4277,7 +4288,7 @@ return;
 
 
 /* ========================================================================= */
-   int  optimalLahendaja(char inp_string[])
+   int  optimalLahendaja(char* inp_string)
 /* ------------------------------------------------------------------------- */
 
 {
@@ -4286,7 +4297,7 @@ Options                 user_options;
 Cube                    cube_struct;
 int                     stat;
 
-
+val = malloc(60);
 init_options(&metric_data, &user_options);
 init_globals();
 

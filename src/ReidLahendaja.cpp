@@ -6,6 +6,7 @@
  */
 
 #include "ReidLahendaja.h"
+#include "optimal.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,12 +19,11 @@ ReidLahendaja::ReidLahendaja() {
 
 /*ReidLahendaja::~ReidLahendaja() {
 	~lahendaja();
-}
+}*/
 
 valem ReidLahendaja::lahenda(asend sisAsend){
-
-
-}*/
+	optimalLahendaja(asend2string(sisAsend));
+}
 
 char* ReidLahendaja::asend2string(asend &sisAsend){
 	// eraldame mälu piisavalt, et mahuks ära kogu kuubiku olek
@@ -32,22 +32,22 @@ char* ReidLahendaja::asend2string(asend &sisAsend){
 	sprintf(out, "%1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c%1c %1c%1c%1c %1c%1c%1c %1c%1c%1c %1c%1c%1c %1c%1c%1c %1c%1c%1c %1c%1c%1c",
 			sisAsend.kuljed[0][2][1], sisAsend.kuljed[2][0][1],
 			sisAsend.kuljed[0][1][2],sisAsend.kuljed[3][0][1],
-			sisAsend.kuljed[0][0][1],sisAsend.kuljed[5][0][1],
+			sisAsend.kuljed[0][0][1],sisAsend.kuljed[5][2][1],
 			sisAsend.kuljed[0][1][0],sisAsend.kuljed[1][0][1],
 			sisAsend.kuljed[4][0][1],sisAsend.kuljed[2][2][1],
 			sisAsend.kuljed[4][1][2],sisAsend.kuljed[3][2][1],
-			sisAsend.kuljed[4][2][1],sisAsend.kuljed[5][2][1],
+			sisAsend.kuljed[4][2][1],sisAsend.kuljed[5][0][1],
 			sisAsend.kuljed[4][1][0],sisAsend.kuljed[1][2][1],
-			sisAsend.kuljed[2][2][1],sisAsend.kuljed[3][0][1],
-			sisAsend.kuljed[2][0][1],sisAsend.kuljed[1][2][1],
-			sisAsend.kuljed[5][2][1],sisAsend.kuljed[3][0][1],
+			sisAsend.kuljed[2][1][2],sisAsend.kuljed[3][1][0],
+			sisAsend.kuljed[2][1][0],sisAsend.kuljed[1][1][2],
+			sisAsend.kuljed[5][1][2],sisAsend.kuljed[3][1][2],
 			sisAsend.kuljed[5][0][1],sisAsend.kuljed[1][2][1],
 			sisAsend.kuljed[0][2][2],sisAsend.kuljed[2][0][2],sisAsend.kuljed[3][0][0],
 			sisAsend.kuljed[0][0][2],sisAsend.kuljed[3][0][2],sisAsend.kuljed[5][2][2],
 			sisAsend.kuljed[0][0][0],sisAsend.kuljed[5][2][0],sisAsend.kuljed[1][0][0],
 			sisAsend.kuljed[0][2][0],sisAsend.kuljed[1][0][2],sisAsend.kuljed[2][0][0],
 			sisAsend.kuljed[4][0][2],sisAsend.kuljed[3][2][0],sisAsend.kuljed[2][2][2],
-			sisAsend.kuljed[4][0][0],sisAsend.kuljed[2][0][2],sisAsend.kuljed[1][2][2],
+			sisAsend.kuljed[4][0][0],sisAsend.kuljed[2][2][0],sisAsend.kuljed[1][2][2],
 			sisAsend.kuljed[4][2][0],sisAsend.kuljed[1][2][0],sisAsend.kuljed[5][0][0],
 			sisAsend.kuljed[4][2][2],sisAsend.kuljed[5][0][2],sisAsend.kuljed[3][2][2]
 	);

@@ -35,6 +35,37 @@ void testConversion(){
 	ASSERTM("Asendit ei teisendatud õigesti", strcmp(string, lahendatud)==0);
 }
 
+void testConversion2(){
+	kuubik algne;
+	ReidLahendaja lah;
+	algne.turn("F*D R F*U F D*F L F*R*D*F L B*L*D L*");
+	char* string = lah.asend2string(*algne.kuup);
+	char* lahendatud = "UF UR FL FD BR BU DB DL FR RD LU BL UFR FUL FLD FDR BUR BRD DLB BLU";
+	//std::cout << "Tulemus: " << string << std::endl;
+	//std::cout << "Tulemus: " << lahendatud << std::endl;
+	ASSERTM("Asendit ei teisendatud õigesti", strcmp(string, lahendatud)==0);
+}
+
+void testConversion3(){
+	kuubik algne;
+	ReidLahendaja lah;
+	algne.turn("F F B B R R L L D D U U ");
+	char* string = lah.asend2string(*algne.kuup);
+	char* lahendatud = "DB DL DF DR UB UL UF UR BL BR FL FR UFR URB UBL ULF DRF DFL DLB DBR";
+	//std::cout << "Tulemus: " << string << std::endl;
+	//std::cout << "Tulemus: " << lahendatud << std::endl;
+	ASSERTM("Asendit ei teisendatud õigesti", strcmp(string, lahendatud)==0);
+}
+
+void testReid(){
+	kuubik sihtKuup;
+	//sihtKuup.scramble(5);
+	ReidLahendaja reid;
+	reid.lahenda(sihtKuup.kuup);
+
+	ASSERTM("korras",1);
+}
+
 /**
  * Kontrolli, et IDAlahendaja saab ühe sammu segatud kuubi lahendatud
  */
@@ -108,6 +139,9 @@ void runAllTests(int argc, char const *argv[]){
 		s.push_back(CUTE(testBruteForce3Step));
 	}
 	s.push_back(CUTE(testConversion));
+	s.push_back(CUTE(testConversion2));
+	s.push_back(CUTE(testConversion3));
+	s.push_back(CUTE(testReid));
 
 	cute::xml_file_opener xmlfile(argc,argv);
 	cute::xml_listener<cute::ide_listener<> >  lis(xmlfile.out);
