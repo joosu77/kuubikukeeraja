@@ -76,7 +76,7 @@ void testConversion4(){
 void testReid(){
 	kuubik sihtKuup;
 	engine vroom {9,12};
-	sihtKuup.scramble(500);
+	sihtKuup.scramble(20);
 	sihtKuup.ekraanile(vroom, " ");
 	ReidLahendaja reid;
 	sihtKuup.turn(reid.lahenda(sihtKuup.kuup));
