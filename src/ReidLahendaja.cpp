@@ -6,10 +6,16 @@
  */
 
 #include "ReidLahendaja.h"
+
+#include <stdlib.h>
+#include <cstdio>
+#include <iostream>
+#include <utility>
+#include <vector>
+
 #include "optimal.h"
 
-#include <stdio.h>
-#include <stdlib.h>
+
 
 
 ReidLahendaja::ReidLahendaja() {
@@ -22,7 +28,20 @@ ReidLahendaja::ReidLahendaja() {
 }*/
 
 valem ReidLahendaja::lahenda(asend sisAsend){
-	optimalLahendaja(asend2string(sisAsend));
+	char* valjund = optimalLahendaja(asend2string(sisAsend));
+	valem tulem;
+	int i =0;
+	while ((int)valjund[i*3] != 0){
+		if (valjund[i*3+1] == '2'){
+			tulem.rida.push_back(std::make_pair(valjund[i*3],true));
+			tulem.rida.push_back(std::make_pair(valjund[i*3],true));
+		}else {
+			tulem.rida.push_back(std::make_pair(valjund[i*3],valjund[i*3+1]==' '));
+		}
+		i++;
+	}
+	printValem(tulem);
+	return tulem;
 }
 
 char* ReidLahendaja::asend2string(asend &sisAsend){
@@ -41,7 +60,7 @@ char* ReidLahendaja::asend2string(asend &sisAsend){
 			sisAsend.kuljed[2][1][2],sisAsend.kuljed[3][1][0],
 			sisAsend.kuljed[2][1][0],sisAsend.kuljed[1][1][2],
 			sisAsend.kuljed[5][1][2],sisAsend.kuljed[3][1][2],
-			sisAsend.kuljed[5][0][1],sisAsend.kuljed[1][2][1],
+			sisAsend.kuljed[5][1][0],sisAsend.kuljed[1][1][0],
 			sisAsend.kuljed[0][2][2],sisAsend.kuljed[2][0][2],sisAsend.kuljed[3][0][0],
 			sisAsend.kuljed[0][0][2],sisAsend.kuljed[3][0][2],sisAsend.kuljed[5][2][2],
 			sisAsend.kuljed[0][0][0],sisAsend.kuljed[5][2][0],sisAsend.kuljed[1][0][0],
@@ -56,7 +75,7 @@ char* ReidLahendaja::asend2string(asend &sisAsend){
 			out[i]="ULFRDB"[(int)out[i]];
 		}
 	}
-
+	//std::cout <<"\n" << out << std::endl;
 
 	return out;
 }

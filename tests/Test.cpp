@@ -33,6 +33,7 @@ void testConversion(){
 	//std::cout << "Tulemus: " << string << std::endl;
 	//std::cout << "Tulemus: " << lahendatud << std::endl;
 	ASSERTM("Asendit ei teisendatud õigesti", strcmp(string, lahendatud)==0);
+	free(string);
 }
 
 void testConversion2(){
@@ -44,6 +45,7 @@ void testConversion2(){
 	//std::cout << "Tulemus: " << string << std::endl;
 	//std::cout << "Tulemus: " << lahendatud << std::endl;
 	ASSERTM("Asendit ei teisendatud õigesti", strcmp(string, lahendatud)==0);
+	free(string);
 }
 
 void testConversion3(){
@@ -55,15 +57,32 @@ void testConversion3(){
 	//std::cout << "Tulemus: " << string << std::endl;
 	//std::cout << "Tulemus: " << lahendatud << std::endl;
 	ASSERTM("Asendit ei teisendatud õigesti", strcmp(string, lahendatud)==0);
+	free(string);
+}
+
+void testConversion4(){
+	kuubik algne;
+	ReidLahendaja lah;
+	algne.turn("D*L*U L U ");
+	std::cout << "asi\n";
+	char* string = lah.asend2string(*algne.kuup);
+	char* lahendatud = "UB FL UL UR DR DB DL DF FR UF BR BL FUL UBL FDR URB DBR RUF DFL DLB";
+	std::cout << "Saadudd: " << string << std::endl;
+	std::cout << "Oodatav: " << lahendatud << std::endl;
+	ASSERTM("Asendit ei teisendatud õigesti", strcmp(string, lahendatud)==0);
+	free(string);
 }
 
 void testReid(){
 	kuubik sihtKuup;
-	//sihtKuup.scramble(5);
+	engine vroom {9,12};
+	sihtKuup.scramble(500);
+	sihtKuup.ekraanile(vroom, " ");
 	ReidLahendaja reid;
-	reid.lahenda(sihtKuup.kuup);
+	sihtKuup.turn(reid.lahenda(sihtKuup.kuup));
 
-	ASSERTM("korras",1);
+
+	ASSERTM("ei ole lahendatud",sihtKuup.isSolved());
 }
 
 /**
@@ -141,6 +160,7 @@ void runAllTests(int argc, char const *argv[]){
 	s.push_back(CUTE(testConversion));
 	s.push_back(CUTE(testConversion2));
 	s.push_back(CUTE(testConversion3));
+	s.push_back(CUTE(testConversion4));
 	s.push_back(CUTE(testReid));
 
 	cute::xml_file_opener xmlfile(argc,argv);

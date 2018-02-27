@@ -55,10 +55,11 @@ void kuubik::scramble(int korrad) {
 		int num { rand() % 12 };
 		if (num < 6) {
 			segu.rida.push_back(std::make_pair(moves[num], true));
+			std::cout << moves[num] << " ";
 		} else {
 			segu.rida.push_back(std::make_pair(moves[num-6], false));
+			std::cout << moves[num-6] << "' ";
 		}
-		std::cout << num;
 	}
 
 	turn(segu, false);

@@ -15,6 +15,7 @@ class lahendaja {
 	public:
 			virtual valem lahenda(asend);
 			virtual ~lahendaja(){};
+			void printValem(valem &sisend);
 };
 
 #endif /* LAHENDAJA_H_ */

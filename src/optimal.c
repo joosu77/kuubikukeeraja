@@ -3892,8 +3892,9 @@ int cursor = 0;
 for (ii = 0; ii < count; ii++){
     printf(" %s", twist_string[turn_list[ii]]);
 	if (first){
-		cursor += sprintf(val+cursor, " %s", twist_string[turn_list[ii]]);
+		cursor += sprintf(val+cursor, "%s ", twist_string[turn_list[ii]]);
 	}
+
 }
 first = 0;
 
@@ -4288,7 +4289,7 @@ return;
 
 
 /* ========================================================================= */
-   int  optimalLahendaja(char* inp_string)
+   char*  optimalLahendaja(char* inp_string)
 /* ------------------------------------------------------------------------- */
 
 {
@@ -4297,7 +4298,7 @@ Options                 user_options;
 Cube                    cube_struct;
 int                     stat;
 
-val = malloc(60);
+val = (char*)calloc(60, sizeof(char));
 init_options(&metric_data, &user_options);
 init_globals();
 
@@ -4321,8 +4322,7 @@ signal(SIGINT, SIG_IGN);
          signal(SIGINT, SIG_IGN);
          }
       }
+/*exit(EXIT_SUCCESS);*/
 
-exit(EXIT_SUCCESS);
-
-return 0;  /*  haha  */
+return val;  /*  haha  */
 }

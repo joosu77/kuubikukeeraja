@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-int  optimalLahendaja (char*);
+char*  optimalLahendaja (char*);
 
 #ifdef __cplusplus
 }
