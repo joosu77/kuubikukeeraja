@@ -26,4 +26,6 @@ public:
 	bool operator==(const asend& other);
 };
 
+bool operator==(const asend& self, const asend& other);
+
 #endif /* ASEND_H_ */

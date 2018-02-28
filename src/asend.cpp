@@ -71,3 +71,24 @@ bool asend::operator==(const asend& other) {
     return true;
 }
 
+/**
+ * Asendi C-stiilis võrdlusoperaator
+ * TODO: pole selge, miks objekit võrdlusoperaatoriga linkimisviga tekkis
+ * kui on välja selgitatud, miks mõlemat operaatorit tarvis, siis tuleb
+ * üks teise väljakutsena realiseerida
+ */
+bool operator==(const asend& self, const asend& other) {
+    if (&self != &other) { // self-assignment check expected
+    	for (int i = 0; i < 6; i++) {
+    		for (int j = 0; j < 3; j++) {
+    			for (int k = 0; k < 3; k++) {
+    				if (self.kuljed[i][j][k] != other.kuljed[i][j][k]) {
+    					return false;
+    				}
+    			}
+    		}
+    	}
+    }
+
+    return true;
+}

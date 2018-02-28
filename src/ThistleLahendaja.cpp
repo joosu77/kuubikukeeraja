@@ -126,6 +126,11 @@ bool ThistleLahendaja::serviKuljel(int kulg, std::set<int> servad){
 	return res;
 }
 
+//valem& operator=(const valem& val2){
+//	this->rida = val2.rida;
+//	return *this;
+//}
+
 namespace std {
 
   template <>
