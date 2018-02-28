@@ -4,13 +4,21 @@
 #include <cute_test.h>
 #include <cute_xml_file.h>
 #include <ide_listener.h>
-#include <xml_listener.h>
-#include <vector>
+#include <stdlib.h>
 #include <string.h>
+#include <xml_listener.h>
+#include <iostream>
+#include <map>
+#include <set>
+#include <vector>
 
-#include "../src/kuubik.h"
+#include "../src/asend.h"
+#include "../src/engine.h"
 #include "../src/IDAlahendaja.h"
+#include "../src/kuubik.h"
 #include "../src/ReidLahendaja.h"
+#include "../src/ThistleLahendaja.h"
+#include "../src/valem.h"
 
 /**
  * Kontrolli, et kuup tehakse alati sama algolekuga
@@ -83,6 +91,18 @@ void testReid(){
 
 
 	ASSERTM("ei ole lahendatud",sihtKuup.isSolved());
+}
+
+void testThistleSamm1(){
+	kuubik sihtKuup;
+	sihtKuup.turn("F ");
+	ThistleLahendaja thistle;
+	std::set<valem> lahendid;
+	thistle.samm1(sihtKuup.kuup,lahendid);
+	for (std::set<valem>::iterator ite = lahendid.begin();ite != lahendid.end();++ite){
+		valem val = *ite;
+		thistle.printValem(val);
+	}
 }
 
 /**
