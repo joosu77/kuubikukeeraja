@@ -12,8 +12,14 @@
 #ifndef VALEM_H
 #define VALEM_H
 
-struct valem{
-	std::vector <std::pair <char, bool> > rida;
+class valem{
+	public:
+		std::vector <std::pair <char, bool> > rida;
+		valem(std::string);
+		valem();
+		void print();
+		std::string toString();
+		bool operator==(const std::string &other);
 };
 
 bool operator<(const valem& val1, const valem& val2);

@@ -1,5 +1,7 @@
 #include "valem.h"
 
+#include <iostream>
+
 /**
  * Valemi võrldusoperaator
  */
@@ -20,4 +22,40 @@ bool operator<(const valem& val1, const valem& val2){
 		}
 		return sum1 < sum2;
 	}
+}
+
+valem::valem(){
+	//meelega tyhi
+}
+
+valem::valem(std::string valemStr){
+	for(int i=0;i<valemStr.size();i++){
+		if (valemStr[i] == 'U' || valemStr[i] == 'L' ||
+				valemStr[i] == 'F' ||valemStr[i] == 'R' ||
+				valemStr[i] == 'D' ||valemStr[i] == 'B'){
+			if (i < valemStr.size()-1 && valemStr[i+1]=='*'){
+				rida.push_back(std::make_pair(valemStr[i],false));
+				i++;
+			} else {
+				rida.push_back(std::make_pair(valemStr[i],true));
+			}
+		}
+	}
+}
+
+std::string valem::toString(){
+	std::string res {};
+	for (int i=0;i<rida.size();i++){
+		res += rida[i].first;
+		res += (rida[i].second?' ':'*');
+	}
+	return res;
+}
+
+void valem::print(){
+	std::cout << "Prindin valemit: " << toString() << "\n";
+}
+
+bool valem::operator==(const std::string &other) {
+	return (toString() == other);
 }

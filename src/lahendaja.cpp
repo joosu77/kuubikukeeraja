@@ -16,10 +16,4 @@ valem lahendaja::lahenda(asend c){
 	return val;
 }
 
-void lahendaja::printValem(valem &sisend){
-	std::cout << "Prindin valemit: ";
-	for (int i=0;i<sisend.rida.size();i++){
-		std::cout << sisend.rida[i].first << (sisend.rida[i].second?' ':'*');
-	}
-	std::cout << "\n";
-}
+

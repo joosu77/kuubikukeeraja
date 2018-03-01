@@ -18,6 +18,7 @@
 #include "../src/kuubik.h"
 #include "../src/ReidLahendaja.h"
 #include "../src/ThistleLahendaja.h"
+#include "../src/ThistleSamm2Map.h"
 #include "../src/valem.h"
 
 /**
@@ -102,7 +103,7 @@ void testThistleSamm1(){
 	std::cout << lahendid.size() << '\n';
 	for (std::set<valem>::iterator ite = lahendid.begin();ite != lahendid.end();++ite){
 		valem val = *ite;
-		thistle.printValem(val);
+		val.print();
 	}
 }
 
@@ -116,7 +117,7 @@ void testThistleSamm1vol2(){
 	std::cout << lahendid.size() << '\n';
 	for (std::set<valem>::iterator ite = lahendid.begin();ite != lahendid.end();++ite){
 		valem val = *ite;
-		thistle.printValem(val);
+		val.print();
 	}
 }
 
@@ -132,7 +133,7 @@ void testThistleSamm1proovimiseta(){
 	std::cout << lahendid.size() << '\n';
 	for (std::set<valem>::iterator ite = lahendid.begin();ite != lahendid.end();++ite){
 		valem val = *ite;
-		thistle.printValem(val);
+		val.print();
 	}
 }
 void testThistleSamm2osa1(){
@@ -147,8 +148,20 @@ void testThistleSamm2osa1(){
 	std::cout << lahendid.size() << '\n';
 	for (std::set<valem>::iterator ite = lahendid.begin();ite != lahendid.end();++ite){
 		valem val = *ite;
-		thistle.printValem(val);
+		val.print();
 	}
+}
+void testThistleSamm2Map(){
+	ThistleSamm2Map data;
+	valem val = data.getValem("00000000");
+	val.print();
+	ASSERTM("Ei leidnud valemit 00000000",val == "F L R F F L R U U D D F ");
+	val = data.getValem("00112221");
+	val.print();
+	ASSERTM("Ei leidnud valemit 00112221",val == "F L F F R R B U U L*F F L ");
+	val = data.getValem("30112221");
+	val.print();
+	ASSERTM("Valemile 30112221 tagastati vastus",val == "");
 }
 
 /**
@@ -231,7 +244,9 @@ void runAllTests(int argc, char const *argv[]){
 	//s.push_back(CUTE(testThistleSamm1));
 	//s.push_back(CUTE(testThistleSamm1vol2));
 	s.push_back(CUTE(testThistleSamm1proovimiseta));
-	s.push_back(CUTE(testThistleSamm2osa1));
+	//s.push_back(CUTE(testThistleSamm2osa1));
+	s.push_back(CUTE(testThistleSamm2Map));
+
 
 	cute::xml_file_opener xmlfile(argc,argv);
 	cute::xml_listener<cute::ide_listener<> >  lis(xmlfile.out);

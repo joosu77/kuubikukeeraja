@@ -40,7 +40,7 @@ valem ReidLahendaja::lahenda(asend sisAsend){
 		}
 		i++;
 	}
-	printValem(tulem);
+	tulem.print();
 	return tulem;
 }
 
