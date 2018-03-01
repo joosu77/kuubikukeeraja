@@ -22,7 +22,10 @@ public:
 	std::set <int> servaKontroll(asend sisAsend);
 	bool serviKuljel(int kulg, std::set <int> servad);
 	void samm1(asend sisAsend, std::set<valem> &lahendid);
-	valem samm2(asend sisAsend, std::set<valem> &lahendid);
+	void samm1proovimiseta(asend sisAsend, std::set<valem> &lahendid);
+	std::set<int> LRservaotsing(asend sisAsend);
+	void samm2osa1(asend sisAsend, std::set<valem> &lahendid);
+	void samm2osa2(asend sisAsend, std::set<valem> &lahendid);
 	valem samm3(asend sisAsend);
 	valem samm4(asend sisAsend);
 };

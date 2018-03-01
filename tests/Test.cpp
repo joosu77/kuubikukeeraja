@@ -84,7 +84,7 @@ void testConversion4(){
 void testReid(){
 	kuubik sihtKuup;
 	engine vroom {9,12};
-	sihtKuup.scramble(20);
+	sihtKuup.scramble(17);
 	sihtKuup.ekraanile(vroom, " ");
 	ReidLahendaja reid;
 	sihtKuup.turn(reid.lahenda(sihtKuup.kuup));
@@ -95,10 +95,56 @@ void testReid(){
 
 void testThistleSamm1(){
 	kuubik sihtKuup;
-	sihtKuup.turn("F ");
+	sihtKuup.turn("D F ");
 	ThistleLahendaja thistle;
 	std::set<valem> lahendid;
 	thistle.samm1(sihtKuup.kuup,lahendid);
+	std::cout << lahendid.size() << '\n';
+	for (std::set<valem>::iterator ite = lahendid.begin();ite != lahendid.end();++ite){
+		valem val = *ite;
+		thistle.printValem(val);
+	}
+}
+
+void testThistleSamm1vol2(){
+	kuubik sihtKuup;
+	//sihtKuup.scramble(500);
+	sihtKuup.turn("U*R R D D B*F L*");
+	ThistleLahendaja thistle;
+	std::set<valem> lahendid;
+	thistle.samm1(sihtKuup.kuup,lahendid);
+	std::cout << lahendid.size() << '\n';
+	for (std::set<valem>::iterator ite = lahendid.begin();ite != lahendid.end();++ite){
+		valem val = *ite;
+		thistle.printValem(val);
+	}
+}
+
+void testThistleSamm1proovimiseta(){
+	kuubik sihtKuup;
+	engine vroom {9,12};
+	//sihtKuup.scramble(500);
+	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B ");
+	sihtKuup.ekraanile(vroom, " ");
+	ThistleLahendaja thistle;
+	std::set<valem> lahendid;
+	thistle.samm1proovimiseta(sihtKuup.kuup,lahendid);
+	std::cout << lahendid.size() << '\n';
+	for (std::set<valem>::iterator ite = lahendid.begin();ite != lahendid.end();++ite){
+		valem val = *ite;
+		thistle.printValem(val);
+	}
+}
+void testThistleSamm2osa1(){
+	kuubik sihtKuup;
+	engine vroom {9,12};
+	//sihtKuup.scramble(500);
+	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U ");
+	sihtKuup.ekraanile(vroom, " ");
+	ThistleLahendaja thistle;
+	std::set<valem> lahendid;
+	thistle.samm2osa1(sihtKuup.kuup,lahendid);
+	std::cout << lahendid.size() << '\n';
 	for (std::set<valem>::iterator ite = lahendid.begin();ite != lahendid.end();++ite){
 		valem val = *ite;
 		thistle.printValem(val);
@@ -181,7 +227,11 @@ void runAllTests(int argc, char const *argv[]){
 	s.push_back(CUTE(testConversion2));
 	s.push_back(CUTE(testConversion3));
 	s.push_back(CUTE(testConversion4));
-	s.push_back(CUTE(testReid));
+	//s.push_back(CUTE(testReid));
+	//s.push_back(CUTE(testThistleSamm1));
+	//s.push_back(CUTE(testThistleSamm1vol2));
+	s.push_back(CUTE(testThistleSamm1proovimiseta));
+	s.push_back(CUTE(testThistleSamm2osa1));
 
 	cute::xml_file_opener xmlfile(argc,argv);
 	cute::xml_listener<cute::ide_listener<> >  lis(xmlfile.out);

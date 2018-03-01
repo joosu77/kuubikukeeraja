@@ -8,15 +8,16 @@
 #include "ThistleLahendaja.h"
 
 #include <stdlib.h>
+#include <cstddef>
 #include <cstdio>
-#include <set>
+#include <iostream>
+#include <string>
 #include <unordered_map>
 #include <utility>
 #include <vector>
 
-#include "valem.h"
-#include "asend.h"
 #include "kuubik.h"
+#include "engine.h"
 
 /*ThistleLahendaja::ThistleLahendaja() {
 	// TODO Auto-generated constructor stub
@@ -32,7 +33,6 @@ valem ThistleLahendaja::lahenda(asend sisAsend){
 
 	std::set<valem> lahendid;
 	samm1(sisAsend, lahendid);
-	samm2(sisAsend, lahendid);
 
 	/*valem tulem { };
 	tulem.rida.reserve(val1.rida.size()+val2.rida.size()+...);
@@ -60,7 +60,7 @@ char* ThistleLahendaja::asend2string(asend &sisAsend){
 			sisAsend.kuljed[2][1][2],sisAsend.kuljed[3][1][0],
 			sisAsend.kuljed[2][1][0],sisAsend.kuljed[1][1][2],
 			sisAsend.kuljed[5][1][2],sisAsend.kuljed[3][1][2],
-			sisAsend.kuljed[5][0][1],sisAsend.kuljed[1][2][1],
+			sisAsend.kuljed[5][1][0],sisAsend.kuljed[1][1][0],
 			sisAsend.kuljed[0][2][2],sisAsend.kuljed[2][0][2],sisAsend.kuljed[3][0][0],
 			sisAsend.kuljed[0][0][2],sisAsend.kuljed[3][0][2],sisAsend.kuljed[5][2][2],
 			sisAsend.kuljed[0][0][0],sisAsend.kuljed[5][2][0],sisAsend.kuljed[1][0][0],
@@ -98,27 +98,27 @@ std::set<int> ThistleLahendaja::servaKontroll(asend sisAsend){
 bool ThistleLahendaja::serviKuljel(int kulg, std::set<int> servad){
 	bool res { false };
 	if (kulg==0){
-		if (servad.count(0) || servad.count(1) || servad.count(2) || servad.count(3)){
+		if (!servad.count(0) || !servad.count(1) || !servad.count(2) || !servad.count(3)){
 			res = true;
 		}
 	} else if (kulg==1){
-		if (servad.count(3) || servad.count(7) || servad.count(9) || servad.count(11)){
+		if (!servad.count(3) || !servad.count(7) || !servad.count(9) || !servad.count(11)){
 			res = true;
 		}
 	} else if (kulg==2){
-		if (servad.count(0) || servad.count(4) || servad.count(8) || servad.count(9)){
+		if (!servad.count(0) || !servad.count(4) || !servad.count(8) || !servad.count(9)){
 			res = true;
 		}
 	} else if (kulg==3){
-		if (servad.count(1) || servad.count(5) || servad.count(8) || servad.count(10)){
+		if (!servad.count(1) || !servad.count(5) || !servad.count(8) || !servad.count(10)){
 			res = true;
 		}
 	} else if (kulg==4){
-		if (servad.count(4) || servad.count(5) || servad.count(6) || servad.count(7)){
+		if (!servad.count(4) || !servad.count(5) || !servad.count(6) || !servad.count(7)){
 			res = true;
 		}
 	} else if (kulg==5){
-		if (servad.count(2) || servad.count(6) || servad.count(10) || servad.count(11)){
+		if (!servad.count(2) || !servad.count(6) || !servad.count(10) || !servad.count(11)){
 			res = true;
 		}
 	}
@@ -177,30 +177,52 @@ namespace std {
  * kus kõik servad on "head", ja kutsub nendega samm2 välja
  *
  * "hea" serv - serv, millel on enda kohale jõudmiseks vaja teha paarisarv U ja D pöördeid
+ *
+ * TODO: kui leitakse samasse positsiooni kiirem tee ei kasutata seda hetkel
  */
 void ThistleLahendaja::samm1(asend sisAsend, std::set<valem> &lahendid){
 	std::set<int> headServad = servaKontroll(sisAsend);
 
+	int maxPoorded = 7;
 	kuubik sisKuup {sisAsend};
 	std::unordered_map<asend, int> kaidud {};
 	std::vector<std::pair<valem, int> > pooleli { };
-	while (pooleli.size()){
-		valem tee = pooleli[pooleli.size()-1].first;
-		int kaugus { pooleli[pooleli.size() - 1].second };
-		pooleli.pop_back();
+	bool first = true;
+	while (pooleli.size() || first){
+		valem tee;
+		int kaugus =0;
+		asend olek;
+		if (first){
+			olek = sisKuup.kuup;
+		}else {
+			//tee = pooleli[pooleli.size()-1].first;
+			//kaugus = pooleli[pooleli.size() - 1].second;
+			//pooleli.pop_back();
+			tee = pooleli[0].first;
+			kaugus = pooleli[0].second;
+			std::cout << "kaugus: " << kaugus << '\n';
+			std::cout << "alles: " << pooleli.size() << '\n';
+			pooleli.erase(pooleli.begin());
 
-		sisKuup.turn(tee);
-		asend olek = sisKuup.kuup;
-		sisKuup.rewind();
+			sisKuup.turn(tee);
+			olek = sisKuup.kuup;
+			//engine vroom {9,12};
+			//sisKuup.ekraanile(vroom, " ");
+			sisKuup.rewind();
+		}
+
 		headServad = servaKontroll(olek);
 
 		bool korras { false };
 		if (headServad.size()==12){
 			korras = true;
-			lahendid.insert(tee);
+			if (!first){
+				lahendid.insert(tee);
+			}
+			maxPoorded = tee.rida.size();
 		}
 
-		if (kaugus<7 && kaidud.count(olek) == 0 && korras == false){
+		if (kaugus<maxPoorded && kaidud.count(olek) == 0 && korras == false){
 			for (int i=0;i<12;i++){
 				if (serviKuljel(i%6,headServad)){
 					if(i<6){
@@ -208,7 +230,7 @@ void ThistleLahendaja::samm1(asend sisAsend, std::set<valem> &lahendid){
 						uus.rida.push_back(std::make_pair("ULFRDB"[i],true));
 						pooleli.push_back(std::make_pair(uus, kaugus+1));
 					} else {
-						valem uus = tee;
+						valem uus =tee;
 						uus.rida.push_back(std::make_pair("ULFRDB"[i-6], false));
 						pooleli.push_back(std::make_pair(uus, kaugus+1));
 					}
@@ -216,26 +238,142 @@ void ThistleLahendaja::samm1(asend sisAsend, std::set<valem> &lahendid){
 			}
 		}
 		kaidud[olek]=kaugus;
+		first = false;
 	}
+	/*std::cout << lahendid.size() << '\n';
+	valem yks = *lahendid.begin();
+	printValem(yks);*/
+	return;
+}
+void ThistleLahendaja::samm1proovimiseta(asend sisAsend, std::set<valem> &lahendid){
+	std::set<int> headServad = servaKontroll(sisAsend);
+	kuubik sisKuup {sisAsend};
+	valem tee;
+	while(headServad.size() < 10){
+		int U=4;
+		int D=4;
+		for (std::set<int>::iterator ite = headServad.begin();ite != headServad.end();++ite){
+			if (*ite<4){
+				U--;
+			} else if (*ite<8){
+				D--;
+			}
+		}
+		if (U==4){
+			tee.rida.push_back(std::make_pair('U',true));
+			sisKuup.turn("U ");
+		} else if (D==4){
+			tee.rida.push_back(std::make_pair('D',true));
+			sisKuup.turn("D ");
+		} else if (U==0 && D==0){
+			tee.rida.push_back(std::make_pair('L',true));
+			tee.rida.push_back(std::make_pair('F',false));
+			tee.rida.push_back(std::make_pair('B',true));
+			tee.rida.push_back(std::make_pair('D',true));
+			tee.rida.push_back(std::make_pair('D',true));
+			tee.rida.push_back(std::make_pair('R',true));
+			tee.rida.push_back(std::make_pair('R',true));
+			tee.rida.push_back(std::make_pair('U',true));
+			sisKuup.turn("L F*B D D R R U ");
+		}
+		headServad = servaKontroll(sisKuup.kuup);
+	}
+	sisKuup.rewind();
+	lahendid.insert(tee);
+
+	return;
 }
 
-valem ThistleLahendaja::samm2(asend sisAsend, std::set<valem> &lahendid){
-	/*int min { 20 };
-	std::set<valem>::iterator minIte { };
-	for (std::set<valem>::iterator ite = lahendid.begin();ite != lahendid.end();++ite){
-		if ((*ite).rida.size()<min){
-			min=(*ite).rida.size();
-			minIte = ite;
+std::set<int> ThistleLahendaja::LRservaotsing(asend sisAsend){
+	std::set<int> LRservad { };
+	char* sisString = asend2string(sisAsend);
+
+	for(int i=0;i<12;i++){
+		if ((sisString[i*3]=='U' || sisString[i*3]=='F' || sisString[i*3]=='D' || sisString[i*3]=='B') && (sisString[i*3+1]=='U' || sisString[i*3+1]=='F' || sisString[i*3+1]=='D' || sisString[i*3+1]=='B')){
+			LRservad.insert(i);
 		}
 	}
-	sisKuup.turn(*minIte);
-	valem tee = samm2(sisKuup.kuup,20-min);
-	sisKuup.rewind();
-	lahendid.erase(minIte);
-	int parimNum = tee.rida.size();
+	return LRservad;
+}
 
-	for (std::set<valem>::iterator ite = lahendid.begin();ite != lahendid.end();++ite){
-		valem tulem = samm2(*ite, parimNum-(*ite).rida.size());
-		if (parimN)
-	}*/
+/*
+ * Esimeses osas liigutatakse maksimaalselt 4 poordega LR kihi servad kihile UD
+ * Teises osas kasutatakse tabelit et positsioneerida nurgad nii, et L ja R kleepsud näitavad L või R poole
+ */
+
+void ThistleLahendaja::samm2osa1(asend sisAsend, std::set<valem> &lahendid){
+	std::set<int> LRservad = LRservaotsing(sisAsend);
+
+	int eelmineKaugus = 0;
+	int maxPoorded = 5;
+	kuubik sisKuup {sisAsend};
+	std::unordered_map<asend, int> kaidud {};
+	std::vector<std::pair<valem, int> > pooleli { };
+	bool first = true;
+	while (pooleli.size() || first){
+		valem tee;
+		int kaugus =0;
+		asend olek;
+		if (first){
+			olek = sisKuup.kuup;
+		}else {
+			//tee = pooleli[pooleli.size()-1].first;
+			//kaugus = pooleli[pooleli.size() - 1].second;
+			//pooleli.pop_back();
+			tee = pooleli[0].first;
+			kaugus = pooleli[0].second;
+			std::cout << "kaugus: " << kaugus << '\n';
+			std::cout << "alles: " << pooleli.size() << '\n';
+			pooleli.erase(pooleli.begin());
+
+			sisKuup.turn(tee);
+			olek = sisKuup.kuup;
+			//engine vroom {9,12};
+			//sisKuup.ekraanile(vroom, " ");
+			sisKuup.rewind();
+		}
+
+		LRservad = LRservaotsing(olek);
+
+		bool korras { false };
+		if (LRservad.count(8) && LRservad.count(9) && LRservad.count(10) && LRservad.count(11)){
+			korras = true;
+			if (!first){
+				lahendid.insert(tee);
+			}
+			maxPoorded = kaugus;
+		}
+
+		if(kaugus ==5 && eelmineKaugus<pooleli.size()){
+			int a=0;
+		}
+		eelmineKaugus = pooleli.size();
+
+
+		if (kaugus<maxPoorded && kaidud.count(olek) == 0 && korras == false){
+			for (int i=0;i<10;i++){
+				if(i<4){
+					valem uus = tee;
+					uus.rida.push_back(std::make_pair("LFRB"[i],true));
+					pooleli.push_back(std::make_pair(uus, kaugus+1));
+				} else if (i<8){
+					valem uus =tee;
+					uus.rida.push_back(std::make_pair("LFRB"[i-4], false));
+					pooleli.push_back(std::make_pair(uus, kaugus+1));
+				} else {
+					valem uus =tee;
+					uus.rida.push_back(std::make_pair("UD"[i-8], true));
+					uus.rida.push_back(std::make_pair("UD"[i-8], true));
+					pooleli.push_back(std::make_pair(uus, kaugus+1));
+				}
+			}
+		}
+		kaidud[olek]=kaugus;
+		first = false;
+	}
+	return;
+}
+
+void ThistleLahendaja::samm2osa2(asend sisAsend, std::set<valem> &lahendid){
+
 }
