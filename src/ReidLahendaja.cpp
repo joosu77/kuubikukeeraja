@@ -26,8 +26,8 @@ ReidLahendaja::ReidLahendaja() {
 
 valem ReidLahendaja::lahenda(asend sisAsend){
 	char* valjund = optimalLahendaja(asend2string(sisAsend));
-	valem tulem;
-	int i =0;
+	valem tulem { };
+	int i { 0 };
 	while ((int)valjund[i*3] != 0){
 		if (valjund[i*3+1] == '2'){
 			tulem.rida.push_back(std::make_pair(valjund[i*3],true));

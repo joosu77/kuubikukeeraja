@@ -167,15 +167,15 @@ namespace std {
 void ThistleLahendaja::samm1(asend sisAsend, std::set<valem> &lahendid){
 	std::set<int> headServad = servaKontroll(sisAsend);
 
-	int maxPoorded = 7;
+	int maxPoorded { 7 };
 	kuubik sisKuup {sisAsend};
 	std::unordered_map<asend, int> kaidud {};
 	std::vector<std::pair<valem, int> > pooleli { };
-	bool first = true;
+	bool first { true };
 	while (pooleli.size() || first){
-		valem tee;
-		int kaugus =0;
-		asend olek;
+		valem tee { };
+		int kaugus { 0 };
+		asend olek { };
 		if (first){
 			olek = sisKuup.kuup;
 		}else {
@@ -233,10 +233,10 @@ void ThistleLahendaja::samm1(asend sisAsend, std::set<valem> &lahendid){
 void ThistleLahendaja::samm1proovimiseta(asend sisAsend, std::set<valem> &lahendid){
 	std::set<int> headServad = servaKontroll(sisAsend);
 	kuubik sisKuup {sisAsend};
-	valem tee;
+	valem tee { };
 	while(headServad.size() < 10){
-		int U=4;
-		int D=4;
+		int U { 4 };
+		int D { 4 };
 		for (std::set<int>::iterator ite = headServad.begin();ite != headServad.end();++ite){
 			if (*ite<4){
 				U--;
@@ -274,7 +274,10 @@ std::set<int> ThistleLahendaja::LRservaotsing(asend sisAsend){
 	char* sisString = asend2string(sisAsend);
 
 	for(int i=0;i<12;i++){
-		if ((sisString[i*3]=='U' || sisString[i*3]=='F' || sisString[i*3]=='D' || sisString[i*3]=='B') && (sisString[i*3+1]=='U' || sisString[i*3+1]=='F' || sisString[i*3+1]=='D' || sisString[i*3+1]=='B')){
+		if ((sisString[i*3]=='U' || sisString[i*3]=='F' ||
+				sisString[i*3]=='D' || sisString[i*3]=='B') &&
+				(sisString[i*3+1]=='U' || sisString[i*3+1]=='F' ||
+						sisString[i*3+1]=='D' || sisString[i*3+1]=='B')){
 			LRservad.insert(i);
 		}
 	}
@@ -289,16 +292,16 @@ std::set<int> ThistleLahendaja::LRservaotsing(asend sisAsend){
 void ThistleLahendaja::samm2osa1(asend sisAsend, std::set<valem> &lahendid){
 	std::set<int> LRservad = LRservaotsing(sisAsend);
 
-	int eelmineKaugus = 0;
-	int maxPoorded = 5;
+	int eelmineKaugus { 0 };
+	int maxPoorded { 5 };
 	kuubik sisKuup {sisAsend};
 	std::unordered_map<asend, int> kaidud {};
 	std::vector<std::pair<valem, int> > pooleli { };
-	bool first = true;
+	bool first { true };
 	while (pooleli.size() || first){
-		valem tee;
-		int kaugus =0;
-		asend olek;
+		valem tee { };
+		int kaugus { 0 };
+		asend olek { };
 		if (first){
 			olek = sisKuup.kuup;
 		}else {
@@ -329,11 +332,7 @@ void ThistleLahendaja::samm2osa1(asend sisAsend, std::set<valem> &lahendid){
 			maxPoorded = kaugus;
 		}
 
-		if(kaugus ==5 && eelmineKaugus<pooleli.size()){
-			int a=0;
-		}
 		eelmineKaugus = pooleli.size();
-
 
 		if (kaugus<maxPoorded && kaidud.count(olek) == 0 && korras == false){
 			for (int i=0;i<10;i++){

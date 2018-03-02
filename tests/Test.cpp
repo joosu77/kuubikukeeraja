@@ -35,8 +35,8 @@ void testAlgolek() {
  * Kontrolli, et kuubik teisendatakse korrektselt minu struktuurist stringiks
  */
 void testConversion(){
-	asend algne;
-	ReidLahendaja lah;
+	asend algne { };
+	ReidLahendaja lah { };
 	char* string = lah.asend2string(algne);
 	char* lahendatud = "UF UR UB UL DF DR DB DL FR FL BR BL UFR URB UBL ULF DRF DFL DLB DBR";
 	//std::cout << "Tulemus: " << string << std::endl;
@@ -46,8 +46,8 @@ void testConversion(){
 }
 
 void testConversion2(){
-	kuubik algne;
-	ReidLahendaja lah;
+	kuubik algne { };
+	ReidLahendaja lah { };
 	algne.turn("F*D R F*U F D*F L F*R*D*F L B*L*D L*");
 	char* string = lah.asend2string(*algne.kuup);
 	char* lahendatud = "UF UR FL FD BR BU DB DL FR RD LU BL UFR FUL FLD FDR BUR BRD DLB BLU";
@@ -58,8 +58,8 @@ void testConversion2(){
 }
 
 void testConversion3(){
-	kuubik algne;
-	ReidLahendaja lah;
+	kuubik algne { };
+	ReidLahendaja lah { };
 	algne.turn("F F B B R R L L D D U U ");
 	char* string = lah.asend2string(*algne.kuup);
 	char* lahendatud = "DB DL DF DR UB UL UF UR BL BR FL FR UFR URB UBL ULF DRF DFL DLB DBR";
@@ -70,8 +70,8 @@ void testConversion3(){
 }
 
 void testConversion4(){
-	kuubik algne;
-	ReidLahendaja lah;
+	kuubik algne { };
+	ReidLahendaja lah { };
 	algne.turn("D*L*U L U ");
 	std::cout << "asi\n";
 	char* string = lah.asend2string(*algne.kuup);
@@ -83,11 +83,11 @@ void testConversion4(){
 }
 
 void testReid(){
-	kuubik sihtKuup;
+	kuubik sihtKuup { };
 	engine vroom {9,12};
 	sihtKuup.scramble(17);
 	sihtKuup.ekraanile(vroom, " ");
-	ReidLahendaja reid;
+	ReidLahendaja reid { };
 	sihtKuup.turn(reid.lahenda(sihtKuup.kuup));
 
 
@@ -95,10 +95,10 @@ void testReid(){
 }
 
 void testThistleSamm1(){
-	kuubik sihtKuup;
+	kuubik sihtKuup { };
 	sihtKuup.turn("D F ");
-	ThistleLahendaja thistle;
-	std::set<valem> lahendid;
+	ThistleLahendaja thistle { };
+	std::set<valem> lahendid { };
 	thistle.samm1(sihtKuup.kuup,lahendid);
 	std::cout << lahendid.size() << '\n';
 	for (std::set<valem>::iterator ite = lahendid.begin();ite != lahendid.end();++ite){
@@ -108,11 +108,11 @@ void testThistleSamm1(){
 }
 
 void testThistleSamm1vol2(){
-	kuubik sihtKuup;
+	kuubik sihtKuup { };
 	//sihtKuup.scramble(500);
 	sihtKuup.turn("U*R R D D B*F L*");
-	ThistleLahendaja thistle;
-	std::set<valem> lahendid;
+	ThistleLahendaja thistle { };
+	std::set<valem> lahendid { };
 	thistle.samm1(sihtKuup.kuup,lahendid);
 	std::cout << lahendid.size() << '\n';
 	for (std::set<valem>::iterator ite = lahendid.begin();ite != lahendid.end();++ite){
@@ -122,13 +122,13 @@ void testThistleSamm1vol2(){
 }
 
 void testThistleSamm1proovimiseta(){
-	kuubik sihtKuup;
+	kuubik sihtKuup { };
 	engine vroom {9,12};
 	//sihtKuup.scramble(500);
 	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B ");
 	sihtKuup.ekraanile(vroom, " ");
-	ThistleLahendaja thistle;
-	std::set<valem> lahendid;
+	ThistleLahendaja thistle { };
+	std::set<valem> lahendid { };
 	thistle.samm1proovimiseta(sihtKuup.kuup,lahendid);
 	std::cout << lahendid.size() << '\n';
 	for (std::set<valem>::iterator ite = lahendid.begin();ite != lahendid.end();++ite){
@@ -137,13 +137,13 @@ void testThistleSamm1proovimiseta(){
 	}
 }
 void testThistleSamm2osa1(){
-	kuubik sihtKuup;
+	kuubik sihtKuup { };
 	engine vroom {9,12};
 	//sihtKuup.scramble(500);
 	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U ");
 	sihtKuup.ekraanile(vroom, " ");
-	ThistleLahendaja thistle;
-	std::set<valem> lahendid;
+	ThistleLahendaja thistle { };
+	std::set<valem> lahendid { };
 	thistle.samm2osa1(sihtKuup.kuup,lahendid);
 	std::cout << lahendid.size() << '\n';
 	for (std::set<valem>::iterator ite = lahendid.begin();ite != lahendid.end();++ite){
@@ -152,7 +152,7 @@ void testThistleSamm2osa1(){
 	}
 }
 void testThistleSamm2Map(){
-	ThistleSamm2Map data;
+	ThistleSamm2Map data { };
 	valem val = data.getValem("00000000");
 	val.print();
 	ASSERTM("Ei leidnud valemit 00000000",val == "F L R F F L R U U D D F ");
@@ -165,9 +165,9 @@ void testThistleSamm2Map(){
 }
 
 void testNurkadePoordeLeidmine(){
-	ThistleLahendaja thistle;
+	ThistleLahendaja thistle { };
 	valem sisend {"B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F "};
-	kuubik sihtKuup;
+	kuubik sihtKuup { };
 	sihtKuup.turn(sisend);
 	std::cout << thistle.nurkadePooreteLeidmine(sihtKuup.kuup) << '\n';
 	ASSERTM("Pöördeid ei leitud õigesti",thistle.nurkadePooreteLeidmine(sihtKuup.kuup) == "02020011");
@@ -175,11 +175,11 @@ void testNurkadePoordeLeidmine(){
 
 void testKuubikuPeegeldamine(){
 	engine vroom {9,12};
-	kuubik sihtKuup;
+	kuubik sihtKuup { };
 	sihtKuup.turn("F R ");
 	sihtKuup.peegelda("LR");
 	sihtKuup.ekraanile(vroom,"peegeldatud");
-	kuubik peegelKuup;
+	kuubik peegelKuup { };
 	peegelKuup.turn("F*L*");
 	peegelKuup.ekraanile(vroom,"peegeldamata");
 	ASSERTM("Ei peegeldatud kuubikut õigesti",
