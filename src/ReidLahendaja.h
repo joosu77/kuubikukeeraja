@@ -16,7 +16,6 @@ public:
 	ReidLahendaja();
 	//virtual ~ReidLahendaja();
 	valem lahenda(asend sisAsend);
-	char* asend2string(asend &);
 };
 
 #endif /* REIDLAHENDAJA_H_ */

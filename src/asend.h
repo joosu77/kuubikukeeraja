@@ -8,6 +8,8 @@
 #ifndef ASEND_H_
 #define ASEND_H_
 
+#include <string>
+
 class asend {
 public:
 	int kuljed[6][3][3];
@@ -24,6 +26,9 @@ public:
 
 	// kahe asendi võrdlus
 	bool operator==(const asend& other);
+
+	//
+	std::string toString();
 };
 
 bool operator==(const asend& self, const asend& other);

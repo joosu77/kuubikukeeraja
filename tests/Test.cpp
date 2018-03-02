@@ -37,36 +37,30 @@ void testAlgolek() {
 void testConversion(){
 	asend algne { };
 	ReidLahendaja lah { };
-	char* string = lah.asend2string(algne);
-	char* lahendatud = "UF UR UB UL DF DR DB DL FR FL BR BL UFR URB UBL ULF DRF DFL DLB DBR";
+	std::string lahendatud {"UF UR UB UL DF DR DB DL FR FL BR BL UFR URB UBL ULF DRF DFL DLB DBR"};
 	//std::cout << "Tulemus: " << string << std::endl;
 	//std::cout << "Tulemus: " << lahendatud << std::endl;
-	ASSERTM("Asendit ei teisendatud õigesti", strcmp(string, lahendatud)==0);
-	free(string);
+	ASSERTM("Asendit ei teisendatud õigesti", algne.toString() == lahendatud);
 }
 
 void testConversion2(){
 	kuubik algne { };
 	ReidLahendaja lah { };
 	algne.turn("F*D R F*U F D*F L F*R*D*F L B*L*D L*");
-	char* string = lah.asend2string(*algne.kuup);
-	char* lahendatud = "UF UR FL FD BR BU DB DL FR RD LU BL UFR FUL FLD FDR BUR BRD DLB BLU";
+	std::string lahendatud {"UF UR FL FD BR BU DB DL FR RD LU BL UFR FUL FLD FDR BUR BRD DLB BLU"};
 	//std::cout << "Tulemus: " << string << std::endl;
 	//std::cout << "Tulemus: " << lahendatud << std::endl;
-	ASSERTM("Asendit ei teisendatud õigesti", strcmp(string, lahendatud)==0);
-	free(string);
+	ASSERTM("Asendit ei teisendatud õigesti", algne.kuup->toString() == lahendatud);
 }
 
 void testConversion3(){
 	kuubik algne { };
 	ReidLahendaja lah { };
 	algne.turn("F F B B R R L L D D U U ");
-	char* string = lah.asend2string(*algne.kuup);
-	char* lahendatud = "DB DL DF DR UB UL UF UR BL BR FL FR UFR URB UBL ULF DRF DFL DLB DBR";
+	std::string lahendatud {"DB DL DF DR UB UL UF UR BL BR FL FR UFR URB UBL ULF DRF DFL DLB DBR"};
 	//std::cout << "Tulemus: " << string << std::endl;
 	//std::cout << "Tulemus: " << lahendatud << std::endl;
-	ASSERTM("Asendit ei teisendatud õigesti", strcmp(string, lahendatud)==0);
-	free(string);
+	ASSERTM("Asendit ei teisendatud õigesti", algne.kuup->toString() == lahendatud);
 }
 
 void testConversion4(){
@@ -74,12 +68,11 @@ void testConversion4(){
 	ReidLahendaja lah { };
 	algne.turn("D*L*U L U ");
 	std::cout << "asi\n";
-	char* string = lah.asend2string(*algne.kuup);
-	char* lahendatud = "UB FL UL UR DR DB DL DF FR UF BR BL FUL UBL FDR URB DBR RUF DFL DLB";
-	std::cout << "Saadudd: " << string << std::endl;
+	std::string lahendatud {"UB FL UL UR DR DB DL DF FR UF BR BL FUL UBL FDR URB DBR RUF DFL DLB"};
+	std::string saadud {algne.kuup->toString()};
+	std::cout << "Saadudd: " << saadud << std::endl;
 	std::cout << "Oodatav: " << lahendatud << std::endl;
-	ASSERTM("Asendit ei teisendatud õigesti", strcmp(string, lahendatud)==0);
-	free(string);
+	ASSERTM("Asendit ei teisendatud õigesti", saadud == lahendatud);
 }
 
 void testReid(){

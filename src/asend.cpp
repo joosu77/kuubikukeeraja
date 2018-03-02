@@ -7,7 +7,9 @@
 
 #include "asend.h"
 
-#include <iostream>
+#include <stdlib.h>
+#include <cstdio>
+#include <string>
 
 /**
  * Algväärtuseks on igal külje ruudl sama nimber mis külg
@@ -71,6 +73,43 @@ bool asend::operator==(const asend& other) {
     }
 
     return true;
+}
+
+std::string asend::toString() {
+	// eraldame mälu piisavalt, et mahuks ära kogu kuubiku olek
+	char *out = (char*) malloc (100);
+	// kirjutame eraldautd puhvrisse olekumuutujad
+	sprintf(out, "%1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c%1c %1c%1c%1c %1c%1c%1c %1c%1c%1c %1c%1c%1c %1c%1c%1c %1c%1c%1c %1c%1c%1c",
+			kuljed[0][2][1], kuljed[2][0][1],
+			kuljed[0][1][2],kuljed[3][0][1],
+			kuljed[0][0][1],kuljed[5][2][1],
+			kuljed[0][1][0],kuljed[1][0][1],
+			kuljed[4][0][1],kuljed[2][2][1],
+			kuljed[4][1][2],kuljed[3][2][1],
+			kuljed[4][2][1],kuljed[5][0][1],
+			kuljed[4][1][0],kuljed[1][2][1],
+			kuljed[2][1][2],kuljed[3][1][0],
+			kuljed[2][1][0],kuljed[1][1][2],
+			kuljed[5][1][2],kuljed[3][1][2],
+			kuljed[5][1][0],kuljed[1][1][0],
+			kuljed[0][2][2],kuljed[2][0][2],kuljed[3][0][0],
+			kuljed[0][0][2],kuljed[3][0][2],kuljed[5][2][2],
+			kuljed[0][0][0],kuljed[5][2][0],kuljed[1][0][0],
+			kuljed[0][2][0],kuljed[1][0][2],kuljed[2][0][0],
+			kuljed[4][0][2],kuljed[3][2][0],kuljed[2][2][2],
+			kuljed[4][0][0],kuljed[2][2][0],kuljed[1][2][2],
+			kuljed[4][2][0],kuljed[1][2][0],kuljed[5][0][0],
+			kuljed[4][2][2],kuljed[5][0][2],kuljed[3][2][2]
+	);
+	for(int i=0;i<67;i++){
+		if (out[i] != ' '){
+			out[i]="ULFRDB"[(int)out[i]];
+		}
+	}
+	//std::cout <<"\n" << out << std::endl;
+    std::string strOut {out};
+    free(out);
+    return strOut;
 }
 
 /**
