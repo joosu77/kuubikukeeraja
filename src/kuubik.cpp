@@ -130,6 +130,76 @@ void kuubik::turn(valem sisValem, bool memorize) {
 	}
 }
 
+/*
+ * pöörab tervet kuubikut, mitte mingeid kihte
+ *
+ * suund näitab, mööda millist kihti pööratakse
+ * nt LR pöördega jäävad L ja R küljed samale kohale ja teised liiguvad
+ */
+
+void kuubik::tervePoore(std::string suund){
+
+}
+
+/*
+ * peegeldab kuubikut üle mingi kihi
+ *
+ * suund näitab üle millise kihi pegeldatakse
+ * nt LR peegelduse puhul vahetavad L ja R küljed kohti
+ * ja kõik L tükid muutuvad R tükkideks ja vastupidi
+ */
+
+void kuubik::peegelda(std::string suund){
+	std::string kuljed = "ULFRDB";
+	int kulg1 = kuljed.find(suund[0]);
+	int kulg2 = kuljed.find(suund[1]);
+
+	int buffer [3][3];
+	for (int i=0;i<3;i++){
+		for (int o=0;o<3;o++){
+			if (suund == "LR" || suund == "RL"){
+				buffer[i][o]=kuup->kuljed[kulg1][i][2-o];
+			} else {
+				buffer[i][o]=kuup->kuljed[kulg1][2-i][o];
+			}
+		}
+	}
+	for (int i=0;i<3;i++){
+		for (int o=0;o<3;o++){
+			if (suund == "LR" || suund == "RL"){
+				kuup->kuljed[kulg1][i][o]=kuup->kuljed[kulg2][i][2-o];
+			} else {
+				kuup->kuljed[kulg1][i][o]=kuup->kuljed[kulg2][2-i][o];
+			}
+		}
+	}
+	for (int i=0;i<3;i++){
+		for (int o=0;o<3;o++){
+			kuup->kuljed[kulg2][i][o]=buffer[i][o];
+		}
+	}
+	for (int i=0;i<6;i++){
+		if (i != kulg1 && i != kulg2){
+			for (int o=0;o<3;o++){
+				buffer[o][0]=kuup->kuljed[i][o][0];
+				kuup->kuljed[i][o][0]=kuup->kuljed[i][o][2];
+				kuup->kuljed[i][o][2]=buffer[o][0];
+			}
+		}
+	}
+	for (int i=0;i<6;i++){
+		for (int o=0;o<3;o++){
+			for (int u=0;u<3;u++){
+				if (kuup->kuljed[i][o][u] == kulg1){
+					kuup->kuljed[i][o][u] = kulg2;
+				} else if (kuup->kuljed[i][o][u] == kulg2){
+					kuup->kuljed[i][o][u] = kulg1;
+				}
+			}
+		}
+	}
+}
+
 void kuubik::rewind(){
 	for(std::vector< std::pair<char,bool> >::reverse_iterator iter = meeles.rida.rbegin(); iter != meeles.rida.rend(); ++iter){
 		turn(iter->first,!(iter->second));

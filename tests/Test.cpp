@@ -164,6 +164,28 @@ void testThistleSamm2Map(){
 	ASSERTM("Valemile 30112221 tagastati vastus",val == "");
 }
 
+void testNurkadePoordeLeidmine(){
+	ThistleLahendaja thistle;
+	valem sisend {"B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F "};
+	kuubik sihtKuup;
+	sihtKuup.turn(sisend);
+	std::cout << thistle.nurkadePooreteLeidmine(sihtKuup.kuup) << '\n';
+	ASSERTM("Pöördeid ei leitud õigesti",thistle.nurkadePooreteLeidmine(sihtKuup.kuup) == "02020011");
+}
+
+void testKuubikuPeegeldamine(){
+	engine vroom {9,12};
+	kuubik sihtKuup;
+	sihtKuup.turn("F R ");
+	sihtKuup.peegelda("LR");
+	sihtKuup.ekraanile(vroom,"peegeldatud");
+	kuubik peegelKuup;
+	peegelKuup.turn("F*L*");
+	peegelKuup.ekraanile(vroom,"peegeldamata");
+	ASSERTM("Ei peegeldatud kuubikut õigesti",
+			*(sihtKuup.kuup) == *(peegelKuup.kuup));
+}
+
 /**
  * Kontrolli, et IDAlahendaja saab ühe sammu segatud kuubi lahendatud
  */
@@ -246,6 +268,8 @@ void runAllTests(int argc, char const *argv[]){
 	s.push_back(CUTE(testThistleSamm1proovimiseta));
 	//s.push_back(CUTE(testThistleSamm2osa1));
 	s.push_back(CUTE(testThistleSamm2Map));
+	s.push_back(CUTE(testNurkadePoordeLeidmine));
+	s.push_back(CUTE(testKuubikuPeegeldamine));
 
 
 	cute::xml_file_opener xmlfile(argc,argv);

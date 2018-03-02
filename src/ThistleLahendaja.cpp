@@ -374,6 +374,36 @@ void ThistleLahendaja::samm2osa1(asend sisAsend, std::set<valem> &lahendid){
 	return;
 }
 
+std::string ThistleLahendaja::nurkadePooreteLeidmine(asend sisAsend){
+	std::string sisString = asend2string(sisAsend);
+	std::string jarjekord = "25703641";
+	std::string valjund;
+	for (int i=0;i<8;i++){
+		if (i<4){
+			if(sisString[36+(jarjekord[i]-'0')*4+2] == 'L' || sisString[36+(jarjekord[i]-'0')*4+2] == 'R'){
+				valjund +='0';
+			} else if(sisString[36+(jarjekord[i]-'0')*4] == 'L' || sisString[36+(jarjekord[i]-'0')*4] == 'R'){
+				valjund +='2';
+			} else if(sisString[36+(jarjekord[i]-'0')*4+1] == 'L' || sisString[36+(jarjekord[i]-'0')*4+1] == 'R'){
+				valjund +='1';
+			} else {
+				std::cout << "error nurkadepöörde leidmises\n";
+			}
+		} else {
+			if(sisString[36+(jarjekord[i]-'0')*4+1] == 'L' || sisString[36+(jarjekord[i]-'0')*4+1] == 'R'){
+				valjund +='0';
+			} else if(sisString[36+(jarjekord[i]-'0')*4+2] == 'L' || sisString[36+(jarjekord[i]-'0')*4+2] == 'R'){
+				valjund +='2';
+			} else if(sisString[36+(jarjekord[i]-'0')*4] == 'L' || sisString[36+(jarjekord[i]-'0')*4] == 'R'){
+				valjund +='1';
+			} else {
+				std::cout << "error nurkadepöörde leidmises\n";
+			}
+		}
+	}
+	return valjund;
+}
+
 void ThistleLahendaja::samm2osa2(asend sisAsend, std::set<valem> &lahendid){
 
 }

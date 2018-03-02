@@ -66,6 +66,10 @@ class kuubik {
 		// tagastab true, kui kuubik
 		bool isSolved();
 
+		void peegelda(std::string suund);
+
+		void tervePoore(std::string suund);
+
 		bool operator==(const kuubik& other);
 };
 

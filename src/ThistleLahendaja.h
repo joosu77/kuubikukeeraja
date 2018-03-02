@@ -26,6 +26,7 @@ public:
 	std::set<int> LRservaotsing(asend sisAsend);
 	void samm2osa1(asend sisAsend, std::set<valem> &lahendid);
 	void samm2osa2(asend sisAsend, std::set<valem> &lahendid);
+	std::string nurkadePooreteLeidmine(asend sisAsend);
 	valem samm3(asend sisAsend);
 	valem samm4(asend sisAsend);
 };
