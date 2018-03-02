@@ -1,10 +1,16 @@
 <testsuites>
-	<testsuite name="AllTests" tests="2">
-		<testcase classname="AllTests" name="thisIsATest"/>
-		<testcase classname="AllTests" name="testAlgolek">
-			<failure message="../tests/Test.cpp:20 testAlgolek: Kuubikud pole võrdsed">
-testAlgolek: Kuubikud pole võrdsed
-			</failure>
-		</testcase>
+	<testsuite name="AllTests" tests="12">
+		<testcase classname="AllTests" name="testAlgolek"/>
+		<testcase classname="AllTests" name="testBruteForce1Step"/>
+		<testcase classname="AllTests" name="testBruteForce2Step"/>
+		<testcase classname="AllTests" name="testBruteForce3Step"/>
+		<testcase classname="AllTests" name="testConversion"/>
+		<testcase classname="AllTests" name="testConversion2"/>
+		<testcase classname="AllTests" name="testConversion3"/>
+		<testcase classname="AllTests" name="testConversion4"/>
+		<testcase classname="AllTests" name="testThistleSamm1proovimiseta"/>
+		<testcase classname="AllTests" name="testThistleSamm2Map"/>
+		<testcase classname="AllTests" name="testNurkadePoordeLeidmine"/>
+		<testcase classname="AllTests" name="testKuubikuPeegeldamine"/>
 	</testsuite>
 </testsuites>

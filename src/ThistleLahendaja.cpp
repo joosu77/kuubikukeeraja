@@ -29,9 +29,9 @@ ThistleLahendaja::~ThistleLahendaja() {
 }*/
 
 valem ThistleLahendaja::lahenda(asend sisAsend){
-	kuubik kuup;
+	kuubik kuup { };
 
-	std::set<valem> lahendid;
+	std::set<valem> lahendid { };
 	samm1(sisAsend, lahendid);
 
 	/*valem tulem { };
@@ -40,7 +40,7 @@ valem ThistleLahendaja::lahenda(asend sisAsend){
 	tulem.rida.insert(tulem.rida.end(),val2.rida.begin(),val2.rida.end());
 	//...
 */
-	valem tulem;
+	valem tulem { };
 	return tulem;
 }
 
@@ -136,41 +136,25 @@ namespace std {
   template <>
   struct hash<asend>{
     std::size_t operator()(const asend& k) const{
-      std::size_t val = 0;
-      int shift{0};
-      for (int i=0;i<6;i++){
-    	  for (int o=0;o<3;o++){
-    		  for (int u=0;u<3;u++){
-    			  val = (val << shift) | k.kuljed[i][o][u];
-    			  shift += 3;
-    		  }
-    	  }
-      }
+		using std::hash;
 
-     return val;
+		std::size_t val = 0;
+		int shift { 0 };
+		for (int i = 0; i < 6; i++) {
+			for (int o = 0; o < 3; o++) {
+				for (int u = 0; u < 3; u++) {
+					val = (val << shift) | k.kuljed[i][o][u];
+					shift += 3;
+				}
+			}
+		}
+
+		return val;
     }
   };
 
 }
 
-namespace std {
-
-	template <>
-	struct hash<valem>{
-		std::size_t operator()(const valem& k) const{
-			using std::string;
-		    using std::hash;
-
-			std::string str;
-			for (unsigned int i=0;i<k.rida.size();i++){
-				str += (k.rida[i].first);
-				str += (k.rida[i].second?' ':'*');
-			}
-
-			return hash<string>()(str);
-		}
-	};
-}
 /**
  * kontrollib, millised servad on "head" servad
  * leiab kõik valemid millega jõuab asendisse,
@@ -377,7 +361,7 @@ void ThistleLahendaja::samm2osa1(asend sisAsend, std::set<valem> &lahendid){
 std::string ThistleLahendaja::nurkadePooreteLeidmine(asend sisAsend){
 	std::string sisString = asend2string(sisAsend);
 	std::string jarjekord = "25703641";
-	std::string valjund;
+	std::string valjund { };
 	for (int i=0;i<8;i++){
 		if (i<4){
 			if(sisString[36+(jarjekord[i]-'0')*4+2] == 'L' || sisString[36+(jarjekord[i]-'0')*4+2] == 'R'){

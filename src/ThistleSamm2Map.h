@@ -11,7 +11,7 @@
 #include <map>
 #include <string>
 
-#include "valem.h";
+#include "valem.h"
 
 class ThistleSamm2Map {
 public:

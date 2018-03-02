@@ -7,6 +7,8 @@
 
 #include "asend.h"
 
+#include <iostream>
+
 /**
  * Algväärtuseks on igal külje ruudl sama nimber mis külg
  */
@@ -92,3 +94,4 @@ bool operator==(const asend& self, const asend& other) {
 
     return true;
 }
+

@@ -18,7 +18,7 @@ class valem{
 		valem(std::string);
 		valem();
 		void print();
-		std::string toString();
+		std::string toString() const;
 		bool operator==(const std::string &other);
 };
 

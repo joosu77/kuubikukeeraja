@@ -15,9 +15,6 @@
 
 #include "optimal.h"
 
-
-
-
 ReidLahendaja::ReidLahendaja() {
 	lahendaja();
 

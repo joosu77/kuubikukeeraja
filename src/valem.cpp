@@ -29,7 +29,7 @@ valem::valem(){
 }
 
 valem::valem(std::string valemStr){
-	for(int i=0;i<valemStr.size();i++){
+	for(unsigned int i=0;i<valemStr.size();i++){
 		if (valemStr[i] == 'U' || valemStr[i] == 'L' ||
 				valemStr[i] == 'F' ||valemStr[i] == 'R' ||
 				valemStr[i] == 'D' ||valemStr[i] == 'B'){
@@ -43,9 +43,9 @@ valem::valem(std::string valemStr){
 	}
 }
 
-std::string valem::toString(){
+std::string valem::toString() const {
 	std::string res {};
-	for (int i=0;i<rida.size();i++){
+	for (unsigned int i=0;i<rida.size();i++){
 		res += rida[i].first;
 		res += (rida[i].second?' ':'*');
 	}
@@ -58,4 +58,15 @@ void valem::print(){
 
 bool valem::operator==(const std::string &other) {
 	return (toString() == other);
+}
+
+namespace std {
+	template <>
+	struct hash<valem>{
+		std::size_t operator()(const valem& k) const{
+		    using std::hash;
+
+			return hash<string>()(k.toString());
+		}
+	};
 }
