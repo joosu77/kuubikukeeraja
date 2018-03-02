@@ -229,6 +229,7 @@ void ThistleLahendaja::samm1(asend sisAsend, std::set<valem> &lahendid){
 	printValem(yks);*/
 	return;
 }
+
 void ThistleLahendaja::samm1proovimiseta(asend sisAsend, std::set<valem> &lahendid){
 	std::set<int> headServad = servaKontroll(sisAsend);
 	kuubik sisKuup {sisAsend};

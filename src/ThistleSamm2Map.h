@@ -8,18 +8,12 @@
 #ifndef THISTLESAMM2MAP_H_
 #define THISTLESAMM2MAP_H_
 
-#include <map>
-#include <string>
+#include "ValemMap.h"
 
-#include "valem.h"
 
-class ThistleSamm2Map {
+class ThistleSamm2Map: public ValemMap {
 public:
 	ThistleSamm2Map();
-	virtual ~ThistleSamm2Map();
-	valem getValem(std::string voti);
-private:
-	std::map<std::string,std::string> data;
 };
 
 #endif /* THISTLESAMM2MAP_H_ */

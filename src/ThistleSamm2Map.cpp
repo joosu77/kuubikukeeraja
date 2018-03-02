@@ -333,18 +333,3 @@ ThistleSamm2Map::ThistleSamm2Map() {
 	data["22222020"]="FLF FR RU ULD DR*F";
 	data["22222212"]="FLFRFR*F FL*B";
 }
-
-valem ThistleSamm2Map::getValem(std::string voti){
-	if(data.count(voti)){
-		valem valjund {data[voti]};
-		return valjund;
-	} else {
-		valem valjund;
-		return valjund;
-	}
-}
-
-ThistleSamm2Map::~ThistleSamm2Map() {
-	// TODO Auto-generated destructor stub
-}
-

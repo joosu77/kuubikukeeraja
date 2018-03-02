@@ -154,7 +154,7 @@ void kuubik::peegelda(std::string suund){
 	int kulg1 = kuljed.find(suund[0]);
 	int kulg2 = kuljed.find(suund[1]);
 
-	int buffer [3][3];
+	int buffer[3][3] { };
 	for (int i=0;i<3;i++){
 		for (int o=0;o<3;o++){
 			if (suund == "LR" || suund == "RL"){
