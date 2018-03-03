@@ -4,12 +4,11 @@
 #include <cute_test.h>
 #include <cute_xml_file.h>
 #include <ide_listener.h>
-#include <stdlib.h>
-#include <string.h>
 #include <xml_listener.h>
 #include <iostream>
 #include <map>
 #include <set>
+#include <string>
 #include <vector>
 
 #include "../src/asend.h"
@@ -197,6 +196,15 @@ void testThistleSamm2osa2(){
 	}
 }
 
+void testNurgadOrbiidil(){
+	kuubik sihtKuup {};
+	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F R R F B B R B*R R B R B ");
+	ThistleLahendaja thistle;
+	std::string nurgad = thistle.getNurgadOrbiidil(sihtKuup.kuup);
+	std::cout << nurgad << '\n';
+	ASSERTM("nurkade orbiite ei määratud õigesti", nurgad == "1258");
+}
+
 /**
  * Kontrolli, et IDAlahendaja saab ühe sammu segatud kuubi lahendatud
  */
@@ -282,6 +290,7 @@ void runAllTests(int argc, char const *argv[]){
 	s.push_back(CUTE(testNurkadePoordeLeidmine));
 	s.push_back(CUTE(testKuubikuPeegeldamine));
 	s.push_back(CUTE(testThistleSamm2osa2));
+	s.push_back(CUTE(testNurgadOrbiidil));
 
 
 	cute::xml_file_opener xmlfile(argc,argv);

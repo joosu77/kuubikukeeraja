@@ -424,3 +424,29 @@ void ThistleLahendaja::samm2osa2(asend sisAsend, std::set<valem> &lahendid){
 	lahendid.insert(tulem);
 	std::cout << "tundmatu sümmeetria";
 }
+
+std::string ThistleLahendaja::getNurgadOrbiidil(asend sisAsend){
+	std::set<int> orbiidiltMaas {};
+	std::map<int,int> paarid;
+	paarid[0] = 4;
+	paarid[4] = 0;
+	paarid[1] = 3;
+	paarid[3] = 1;
+	paarid[2] = 5;
+	paarid[5] = 2;
+	int nurgad [2][2][2] = {{{1,5},{8,4}},{{2,6},{7,3}}};
+	for (int i = 0; i < 2; i++){
+		for (int y = 0; y < 2; y++){
+			for (int x = 0; x < 2; x++){
+				if (sisAsend.kuljed[i*4][y*2][x*2] != sisAsend.kuljed[i*4][1][1] && sisAsend.kuljed[i*4][y*2][x*2] != sisAsend.kuljed[paarid[i*4]][1][1]){
+					orbiidiltMaas.insert(nurgad[i][y][x]);
+				}
+			}
+		}
+	}
+	std::string valjund;
+	for (std::set<int>::iterator ite = orbiidiltMaas.begin();ite != orbiidiltMaas.end(); ++ite){
+		valjund += (char)(*ite+48);
+	}
+	return valjund;
+}

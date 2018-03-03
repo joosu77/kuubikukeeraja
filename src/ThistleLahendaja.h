@@ -9,9 +9,11 @@
 #define THISTLELAHENDAJA_H_
 
 #include <set>
+#include <string>
 
 #include "asend.h"
 #include "lahendaja.h"
+#include "valem.h"
 
 class ThistleLahendaja: public lahendaja {
 public:
@@ -29,6 +31,7 @@ public:
 	std::string nurkadePooreteLeidmine(asend sisAsend, std::string poore);
 	valem lahendiPeegeldus(valem sisValem, std::string poore);
 	valem samm3(asend sisAsend);
+	std::string getNurgadOrbiidil(asend sisAsend);
 	valem samm4(asend sisAsend);
 };
 
