@@ -13,6 +13,12 @@ bool operator<(const valem& val1, const valem& val2){
 	}
 }
 
+valem& valem::operator=(const valem& val2){
+	rida.empty();
+	rida = val2.rida;
+	return *this;
+}
+
 valem::valem(){
 	//meelega tyhi
 }

@@ -18,7 +18,7 @@ public:
 	//ThistleLahendaja();
 	//virtual ~ThistleLahendaja();
 	valem lahenda(asend sisAsend);
-	char* asend2string(asend &);
+
 	std::set <int> servaKontroll(asend sisAsend);
 	bool serviKuljel(int kulg, std::set <int> servad);
 	void samm1(asend sisAsend, std::set<valem> &lahendid);
@@ -26,7 +26,8 @@ public:
 	std::set<int> LRservaotsing(asend sisAsend);
 	void samm2osa1(asend sisAsend, std::set<valem> &lahendid);
 	void samm2osa2(asend sisAsend, std::set<valem> &lahendid);
-	std::string nurkadePooreteLeidmine(asend sisAsend);
+	std::string nurkadePooreteLeidmine(asend sisAsend, std::string poore);
+	valem lahendiPeegeldus(valem sisValem, std::string poore);
 	valem samm3(asend sisAsend);
 	valem samm4(asend sisAsend);
 };

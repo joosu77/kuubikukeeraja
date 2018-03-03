@@ -15,9 +15,11 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
+#include <map>
 
 #include "kuubik.h"
 #include "engine.h"
+#include "ThistleSamm2Map.h"
 
 /*ThistleLahendaja::ThistleLahendaja() {
 	// TODO Auto-generated constructor stub
@@ -44,43 +46,9 @@ valem ThistleLahendaja::lahenda(asend sisAsend){
 	return tulem;
 }
 
-char* ThistleLahendaja::asend2string(asend &sisAsend){
-	// eraldame mälu piisavalt, et mahuks ära kogu kuubiku olek
-	char *out = (char*) malloc (100);
-	// kirjutame eraldautd puhvrisse olekumuutujad
-	sprintf(out, "%1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c %1c%1c%1c %1c%1c%1c %1c%1c%1c %1c%1c%1c %1c%1c%1c %1c%1c%1c %1c%1c%1c %1c%1c%1c",
-			sisAsend.kuljed[0][2][1], sisAsend.kuljed[2][0][1],
-			sisAsend.kuljed[0][1][2],sisAsend.kuljed[3][0][1],
-			sisAsend.kuljed[0][0][1],sisAsend.kuljed[5][2][1],
-			sisAsend.kuljed[0][1][0],sisAsend.kuljed[1][0][1],
-			sisAsend.kuljed[4][0][1],sisAsend.kuljed[2][2][1],
-			sisAsend.kuljed[4][1][2],sisAsend.kuljed[3][2][1],
-			sisAsend.kuljed[4][2][1],sisAsend.kuljed[5][0][1],
-			sisAsend.kuljed[4][1][0],sisAsend.kuljed[1][2][1],
-			sisAsend.kuljed[2][1][2],sisAsend.kuljed[3][1][0],
-			sisAsend.kuljed[2][1][0],sisAsend.kuljed[1][1][2],
-			sisAsend.kuljed[5][1][2],sisAsend.kuljed[3][1][2],
-			sisAsend.kuljed[5][1][0],sisAsend.kuljed[1][1][0],
-			sisAsend.kuljed[0][2][2],sisAsend.kuljed[2][0][2],sisAsend.kuljed[3][0][0],
-			sisAsend.kuljed[0][0][2],sisAsend.kuljed[3][0][2],sisAsend.kuljed[5][2][2],
-			sisAsend.kuljed[0][0][0],sisAsend.kuljed[5][2][0],sisAsend.kuljed[1][0][0],
-			sisAsend.kuljed[0][2][0],sisAsend.kuljed[1][0][2],sisAsend.kuljed[2][0][0],
-			sisAsend.kuljed[4][0][2],sisAsend.kuljed[3][2][0],sisAsend.kuljed[2][2][2],
-			sisAsend.kuljed[4][0][0],sisAsend.kuljed[2][2][0],sisAsend.kuljed[1][2][2],
-			sisAsend.kuljed[4][2][0],sisAsend.kuljed[1][2][0],sisAsend.kuljed[5][0][0],
-			sisAsend.kuljed[4][2][2],sisAsend.kuljed[5][0][2],sisAsend.kuljed[3][2][2]
-	);
-	for(int i=0;i<67;i++){
-		if (out[i] != ' '){
-			out[i]="ULFRDB"[(int)out[i]];
-		}
-	}
-	return out;
-}
-
 std::set<int> ThistleLahendaja::servaKontroll(asend sisAsend){
 	std::set<int> headServad { };
-	char* sisString = asend2string(sisAsend);
+	std::string sisString = sisAsend.toString();
 
 	for(int i=0;i<12;i++){
 
@@ -271,7 +239,7 @@ void ThistleLahendaja::samm1proovimiseta(asend sisAsend, std::set<valem> &lahend
 
 std::set<int> ThistleLahendaja::LRservaotsing(asend sisAsend){
 	std::set<int> LRservad { };
-	char* sisString = asend2string(sisAsend);
+	std::string sisString = sisAsend.toString();
 
 	for(int i=0;i<12;i++){
 		if ((sisString[i*3]=='U' || sisString[i*3]=='F' ||
@@ -358,9 +326,18 @@ void ThistleLahendaja::samm2osa1(asend sisAsend, std::set<valem> &lahendid){
 	return;
 }
 
-std::string ThistleLahendaja::nurkadePooreteLeidmine(asend sisAsend){
-	std::string sisString = asend2string(sisAsend);
-	std::string jarjekord = "25703641";
+std::string ThistleLahendaja::nurkadePooreteLeidmine(asend sisAsend, std::string poore){
+	std::string sisString = sisAsend.toString();
+	std::string jarjekord;
+	if (poore == ""){
+		jarjekord = "25703641";
+	} else if (poore == "LR"){
+		jarjekord = "56076314";
+	} else if (poore == "UD"){
+		jarjekord = "07521463";
+	} else if (poore == "FB"){
+		jarjekord = "70234136";
+	}
 	std::string valjund { };
 	for (int i=0;i<8;i++){
 		if (i<4){
@@ -388,6 +365,52 @@ std::string ThistleLahendaja::nurkadePooreteLeidmine(asend sisAsend){
 	return valjund;
 }
 
-void ThistleLahendaja::samm2osa2(asend sisAsend, std::set<valem> &lahendid){
+valem ThistleLahendaja::lahendiPeegeldus(valem sisValem, std::string poore){
+	valem valjund;
+	std::map<char,char> vastasKuljed;
+	vastasKuljed['F'] = 'B';
+	vastasKuljed['B'] = 'F';
+	vastasKuljed['U'] = 'D';
+	vastasKuljed['D'] = 'U';
+	vastasKuljed['L'] = 'R';
+	vastasKuljed['R'] = 'L';
+	for (int i=0;i<sisValem.rida.size();i++){
+		valjund.rida.push_back(std::make_pair(vastasKuljed[sisValem.rida[i].first],!sisValem.rida[i].second));
+	}
+}
 
+void ThistleLahendaja::samm2osa2(asend sisAsend, std::set<valem> &lahendid){
+	ThistleSamm2Map tabel;
+	valem tulem;
+	kuubik sihtKuup {sisAsend};
+
+	tulem = tabel.getValem(nurkadePooreteLeidmine(sisAsend, ""));
+	if (tulem.rida.size() != 0){
+		lahendid.insert(tulem);
+		return;
+	}
+	sihtKuup.peegelda("LR");
+	tulem = tabel.getValem(nurkadePooreteLeidmine(sisAsend, "LR"));
+	sihtKuup.peegelda("LR");
+
+	if (tulem.rida.size() == 0){
+		lahendid.insert(tulem);
+		return;
+	}
+	sihtKuup.peegelda("UD");
+	tulem = tabel.getValem(nurkadePooreteLeidmine(sisAsend, "UD"));
+	sihtKuup.peegelda("UD");
+	if (tulem.rida.size() == 0){
+		lahendid.insert(tulem);
+		return;
+	}
+	sihtKuup.peegelda("FB");
+	tulem = tabel.getValem(nurkadePooreteLeidmine(sisAsend, "FB"));
+	sihtKuup.peegelda("FB");
+	if (tulem.rida.size() == 0){
+		lahendid.insert(tulem);
+		return;
+	}
+	lahendid.insert(tulem);
+	std::cout << "tundmatu sümmeetria";
 }

@@ -20,6 +20,7 @@ class valem{
 		void print();
 		std::string toString() const;
 		bool operator==(const std::string &other);
+		valem &operator=(const valem&);
 };
 
 bool operator<(const valem& val1, const valem& val2);
