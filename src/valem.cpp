@@ -3,7 +3,7 @@
 #include <iostream>
 
 /**
- * Valemi võrldusoperaator
+ * Valemi võrdlusoperaator
  */
 bool operator<(const valem& val1, const valem& val2){
 	if (val1.rida.size() != val2.rida.size()){
@@ -23,19 +23,43 @@ valem::valem(){
 	//meelega tyhi
 }
 
+valem::valem(char kask, bool suund){
+	append(kask, suund);
+}
+
+/**
+ * Lisa valemi samm
+ * @param kask -- käsusümbol
+ * @param suund
+ */
+void valem::append(char kask, bool suund){
+	rida.push_back(std::make_pair(kask,suund));
+}
+
+int valem::size() {
+	return rida.size();
+}
+
 /**
  * Konstrueeri valem stringist
  */
 valem::valem(std::string valemStr){
+	append (valemStr);
+}
+
+/**
+ * Konstrueeri valem stringist
+ */
+void valem::append(std::string valemStr){
 	for(unsigned int i=0;i<valemStr.size();i++){
 		if (valemStr[i] == 'U' || valemStr[i] == 'L' ||
 				valemStr[i] == 'F' ||valemStr[i] == 'R' ||
 				valemStr[i] == 'D' ||valemStr[i] == 'B'){
 			if (i < valemStr.size()-1 && valemStr[i+1]=='*'){
-				rida.push_back(std::make_pair(valemStr[i],false));
+				append(valemStr[i],false);
 				i++;
 			} else {
-				rida.push_back(std::make_pair(valemStr[i],true));
+				append(valemStr[i],true);
 			}
 		}
 	}

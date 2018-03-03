@@ -7,9 +7,7 @@
 
 #include "ReidLahendaja.h"
 
-#include <stdlib.h>
-#include <cstdio>
-#include <iostream>
+#include <string>
 #include <utility>
 #include <vector>
 
