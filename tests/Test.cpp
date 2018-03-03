@@ -223,7 +223,7 @@ void testBruteForce2Step() {
 
     ASSERTM("Lahendamine ei õnnestunud", solved);
     ASSERTM("Käske ei tohiks olla rohkem, kui 2",
-    		lahendusvalem.rida.size() == 2);
+    		lahendusvalem.size() == 2);
 }
 
 void testBruteForce1Step() {
@@ -238,7 +238,7 @@ void testBruteForce1Step() {
     bool solved = sihtKuup.isSolved();
     ASSERTM("Lahendamine ei õnnestunud", solved);
     ASSERTM("Käske ei tohiks olla rohkem, kui 1",
-    		lahendusvalem.rida.size() == 1);
+    		lahendusvalem.size() == 1);
 }
 
 void testBruteForce3Step() {
@@ -253,7 +253,7 @@ void testBruteForce3Step() {
     bool solved = sihtKuup.isSolved();
     ASSERTM("Lahendamine ei õnnestunud", solved);
     ASSERTM("Käske ei tohiks olla rohkem, kui 3",
-    		lahendusvalem.rida.size() == 3);
+    		lahendusvalem.size() == 3);
 }
 
 /**

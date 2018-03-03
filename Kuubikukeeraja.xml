@@ -1,5 +1,5 @@
 <testsuites>
-	<testsuite name="AllTests" tests="12">
+	<testsuite name="AllTests" tests="13">
 		<testcase classname="AllTests" name="testAlgolek"/>
 		<testcase classname="AllTests" name="testBruteForce1Step"/>
 		<testcase classname="AllTests" name="testBruteForce2Step"/>
@@ -12,5 +12,6 @@
 		<testcase classname="AllTests" name="testThistleSamm2Map"/>
 		<testcase classname="AllTests" name="testNurkadePoordeLeidmine"/>
 		<testcase classname="AllTests" name="testKuubikuPeegeldamine"/>
+		<testcase classname="AllTests" name="testThistleSamm2osa2"/>
 	</testsuite>
 </testsuites>

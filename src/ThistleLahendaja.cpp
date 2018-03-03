@@ -380,7 +380,7 @@ valem ThistleLahendaja::lahendiPeegeldus(valem sisValem, std::string poore){
 	};
 
 	for (int i = 0; i < sisValem.size(); i++){
-		valjund.append(vastasKuljed[sisValem.rida[i].first],!sisValem.rida[i].second);
+		valjund.append(vastasKuljed[sisValem.rida[i].kylg],!sisValem.rida[i].edasi);
 	}
 
 	return valjund;
