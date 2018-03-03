@@ -1,6 +1,8 @@
 #include "valem.h"
 
+#include <cstddef>
 #include <iostream>
+#include <unordered_map>
 
 /**
  * Valemi võrdlusoperaator
@@ -23,8 +25,8 @@ valem::valem(){
 	//meelega tyhi
 }
 
-valem::valem(char kask, bool suund){
-	append(kask, suund);
+valem::valem(char kylg, bool suund){
+	append(kylg, suund);
 }
 
 /**
@@ -32,8 +34,17 @@ valem::valem(char kask, bool suund){
  * @param kask -- käsusümbol
  * @param suund
  */
-void valem::append(char kask, bool suund){
-	rida.push_back(std::make_pair(kask,suund));
+void valem::append(char kylg, bool suund){
+	rida.push_back(*(new kask {kylg, suund}));
+}
+
+/**
+ * Lisa valemi samm
+ * @param kask -- käsusümbol
+ * @param suund
+ */
+void valem::append(kask k){
+	rida.push_back(k);
 }
 
 int valem::size() {
@@ -71,8 +82,7 @@ void valem::append(std::string valemStr){
 std::string valem::toString() const {
 	std::string res {};
 	for (unsigned int i=0;i<rida.size();i++){
-		res += rida[i].first;
-		res += (rida[i].second?' ':'*');
+		res += rida[i].toString();
 	}
 	return res;
 }
@@ -94,4 +104,35 @@ namespace std {
 			return hash<string>()(k.toString());
 		}
 	};
+
+	template <>
+	struct hash<kask>{
+		std::size_t operator()(const kask& k) const{
+		    using std::hash;
+
+			return hash<string>()(k.toString());
+		}
+	};
+}
+
+//---------------- Käsk ----------------------------------------
+
+kask::kask(char k, bool e) {
+	kylg = k;
+	edasi = e;
+}
+
+kask::kask(char k) {
+	kylg = k;
+	edasi = true;
+}
+
+bool kask::operator==(const kask &other) {
+	return (kylg == other.kylg && edasi == other.edasi);
+}
+
+std::string kask::toString() const {
+	std::string res {kylg};
+	res += (edasi ? ' ' : '*');
+	return res;
 }

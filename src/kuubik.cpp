@@ -54,10 +54,10 @@ void kuubik::scramble(int korrad) {
 		std::vector<char> moves = { 'U', 'L', 'F', 'R', 'D', 'B' };
 		int num { rand() % 12 };
 		if (num < 6) {
-			segu.rida.push_back(std::make_pair(moves[num], true));
+			segu.append(moves[num], true);
 			std::cout << moves[num] << " ";
 		} else {
-			segu.rida.push_back(std::make_pair(moves[num-6], false));
+			segu.append(moves[num-6], false);
 			std::cout << moves[num-6] << "' ";
 		}
 	}
@@ -88,7 +88,7 @@ void kuubik::turn(valem sisValem) {
 
 void kuubik::turn(char kylg, bool suund){
 	valem sisend {};
-	sisend.rida.push_back(std::make_pair(kylg,suund));
+	sisend.append(kylg,suund);
 	turn (sisend, false);
 }
 
@@ -98,31 +98,32 @@ void kuubik::turn(std::string sisend){
 }
 
 void kuubik::turn(valem sisValem, bool memorize) {
-	for (unsigned int i = 0; i < sisValem.rida.size(); i++) {
+	for (int i = 0; i < sisValem.size(); i++) {
+		kask k = sisValem.rida[i];
 		if (memorize){
-			meeles.rida.push_back(std::make_pair(sisValem.rida[i].first,sisValem.rida[i].second));
+			meeles.append(k);
 		}
-		switch (sisValem.rida[i].first) {
+		switch (k.kylg) {
 		case 'U':
-			turnSide(0, sisValem.rida[i].second);
+			turnSide(0, k.edasi);
 			break;
 		case 'L':
-			turnSide(1, sisValem.rida[i].second);
+			turnSide(1, k.edasi);
 			break;
 		case 'F':
-			turnSide(2, sisValem.rida[i].second);
+			turnSide(2, k.edasi);
 			break;
 		case 'R':
-			turnSide(3, sisValem.rida[i].second);
+			turnSide(3, k.edasi);
 			break;
 		case 'D':
-			turnSide(4, sisValem.rida[i].second);
+			turnSide(4, k.edasi);
 			break;
 		case 'B':
-			turnSide(5, sisValem.rida[i].second);
+			turnSide(5, k.edasi);
 			break;
 		default:
-			std::cout << "ERROR";
+			std::cout << "ERROR" << std::endl;
 		}
 	}
 }
@@ -198,8 +199,8 @@ void kuubik::peegelda(std::string suund){
 }
 
 void kuubik::rewind(){
-	for(std::vector< std::pair<char,bool> >::reverse_iterator iter = meeles.rida.rbegin(); iter != meeles.rida.rend(); ++iter){
-		turn(iter->first,!(iter->second));
+	for(std::vector<kask>::reverse_iterator iter = meeles.rida.rbegin(); iter != meeles.rida.rend(); ++iter){
+		turn(iter->kylg,!(iter->edasi));
 	}
 	meeles.rida.clear();
 }

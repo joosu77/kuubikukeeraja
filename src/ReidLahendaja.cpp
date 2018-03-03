@@ -29,10 +29,10 @@ valem ReidLahendaja::lahenda(asend sisAsend){
 	int i { 0 };
 	while ((int)valjund[i*3] != 0){
 		if (valjund[i*3+1] == '2'){
-			tulem.rida.push_back(std::make_pair(valjund[i*3],true));
-			tulem.rida.push_back(std::make_pair(valjund[i*3],true));
+			tulem.append(valjund[i*3],true);
+			tulem.append(valjund[i*3],true);
 		}else {
-			tulem.rida.push_back(std::make_pair(valjund[i*3],valjund[i*3+1]==' '));
+			tulem.append(valjund[i*3],valjund[i*3+1]==' ');
 		}
 		i++;
 	}
