@@ -199,17 +199,17 @@ void testThistleSamm2osa2(){
 void testNurgadOrbiidil(){
 	kuubik sihtKuup {};
 	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F R R F B B R B*R R B R B ");
-	ThistleLahendaja thistle;
+	ThistleLahendaja thistle {};
 	std::string nurgad = thistle.getNurgadOrbiidil(sihtKuup.kuup);
 	std::cout << nurgad << '\n';
 	ASSERTM("nurkade orbiite ei määratud õigesti", nurgad == "1258");
 }
 
 void testThistleSamm3osa1(){
-	kuubik sihtKuup;
+	kuubik sihtKuup { };
 	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F R R F B B R B*R R B R B ");
-	ThistleLahendaja thistle;
-	std::set<valem> lahendid;
+	ThistleLahendaja thistle { };
+	std::set<valem> lahendid { };
 	thistle.samm3osa1(sihtKuup.kuup,lahendid);
 	valem tulem = *(lahendid.begin());
 	ASSERTM("ei leitud õiget valemit", tulem=="L*U U ");

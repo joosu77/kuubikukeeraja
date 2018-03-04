@@ -6,6 +6,7 @@
  */
 
 #include "lahendaja.h"
+#include "asend.h"
 
 #include <iostream>
 #include <vector>

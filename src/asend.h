@@ -25,12 +25,34 @@ public:
 	asend& operator=(const asend& other);
 
 	// kahe asendi võrdlus
-	bool operator==(const asend& other);
+	bool operator==(const asend& other) const;
+
+	// kahe asendi võrdlus
+	bool operator<(const asend& other) const;
 
 	//
-	std::string toString();
+	std::string toString() const;
 };
 
-bool operator==(const asend& self, const asend& other);
+namespace std {
+
+	template <>
+	struct hash<asend>{
+		std::size_t operator()(const asend& k) const{
+			std::size_t val = 0;
+			int shift { 0 };
+			for (int i = 0; i < 6; i++) {
+				for (int o = 0; o < 3; o++) {
+					for (int u = 0; u < 3; u++) {
+						val = (val << shift) | k.kuljed[i][o][u];
+						shift += 3;
+					}
+				}
+			}
+
+			return val;
+		}
+	};
+}
 
 #endif /* ASEND_H_ */

@@ -7,11 +7,11 @@
 /**
  * Valemi võrdlusoperaator
  */
-bool operator<(const valem& val1, const valem& val2){
-	if (val1.rida.size() != val2.rida.size()){
-		return val1.rida.size() < val2.rida.size();
+bool valem::operator<(const valem& other) const {
+	if (rida.size() != other.rida.size()){
+		return rida.size() < other.rida.size();
 	} else {
-		return val1.toString() < val2.toString();
+		return toString() < other.toString();
 	}
 }
 
@@ -91,7 +91,7 @@ void valem::print(){
 	std::cout << "Prindin valemit: " << toString() << "\n";
 }
 
-bool valem::operator==(const std::string &other) {
+bool valem::operator==(const std::string &other) const {
 	return (toString() == other);
 }
 
@@ -127,7 +127,7 @@ kask::kask(char k) {
 	edasi = true;
 }
 
-bool kask::operator==(const kask &other) {
+bool kask::operator==(const kask &other) const {
 	return (kylg == other.kylg && edasi == other.edasi);
 }
 

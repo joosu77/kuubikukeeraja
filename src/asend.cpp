@@ -59,7 +59,7 @@ asend& asend::operator=(const asend& other) {
 /**
  * equals
  */
-bool asend::operator==(const asend& other) {
+bool asend::operator==(const asend& other) const {
     if (this != &other) { // self-assignment check expected
     	for (int i = 0; i < 6; i++) {
     		for (int j = 0; j < 3; j++) {
@@ -75,7 +75,7 @@ bool asend::operator==(const asend& other) {
     return true;
 }
 
-std::string asend::toString() {
+std::string asend::toString() const {
 	// eraldame mälu piisavalt, et mahuks ära kogu kuubiku olek
 	char *out = (char*) malloc (100);
 	// kirjutame eraldautd puhvrisse olekumuutujad
@@ -113,46 +113,11 @@ std::string asend::toString() {
 }
 
 /**
- * Asendi C-stiilis võrdlusoperaator
- * TODO: pole selge, miks objekit võrdlusoperaatoriga linkimisviga tekkis
- * kui on välja selgitatud, miks mõlemat operaatorit tarvis, siis tuleb
- * üks teise väljakutsena realiseerida
+ * Asendi võrdlusoperaator
  */
-bool operator==(const asend& self, const asend& other) {
-    if (&self != &other) { // self-assignment check expected
-    	for (int i = 0; i < 6; i++) {
-    		for (int j = 0; j < 3; j++) {
-    			for (int k = 0; k < 3; k++) {
-    				if (self.kuljed[i][j][k] != other.kuljed[i][j][k]) {
-    					return false;
-    				}
-    			}
-    		}
-    	}
-    }
-
-    return true;
+bool asend::operator<(const asend& other) const {
+	return toString() < other.toString();
 }
 
-namespace std {
 
-template <>
-struct hash<asend>{
-std::size_t operator()(const asend& k) const{
-	using std::hash;
-
-	std::size_t val = 0;
-	int shift { 0 };
-	for (int i = 0; i < 6; i++) {
-		for (int o = 0; o < 3; o++) {
-			for (int u = 0; u < 3; u++) {
-				val = (val << shift) | k.kuljed[i][o][u];
-				shift += 3;
-			}
-		}
-	}
-
-	return val;
-}
-};
 

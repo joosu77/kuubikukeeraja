@@ -104,30 +104,6 @@ bool ThistleLahendaja::serviKuljel(int kulg, std::set<int> servad){
 //	return *this;
 //}
 
-namespace std {
-
-  template <>
-  struct hash<asend>{
-    std::size_t operator()(const asend& k) const{
-		using std::hash;
-
-		std::size_t val = 0;
-		int shift { 0 };
-		for (int i = 0; i < 6; i++) {
-			for (int o = 0; o < 3; o++) {
-				for (int u = 0; u < 3; u++) {
-					val = (val << shift) | k.kuljed[i][o][u];
-					shift += 3;
-				}
-			}
-		}
-
-		return val;
-    }
-  };
-
-}
-
 /**
  * kontrollib, millised servad on "head" servad
  * leiab kõik valemid millega jõuab asendisse,
@@ -428,7 +404,7 @@ void ThistleLahendaja::samm2osa2(asend sisAsend, std::set<valem> &lahendid){
 
 std::string ThistleLahendaja::getNurgadOrbiidil(asend sisAsend){
 	std::set<int> orbiidiltMaas {};
-	std::map<int,int> paarid;
+	std::map<int, int> paarid { };
 	paarid[0] = 4;
 	paarid[4] = 0;
 	paarid[1] = 3;
@@ -445,7 +421,7 @@ std::string ThistleLahendaja::getNurgadOrbiidil(asend sisAsend){
 			}
 		}
 	}
-	std::string valjund;
+	std::string valjund { };
 	for (std::set<int>::iterator ite = orbiidiltMaas.begin();ite != orbiidiltMaas.end(); ++ite){
 		valjund += (char)(*ite+48);
 	}

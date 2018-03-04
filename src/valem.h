@@ -22,7 +22,7 @@ public:
 	kask(char k);
 	kask(char k, bool e);
 	// võrdle käsku teisega
-	bool operator==(const kask &other);
+	bool operator==(const kask &other) const;
 	// trüki käsk stringi
 	std::string toString() const;
 };
@@ -54,14 +54,13 @@ class valem {
 		// sammude arv valemis
 		int size();
 		// võrdle valemit teisega
-		bool operator==(const std::string &other);
+		bool operator==(const std::string &other) const;
+		bool operator<(const valem &other) const;
 		// kopeeri teise valemi sisu siia
 		valem &operator=(const valem&);
 	private:
 
 
 };
-
-bool operator<(const valem& val1, const valem& val2);
 
 #endif /* VALEM_H_ */

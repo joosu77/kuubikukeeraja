@@ -8,12 +8,11 @@
 #include "IDAlahendaja.h"
 
 #include <iostream>
+#include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <vector>
-#include <unordered_set>
-#include <set>
 
-#include "ThistleLahendaja.h"
 #include "kuubik.h"
 
 valem IDAlahendaja::lahenda(asend sisAsend) {
@@ -22,7 +21,7 @@ valem IDAlahendaja::lahenda(asend sisAsend) {
 	std::unordered_set<asend> kaidud {};
 	std::vector<valem> pooleli { };
 	bool first { true };
-	valem lahend;
+	valem lahend {};
 	while (lahend.rida.size()==0 || first){
 		valem tee { };
 		asend olek { };
@@ -37,7 +36,7 @@ valem IDAlahendaja::lahenda(asend sisAsend) {
 			olek = sisKuup.kuup;
 		}
 
-		bool korras = false;
+		bool korras { false };
 		if (sisKuup.isSolved()){
 			korras = true;
 			lahend.rida = tee.rida;
