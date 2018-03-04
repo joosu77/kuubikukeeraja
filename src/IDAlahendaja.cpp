@@ -7,16 +7,62 @@
 
 #include "IDAlahendaja.h"
 
-#include <deque>
 #include <iostream>
 #include <utility>
+#include <vector>
+#include <unordered_set>
+#include <set>
 
+#include "ThistleLahendaja.h"
 #include "kuubik.h"
-#include "asend.h"
-#include "valem.h"
 
 valem IDAlahendaja::lahenda(asend sisAsend) {
-	std::deque<valem> rivi { };
+	int attempts { 0 };
+	kuubik sisKuup {sisAsend};
+	std::unordered_set<asend> kaidud {};
+	std::vector<valem> pooleli { };
+	bool first { true };
+	valem lahend;
+	while (lahend.rida.size()==0 || first){
+		valem tee { };
+		asend olek { };
+		if (first){
+			olek = sisKuup.kuup;
+		}else {
+			tee = pooleli[0];
+			std::cout << "alles: " << pooleli.size() << '\n';
+			pooleli.erase(pooleli.begin());
+
+			sisKuup.turn(tee);
+			olek = sisKuup.kuup;
+		}
+
+		bool korras = false;
+		if (sisKuup.isSolved()){
+			korras = true;
+			lahend.rida = tee.rida;
+		}
+		sisKuup.rewind();
+
+		if (kaidud.count(olek) == 0 && korras == false){
+			for (int i=0;i<12;i++){
+				if(i<6){
+					valem uus = tee;
+					uus.append("ULFRDB"[i],true);
+					pooleli.push_back(uus);
+				} else {
+					valem uus =tee;
+					uus.append("ULFRDB"[i-6], false);
+					pooleli.push_back(uus);
+				}
+			}
+		}
+		kaidud.insert(olek);
+		first = false;
+		attempts++;
+	}
+
+	/*std::deque<valem> rivi { };
 	unsigned int min { 21 };
 	char kaigud[6] = { 'F', 'B', 'L', 'R', 'U', 'D' };
 	kuubik sisKuup(sisAsend);
@@ -55,10 +101,7 @@ valem IDAlahendaja::lahenda(asend sisAsend) {
 					kask eelviimane = val.rida[val.rida.size()-2];
 					if (!(viimane == eelviimane && viimane == kontrollitav)){
 						if (!(viimane.kylg == kontrollitav.kylg && viimane.edasi != kontrollitav.edasi)){
-							/*for (unsigned int e=0;e<val.rida.size();e++){
-								std::cout << val.rida[e].first << ((val.rida[e].second)?('*'):(' '));
-							}
-							std::cout << std::endl;*/
+
 							sama = false;
 						}
 					}
@@ -91,9 +134,9 @@ valem IDAlahendaja::lahenda(asend sisAsend) {
 				}
 			}
 		}
-	}
+	}*/
 
 	std::cout << "Kokku katseid: " << attempts;
-	std::cout << "ei saanud lahendatud" << std::endl;
-	return tyhi;
+	return lahend;
 }
+

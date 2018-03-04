@@ -134,3 +134,25 @@ bool operator==(const asend& self, const asend& other) {
     return true;
 }
 
+namespace std {
+
+template <>
+struct hash<asend>{
+std::size_t operator()(const asend& k) const{
+	using std::hash;
+
+	std::size_t val = 0;
+	int shift { 0 };
+	for (int i = 0; i < 6; i++) {
+		for (int o = 0; o < 3; o++) {
+			for (int u = 0; u < 3; u++) {
+				val = (val << shift) | k.kuljed[i][o][u];
+				shift += 3;
+			}
+		}
+	}
+
+	return val;
+}
+};
+

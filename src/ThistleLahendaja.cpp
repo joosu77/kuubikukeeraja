@@ -17,15 +17,9 @@
 
 #include "kuubik.h"
 #include "ThistleSamm2Map.h"
+#include "ThistleSamm3InitialMap.h"
 
-/*ThistleLahendaja::ThistleLahendaja() {
-	// TODO Auto-generated constructor stub
-
-}
-
-ThistleLahendaja::~ThistleLahendaja() {
-	// TODO Auto-generated destructor stub
-}*/
+//TODO: notes: tuleb alpha ja beta hulgast valida õiged liikmed millega korrutada, alpha ja beta järgi valitakse coset
 
 /**
  *
@@ -425,6 +419,13 @@ void ThistleLahendaja::samm2osa2(asend sisAsend, std::set<valem> &lahendid){
 	std::cout << "tundmatu sümmeetria";
 }
 
+/*
+ * kontrollib, millised nurgad on orbiidil ehk
+ * millised nurgad on oma küljel või vastasküljel
+ * (kui kõik nurgad on orbiidil on külje peale ainult
+ * antud külje ja vastaskülje värvid, ignoreerides servi)
+ */
+
 std::string ThistleLahendaja::getNurgadOrbiidil(asend sisAsend){
 	std::set<int> orbiidiltMaas {};
 	std::map<int,int> paarid;
@@ -449,4 +450,10 @@ std::string ThistleLahendaja::getNurgadOrbiidil(asend sisAsend){
 		valjund += (char)(*ite+48);
 	}
 	return valjund;
+}
+
+void ThistleLahendaja::samm3osa1 (asend sisAsend, std::set<valem> &lahendid){
+	ThistleSamm3InitialMap data {};
+	std::string nurgad = getNurgadOrbiidil(sisAsend);
+	lahendid.insert(data.getValem(nurgad));
 }

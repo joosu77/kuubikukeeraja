@@ -205,6 +205,16 @@ void testNurgadOrbiidil(){
 	ASSERTM("nurkade orbiite ei määratud õigesti", nurgad == "1258");
 }
 
+void testThistleSamm3osa1(){
+	kuubik sihtKuup;
+	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F R R F B B R B*R R B R B ");
+	ThistleLahendaja thistle;
+	std::set<valem> lahendid;
+	thistle.samm3osa1(sihtKuup.kuup,lahendid);
+	valem tulem = *(lahendid.begin());
+	ASSERTM("ei leitud õiget valemit", tulem=="L*U U ");
+}
+
 /**
  * Kontrolli, et IDAlahendaja saab ühe sammu segatud kuubi lahendatud
  */
@@ -291,6 +301,7 @@ void runAllTests(int argc, char const *argv[]){
 	s.push_back(CUTE(testKuubikuPeegeldamine));
 	s.push_back(CUTE(testThistleSamm2osa2));
 	s.push_back(CUTE(testNurgadOrbiidil));
+	s.push_back(CUTE(testThistleSamm3osa1));
 
 
 	cute::xml_file_opener xmlfile(argc,argv);

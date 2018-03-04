@@ -30,7 +30,7 @@ public:
 	void samm2osa2(asend sisAsend, std::set<valem> &lahendid);
 	std::string nurkadePooreteLeidmine(asend sisAsend, std::string poore);
 	valem lahendiPeegeldus(valem sisValem, std::string poore);
-	valem samm3(asend sisAsend);
+	void samm3osa1 (asend sisAsend, std::set<valem> &lahendid);
 	std::string getNurgadOrbiidil(asend sisAsend);
 	valem samm4(asend sisAsend);
 };
