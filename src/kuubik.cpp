@@ -99,7 +99,7 @@ void kuubik::turn(std::string sisend){
 
 void kuubik::turn(valem sisValem, bool memorize) {
 	for (int i = 0; i < sisValem.size(); i++) {
-		kask k = sisValem.rida[i];
+		kask k = sisValem.get(i);
 		if (memorize){
 			meeles.append(k);
 		}
@@ -199,10 +199,11 @@ void kuubik::peegelda(std::string suund){
 }
 
 void kuubik::rewind(){
-	for(std::vector<kask>::reverse_iterator iter = meeles.rida.rbegin(); iter != meeles.rida.rend(); ++iter){
-		turn(iter->kylg,!(iter->edasi));
+	while (!meeles.tyhi()) {
+		kask k = meeles.get(-1);
+		turn(k.kylg, k.edasi);
+		meeles.remove_last();
 	}
-	meeles.rida.clear();
 }
 
 /**

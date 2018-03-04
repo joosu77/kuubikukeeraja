@@ -51,8 +51,8 @@ valem IDAlahendaja::lahenda(asend sisAsend) {
 				kask kontrollitav {kaigud[i],o};
 				bool sama { true };
 				if (val.size()>1){
-					kask viimane = val.rida[val.rida.size()-1];
-					kask eelviimane = val.rida[val.rida.size()-2];
+					kask viimane = val.get(-1);
+					kask eelviimane = val.get(-2);
 					if (!(viimane == eelviimane && viimane == kontrollitav)){
 						if (!(viimane.kylg == kontrollitav.kylg && viimane.edasi != kontrollitav.edasi)){
 							/*for (unsigned int e=0;e<val.rida.size();e++){
@@ -63,7 +63,7 @@ valem IDAlahendaja::lahenda(asend sisAsend) {
 						}
 					}
 				} else if (val.size()>0){
-					kask viimane = val.rida[val.rida.size()-1];
+					kask viimane = val.get(-1);
 					if (!(viimane.kylg == kontrollitav.kylg && viimane.edasi != kontrollitav.edasi)){
 						sama = false;
 					}
@@ -72,7 +72,7 @@ valem IDAlahendaja::lahenda(asend sisAsend) {
 				}
 				if (!sama){
 					attempts++;
-					val.rida.push_back(kontrollitav);
+					val.append(kontrollitav);
 					sisKuup.turn(val);
 					if (*sisKuup.kuup==sisAsend){
 						sisKuup.rewind();
@@ -82,11 +82,11 @@ valem IDAlahendaja::lahenda(asend sisAsend) {
 						std::cout << "Lahendamiseks kulus " << val.size() << " kaiku" << std::endl;
 						std::cout << val.toString() << std::endl;
 						return val;
-					} else if (!((min-1)<val.rida.size()) ){
+					} else if (!((min-1)<val.size()) ){
 						//muuta tagasi push_backiks et saada depth-first
 						rivi.push_front(val);
 						sisKuup.rewind();
-						val.rida.pop_back();
+						val.remove_last();
 					}
 				}
 			}

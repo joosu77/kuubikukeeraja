@@ -8,8 +8,8 @@
  * Valemi võrdlusoperaator
  */
 bool operator<(const valem& val1, const valem& val2){
-	if (val1.rida.size() != val2.rida.size()){
-		return val1.rida.size() < val2.rida.size();
+	if (val1.size() != val2.size()){
+		return val1.size() < val2.size();
 	} else {
 		return val1.toString() < val2.toString();
 	}
@@ -43,25 +43,41 @@ void valem::append(char kylg, bool suund){
  * @param kask -- käsusümbol
  * @param suund
  */
-void valem::append(kask k){
+void valem::append(kask &k){
 	rida.push_back(k);
 }
 
-int valem::size() {
+void valem::remove_last() {
+	rida.pop_back();
+}
+
+kask& valem::get(int idx){
+	if (idx >= 0) {
+		return rida[idx];
+	} else {
+		return rida[rida.size() + idx];
+	}
+}
+
+int valem::size() const {
 	return rida.size();
+}
+
+bool valem::tyhi() const {
+	return rida.empty();
 }
 
 /**
  * Konstrueeri valem stringist
  */
-valem::valem(std::string valemStr){
+valem::valem(const std::string &valemStr){
 	append (valemStr);
 }
 
 /**
  * Konstrueeri valem stringist
  */
-void valem::append(std::string valemStr){
+void valem::append(const std::string &valemStr){
 	for(unsigned int i=0;i<valemStr.size();i++){
 		if (valemStr[i] == 'U' || valemStr[i] == 'L' ||
 				valemStr[i] == 'F' ||valemStr[i] == 'R' ||
