@@ -12,7 +12,7 @@
 #include <string>
 
 /**
- * Algväärtuseks on igal külje ruudl sama nimber mis külg
+ * Algväärtuseks on igal külje ruudul sama number mis külg
  */
 asend::asend() {
 	// kuljed[6][3][3];

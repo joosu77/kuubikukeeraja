@@ -274,6 +274,19 @@ void testBruteForce3Step() {
     		lahendusvalem.size() == 3);
 }
 
+void testBruteForce0Step() {
+    engine vroom {9, 12};
+
+	kuubik sihtKuup {};
+	IDAlahendaja masin {};
+    valem lahendusvalem = masin.lahenda(sihtKuup.kuup);
+    sihtKuup.turn(lahendusvalem);
+    bool solved = sihtKuup.isSolved();
+    ASSERTM("Lahendamine ei õnnestunud", solved);
+    ASSERTM("Käske ei tohiks olla rohkem, kui 0",
+    		lahendusvalem.size() == 0);
+}
+
 /**
  *
  */
@@ -302,6 +315,7 @@ void runAllTests(int argc, char const *argv[]){
 	s.push_back(CUTE(testThistleSamm2osa2));
 	s.push_back(CUTE(testNurgadOrbiidil));
 	s.push_back(CUTE(testThistleSamm3osa1));
+	s.push_back(CUTE(testBruteForce0Step));
 
 
 	cute::xml_file_opener xmlfile(argc,argv);
