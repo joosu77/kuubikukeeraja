@@ -29,6 +29,17 @@ valem::valem(char kylg, bool suund){
 	append(kylg, suund);
 }
 
+void valem::pooraYmber(){
+	std::vector<kask> rev {};
+
+	for (std::vector<kask>::reverse_iterator it = rida.rbegin(); it!=rida.rend(); ++it) {
+		rev.push_back(it->vastandKask());
+
+	}
+
+	rida.swap(rev);
+}
+
 /**
  * Lisa valemi samm
  * @param kask -- käsusümbol
@@ -135,4 +146,17 @@ std::string kask::toString() const {
 	std::string res {kylg};
 	res += (edasi ? ' ' : '*');
 	return res;
+}
+
+kask kask::vastandKask(){
+	std::map<char, char> vastasKuljed {
+			{'F', 'B'},
+			{'B', 'F'},
+			{'U', 'D'},
+			{'D', 'U'},
+			{'L', 'R'},
+			{'R', 'L'}
+		};
+	kask valjund {vastasKuljed[kylg],!edasi};
+	return valjund;
 }

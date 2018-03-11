@@ -241,9 +241,9 @@ void testThistleSamm3osa2(){
 	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F R R F B B R B*R R B R B L*U U ");
 	ThistleLahendaja thistle { };
 	std::set<valem> lahendid { };
-	thistle.samm3osa1(sihtKuup.kuup,lahendid);
+	thistle.samm3osa2(sihtKuup.kuup,lahendid);
 	valem tulem = *(lahendid.begin());
-	ASSERTM("ei leitud õiget valemit", tulem=="L*U U ");
+	ASSERTM("ei leitud õiget valemit", tulem=="R*U U D D R R D D L*F F L D D L*");
 }
 
 /**
@@ -349,6 +349,7 @@ void runAllTests(int argc, char const *argv[]){
 	s.push_back(CUTE(testBruteForce0Step));
 	s.push_back(CUTE(testNurkadeTsyklid));
 	s.push_back(CUTE(testLeiaAlpha));
+	s.push_back(CUTE(testThistleSamm3osa2));
 
 
 	cute::xml_file_opener xmlfile(argc,argv);

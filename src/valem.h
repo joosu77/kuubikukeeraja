@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <map>
 
 #ifndef VALEM_H
 #define VALEM_H
@@ -25,6 +26,8 @@ public:
 	bool operator==(const kask &other) const;
 	// trüki käsk stringi
 	std::string toString() const;
+	//väljastab vastaskülje vastupidise pöörde
+	kask vastandKask();
 };
 
 class valem {
@@ -58,6 +61,8 @@ class valem {
 		bool operator<(const valem &other) const;
 		// kopeeri teise valemi sisu siia
 		valem &operator=(const valem&);
+		// teeb valemist selle asendi lahenduse, kuhu algne valem viib
+		void pooraYmber();
 	private:
 
 

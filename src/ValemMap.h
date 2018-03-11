@@ -19,7 +19,7 @@ class ValemMap {
 public:
 	ValemMap();
 	virtual ~ValemMap();
-	valem getValem(std::string voti);
+	virtual valem getValem(std::string voti);
 protected:
 	std::map<std::string,std::string> data;
 };

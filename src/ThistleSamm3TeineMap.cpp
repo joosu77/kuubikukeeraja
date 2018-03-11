@@ -11,6 +11,44 @@ ThistleSamm3TeineMap::ThistleSamm3TeineMap(){
 	//tyhi
 }
 
+valem ThistleSamm3TeineMap::getValem(std::string voti){
+	if(!data.count(voti)){
+		return *(new valem { });
+	}
+	std::string numValem = data[voti];
+	valem tulevValem {};
+	for (unsigned int i = 0; i < numValem.size(); i++){
+		if(numValem[i] == '0'){
+			tulevValem.append('D', true);
+			tulevValem.append('D', true);
+		} else if (numValem[i] == '1'){
+			tulevValem.append('L', true);
+		} else if (numValem[i] == '2'){
+			tulevValem.append('L', true);
+			tulevValem.append('L', true);
+		} else if (numValem[i] == '3'){
+			tulevValem.append('L', false);
+		} else if (numValem[i] == '4'){
+			tulevValem.append('F', true);
+			tulevValem.append('F', true);
+		} else if (numValem[i] == '5'){
+			tulevValem.append('R', true);
+		} else if (numValem[i] == '6'){
+			tulevValem.append('R', true);
+			tulevValem.append('R', true);
+		} else if (numValem[i] == '7'){
+			tulevValem.append('R', false);
+		} else if (numValem[i] == '8'){
+			tulevValem.append('B', true);
+			tulevValem.append('B', true);
+		} else if (numValem[i] == '9'){
+			tulevValem.append('U', true);
+			tulevValem.append('U', true);
+		}
+	}
+	return tulevValem;
+}
+
 ThistleSamm3TeineMap::ThistleSamm3TeineMap (ALPHA a, BETA b) {
 	if (b == B_0 && a == A_0){
 		data["1234"]="";

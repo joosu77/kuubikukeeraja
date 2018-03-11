@@ -40,6 +40,7 @@ public:
 
 	std::set <int> servaKontroll(asend sisAsend);
 	bool serviKuljel(int kulg, std::set <int> servad);
+	bool nurkiKuljel(int kulg, std::set<int> nurgad);
 	void samm1(asend sisAsend, std::set<valem> &lahendid);
 	void samm1proovimiseta(asend sisAsend, std::set<valem> &lahendid);
 	std::set<int> LRservaotsing(asend sisAsend);
@@ -55,6 +56,10 @@ public:
 	ALPHA leiaAlpha(std::vector <std::string> tsyklid, BETA beta);
 	void vahetaTsyklipaare(std::map<int,int> &tsykliPaarid, int val1, int val2);
 	std::string FBservaotsing(asend sisAsend, int poore);
+	valem valemiMoondus(valem sisValem, int poore);
+	int leiaStringis(std::string sisString, char otsitav);
+	char pooraTeljel(char telg, int kogus, char taht);
+	std::set<int> paigastAraNurgad(asend sisAsend);
 	void samm4osa1 (asend sisAsend, std::set<valem> &lahendid);
 	void samm4osa2 (asend sisAsend, std::set<valem> &lahendid);
 private:
@@ -62,7 +67,7 @@ private:
 	 * kõik erinevad sümmeetriad; kõigepealt tavaline, siis päripäeva mööda F külge pööramine,
 	 * siis kõikide külgede läbi käimine järjekorras U, L, R, D, B, iga külje juures samamoodi päripäeva pöörates
 	 */
-	unsigned int const twIndex2Minu [24][8] = {
+	unsigned int const twNurgaIdx2Minu [24][8] = {
 			{2,5,7,0,3,6,4,1}, // esimene F
 			{1,3,6,4,0,2,5,7},
 			{7,0,2,5,4,1,3,6},
@@ -87,8 +92,9 @@ private:
 			{3,1,4,6,2,0,7,5},
 			{0,7,5,2,1,4,6,3},
 			{4,6,3,1,7,5,2,0}};
-
-	unsigned int minuIndex2Tw(unsigned int val, int poore);
-};
+	unsigned int const twServaIdx2Minu [1][12] = {
+				{3,5,1,7,11,9,8,10,0,4,6,2}};
+	unsigned int minuNurgaIdx2Tw(unsigned int val, int poore);
+	unsigned int minuServaIdx2Tw(unsigned int val, int poore);};
 
 #endif /* THISTLELAHENDAJA_H_ */
