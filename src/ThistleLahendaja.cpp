@@ -14,6 +14,7 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
+#include <algorithm>
 
 #include "kuubik.h"
 #include "ThistleSamm2Map.h"
@@ -432,4 +433,86 @@ void ThistleLahendaja::samm3osa1 (asend sisAsend, std::set<valem> &lahendid){
 	ThistleSamm3InitialMap data {};
 	std::string nurgad = getNurgadOrbiidil(sisAsend);
 	lahendid.insert(data.getValem(nurgad));
+}
+
+std::string ThistleLahendaja::liidaCharid(char sis1, char sis2, char sis3){
+	std::string valjund;
+	valjund = sis1;
+	valjund += sis2;
+	valjund += sis3;
+	std::sort(valjund.begin(),valjund.end());
+	return valjund;
+}
+
+std::string sorditudAlamstring(std::string const  &str, int algus, int pikkus) {
+	std::string tulem = str.substr(algus, pikkus);
+	std::sort(tulem.begin(), tulem.end());
+	return tulem;
+}
+
+/**
+ * Võtab sisse minu süsteemi nurgaindeksi, tegastab TW süsteemi indeksi
+ */
+unsigned int ThistleLahendaja::minuIndex2Tw(unsigned int val, int poore) {
+	for (unsigned int i=0; i < 8; i++) {
+		if (twIndex2Minu[poore][i] == val) {
+			return i;
+		}
+	}
+
+	return 999;
+}
+
+std::vector<std::string> ThistleLahendaja::nurkadeTsyklid(asend sisAsend, int poore){
+	std::string sisString = sisAsend.toString();
+	std::string lahendatudNurgad = "FRU BRU BLU FLU DFR DFL BDL BDR";
+	//std::vector<std::string> lahendatudNurgad = {{"UFR"}, {"URB"}, {"UBL"}, {"ULF"}, {"DRF"}, {"DFL"}, {"DLB"}, {"DBR"}};
+	std::vector<std::string> valjund;
+	// nurgad, kus tsüklite kaudu on käidud
+	// number on nurga indeks thistlethwaite süsteemis
+	std::set<int> kaidud;
+	for (int i=0;i<8;i++){
+		// nurk = liidaCharid(sisString[36+jarjekord[i]*4], sisString[36+jarjekord[i]*4+1], sisString[36+jarjekord[i]*4+2]);
+		std::string nurk = sorditudAlamstring(sisString, 36+twIndex2Minu[poore][i]*4, 3);
+		//if (!kaidud.count)
+		if (!kaidud.count(i) && lahendatudNurgad.find(nurk) != twIndex2Minu[poore][i]*4){
+			std::string tsykkel {(char)(i+48)};
+			while (lahendatudNurgad.find(nurk) != twIndex2Minu[poore][i]*4){
+				// antud nurga asukoht minu systeemis
+				int num = lahendatudNurgad.find(nurk)/4;
+
+				// antud nurga asukoht thistlethwaite'i systeemis
+				int kohtT = minuIndex2Tw(num, poore);
+				tsykkel += (char)(kohtT+48);
+				kaidud.insert(kohtT);
+				nurk = sorditudAlamstring(sisString, 36+num*4, 3);
+			}
+			std::string buffer;
+			if (tsykkel.size()>0){
+				buffer.resize(tsykkel.size());
+				buffer[0]=tsykkel[0];
+				for (int o=1;o<tsykkel.size();o++){
+					buffer[o]=tsykkel[tsykkel.size()-o];
+				}
+			}
+			valjund.push_back(buffer);
+		}
+	}
+
+
+	return valjund;
+}
+void ThistleLahendaja::samm3osa2 (asend sisAsend, std::set<valem> &lahendid){
+
+
+	std::string orbital = getNurgadOrbiidil(sisAsend);
+	//std::string orbital = getNurgadOrbiidil(sisAsend);
+}
+
+void ThistleLahendaja::samm4osa1 (asend sisAsend, std::set<valem> &lahendid){
+
+}
+
+void ThistleLahendaja::samm4osa2 (asend sisAsend, std::set<valem> &lahendid){
+
 }

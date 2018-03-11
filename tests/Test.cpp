@@ -215,6 +215,17 @@ void testThistleSamm3osa1(){
 	ASSERTM("ei leitud õiget valemit", tulem=="L*U U ");
 }
 
+void testNurkadeTsyklid(){
+	kuubik sihtKuup { };
+	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F R R F B B R B*R R B R B L*U U ");
+	ThistleLahendaja thistle { };
+	std::vector<std::string> lahendid = thistle.nurkadeTsyklid(sihtKuup.kuup,4);
+	for (std::vector<std::string>::iterator ite = lahendid.begin(); ite != lahendid.end(); ++ite){
+		std::cout << *ite << '\n';
+	}
+	ASSERTM("ei leitud õiget valemit", (lahendid.size() == 2 && lahendid[0] == "0246" && lahendid[1] == "13"));
+}
+
 /**
  * Kontrolli, et IDAlahendaja saab ühe sammu segatud kuubi lahendatud
  */
@@ -316,6 +327,7 @@ void runAllTests(int argc, char const *argv[]){
 	s.push_back(CUTE(testNurgadOrbiidil));
 	s.push_back(CUTE(testThistleSamm3osa1));
 	s.push_back(CUTE(testBruteForce0Step));
+	s.push_back(CUTE(testNurkadeTsyklid));
 
 
 	cute::xml_file_opener xmlfile(argc,argv);

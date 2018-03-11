@@ -11,8 +11,6 @@
 #include <string>
 #include "valem.h"
 
-class valem;
-
 /**
  * Baasklass valemitabelite salvestamiseks
  *
