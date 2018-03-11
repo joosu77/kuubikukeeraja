@@ -235,7 +235,6 @@ std::set<int> ThistleLahendaja::LRservaotsing(asend sisAsend){
 void ThistleLahendaja::samm2osa1(asend sisAsend, std::set<valem> &lahendid){
 	std::set<int> LRservad = LRservaotsing(sisAsend);
 
-	int eelmineKaugus { 0 };
 	int maxPoorded { 5 };
 	kuubik sisKuup {sisAsend};
 	std::unordered_map<asend, int> kaidud {};
@@ -274,8 +273,6 @@ void ThistleLahendaja::samm2osa1(asend sisAsend, std::set<valem> &lahendid){
 			}
 			maxPoorded = kaugus;
 		}
-
-		eelmineKaugus = pooleli.size();
 
 		if (kaugus<maxPoorded && kaidud.count(olek) == 0 && korras == false){
 			for (int i=0;i<10;i++){
@@ -403,7 +400,7 @@ void ThistleLahendaja::samm2osa2(asend sisAsend, std::set<valem> &lahendid){
  * antud külje ja vastaskülje värvid, ignoreerides servi)
  */
 
-std::string ThistleLahendaja::getNurgadOrbiidil(asend sisAsend){
+std::string ThistleLahendaja::getNurgadOrbiidil(asend sisAsend, int poore){
 	std::set<int> orbiidiltMaas {};
 	std::map<int, int> paarid { };
 	paarid[0] = 4;
@@ -412,12 +409,13 @@ std::string ThistleLahendaja::getNurgadOrbiidil(asend sisAsend){
 	paarid[3] = 1;
 	paarid[2] = 5;
 	paarid[5] = 2;
-	int nurgad [2][2][2] = {{{1,5},{8,4}},{{2,6},{7,3}}};
+	//int nurgad [2][2][2] = {{{1,5},{8,4}},{{2,6},{7,3}}};
+	int nurgad [2][2][2] = {{{2,3},{1,0}},{{5,6},{4,7}}};
 	for (int i = 0; i < 2; i++){
 		for (int y = 0; y < 2; y++){
 			for (int x = 0; x < 2; x++){
 				if (sisAsend.kuljed[i*4][y*2][x*2] != sisAsend.kuljed[i*4][1][1] && sisAsend.kuljed[i*4][y*2][x*2] != sisAsend.kuljed[paarid[i*4]][1][1]){
-					orbiidiltMaas.insert(nurgad[i][y][x]);
+					orbiidiltMaas.insert(minuIndex2Tw(nurgad[i][y][x],poore)+1);
 				}
 			}
 		}
@@ -431,12 +429,12 @@ std::string ThistleLahendaja::getNurgadOrbiidil(asend sisAsend){
 
 void ThistleLahendaja::samm3osa1 (asend sisAsend, std::set<valem> &lahendid){
 	ThistleSamm3InitialMap data {};
-	std::string nurgad = getNurgadOrbiidil(sisAsend);
+	std::string nurgad = getNurgadOrbiidil(sisAsend, 0);
 	lahendid.insert(data.getValem(nurgad));
 }
 
 std::string ThistleLahendaja::liidaCharid(char sis1, char sis2, char sis3){
-	std::string valjund;
+	std::string valjund { };
 	valjund = sis1;
 	valjund += sis2;
 	valjund += sis3;
@@ -467,10 +465,10 @@ std::vector<std::string> ThistleLahendaja::nurkadeTsyklid(asend sisAsend, int po
 	std::string sisString = sisAsend.toString();
 	std::string lahendatudNurgad = "FRU BRU BLU FLU DFR DFL BDL BDR";
 	//std::vector<std::string> lahendatudNurgad = {{"UFR"}, {"URB"}, {"UBL"}, {"ULF"}, {"DRF"}, {"DFL"}, {"DLB"}, {"DBR"}};
-	std::vector<std::string> valjund;
+	std::vector<std::string> valjund { };
 	// nurgad, kus tsüklite kaudu on käidud
 	// number on nurga indeks thistlethwaite süsteemis
-	std::set<int> kaidud;
+	std::set<int> kaidud { };
 	for (int i=0;i<8;i++){
 		// nurk = liidaCharid(sisString[36+jarjekord[i]*4], sisString[36+jarjekord[i]*4+1], sisString[36+jarjekord[i]*4+2]);
 		std::string nurk = sorditudAlamstring(sisString, 36+twIndex2Minu[poore][i]*4, 3);
@@ -487,11 +485,11 @@ std::vector<std::string> ThistleLahendaja::nurkadeTsyklid(asend sisAsend, int po
 				kaidud.insert(kohtT);
 				nurk = sorditudAlamstring(sisString, 36+num*4, 3);
 			}
-			std::string buffer;
+			std::string buffer { };
 			if (tsykkel.size()>0){
 				buffer.resize(tsykkel.size());
 				buffer[0]=tsykkel[0];
-				for (int o=1;o<tsykkel.size();o++){
+				for (unsigned int o=1;o<tsykkel.size();o++){
 					buffer[o]=tsykkel[tsykkel.size()-o];
 				}
 			}
@@ -502,11 +500,92 @@ std::vector<std::string> ThistleLahendaja::nurkadeTsyklid(asend sisAsend, int po
 
 	return valjund;
 }
+
+void ThistleLahendaja::vahetaTsyklipaare(std::map<int,int> &tsykliPaarid, int val1, int val2){
+	int buffer = tsykliPaarid[val1];
+	tsykliPaarid[val1] = tsykliPaarid[val2];
+	tsykliPaarid[val2] = buffer;
+	if (tsykliPaarid[val1] == val1){
+		tsykliPaarid.erase(val1);
+	} else if (tsykliPaarid[val2] == val2){
+		tsykliPaarid.erase(val2);
+	}
+}
+
+int ThistleLahendaja::leiaAlpha(std::vector <std::string> tsyklid, int beta){
+	std::map<int, int> tsykliPaarid { };
+	for (std::vector<std::string>::iterator ite = tsyklid.begin(); ite != tsyklid.end(); ++ite){
+		std::string tsykkel = *ite;
+		for (unsigned int i=0;i<tsykkel.size();i++){
+			if(i != tsykkel.size()-1) {
+				tsykliPaarid[tsykkel[i]-'0'] =  tsykkel[i+1]-'0';
+			} else {
+				tsykliPaarid[tsykkel[i]-'0'] = tsykkel[0] -'0';
+			}
+		}
+	}
+
+	if (beta == 2){
+		vahetaTsyklipaare(tsykliPaarid, 1, 5);
+	} else if (beta == 1){
+		vahetaTsyklipaare(tsykliPaarid, 1, 8);
+		vahetaTsyklipaare(tsykliPaarid, 2, 7);
+	}
+
+	unsigned int algPikkus = tsykliPaarid.size();
+	if (beta == 0 || beta == 1){
+		vahetaTsyklipaare(tsykliPaarid, 1,4);
+		vahetaTsyklipaare(tsykliPaarid, 6,8);
+		if (algPikkus > tsykliPaarid.size()){
+			return 1;
+		} else {
+			vahetaTsyklipaare(tsykliPaarid, 1,4);
+			vahetaTsyklipaare(tsykliPaarid, 6,8);
+		}
+	}
+	if (beta == 2){
+		vahetaTsyklipaare(tsykliPaarid, 2,4);
+		if (algPikkus > tsykliPaarid.size()){
+			return 5;
+		} else {
+			vahetaTsyklipaare(tsykliPaarid, 2,4);
+		}
+	}
+	vahetaTsyklipaare(tsykliPaarid, 1,2);
+	if (algPikkus > tsykliPaarid.size()){
+		return 3;
+	} else {
+		vahetaTsyklipaare(tsykliPaarid, 1,2);
+	}
+	vahetaTsyklipaare(tsykliPaarid, 1,4);
+	if (algPikkus > tsykliPaarid.size()){
+		return 4;
+	} else {
+		vahetaTsyklipaare(tsykliPaarid, 1,4);
+	}
+	return 0;
+}
+
 void ThistleLahendaja::samm3osa2 (asend sisAsend, std::set<valem> &lahendid){
+	int poore { 0 };
+	int juht {3}; // 0 - koik nurgad orbitaalil, 1 - (18)(27), 2 - (15)
+	//TODO: kas 3 - (13) peaks ka olema?
+	for (poore=0;juht == 3;poore++){
+		if (poore > 24){
+			std::cout << "error: yhegi poordega pole sobivad nurgad orbiidil\n";
+			break;
+		}
+		std::string orbital = getNurgadOrbiidil(sisAsend, poore);
+		if (orbital.size()==0){
+			juht = 0;
+		} else if (orbital == "1278"){
+			juht = 1;
+		} else if (orbital == "15"){
+			juht = 2;
+		}
+	}
+	std::vector<std::string> tsyklid = nurkadeTsyklid(sisAsend, poore);
 
-
-	std::string orbital = getNurgadOrbiidil(sisAsend);
-	//std::string orbital = getNurgadOrbiidil(sisAsend);
 }
 
 void ThistleLahendaja::samm4osa1 (asend sisAsend, std::set<valem> &lahendid){

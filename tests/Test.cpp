@@ -200,7 +200,7 @@ void testNurgadOrbiidil(){
 	kuubik sihtKuup {};
 	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F R R F B B R B*R R B R B ");
 	ThistleLahendaja thistle {};
-	std::string nurgad = thistle.getNurgadOrbiidil(sihtKuup.kuup);
+	std::string nurgad = thistle.getNurgadOrbiidil(sihtKuup.kuup, 0);
 	std::cout << nurgad << '\n';
 	ASSERTM("nurkade orbiite ei määratud õigesti", nurgad == "1258");
 }
@@ -224,6 +224,16 @@ void testNurkadeTsyklid(){
 		std::cout << *ite << '\n';
 	}
 	ASSERTM("ei leitud õiget valemit", (lahendid.size() == 2 && lahendid[0] == "0246" && lahendid[1] == "13"));
+}
+
+void testLeiaAlpha(){
+	std::vector<std::string> tsykliPaarid {};
+	tsykliPaarid.push_back("1357");
+	tsykliPaarid.push_back("24");
+	ThistleLahendaja thistle { };
+	int  alpha = thistle.leiaAlpha(tsykliPaarid,2);
+	std::cout << alpha << '\n';
+	ASSERTM("ei leitud õiget valemit", alpha == 5);
 }
 
 /**
@@ -328,6 +338,7 @@ void runAllTests(int argc, char const *argv[]){
 	s.push_back(CUTE(testThistleSamm3osa1));
 	s.push_back(CUTE(testBruteForce0Step));
 	s.push_back(CUTE(testNurkadeTsyklid));
+	s.push_back(CUTE(testLeiaAlpha));
 
 
 	cute::xml_file_opener xmlfile(argc,argv);

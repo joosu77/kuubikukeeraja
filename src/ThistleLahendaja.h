@@ -10,6 +10,7 @@
 
 #include <set>
 #include <string>
+#include <map>
 
 #include "asend.h"
 #include "lahendaja.h"
@@ -31,10 +32,12 @@ public:
 	std::string nurkadePooreteLeidmine(asend sisAsend, std::string poore);
 	valem lahendiPeegeldus(valem sisValem, std::string poore);
 	void samm3osa1 (asend sisAsend, std::set<valem> &lahendid);
-	std::string getNurgadOrbiidil(asend sisAsend);
+	std::string getNurgadOrbiidil(asend sisAsend, int poore);
 	std::string liidaCharid(char sis1, char sis2, char sis3);
 	std::vector<std::string> nurkadeTsyklid(asend sisAsend, int poore);
 	void samm3osa2 (asend sisAsend, std::set<valem> &lahendid);
+	int leiaAlpha(std::vector <std::string> tsyklid, int beta);
+	void vahetaTsyklipaare(std::map<int,int> &tsykliPaarid, int val1, int val2);
 	void samm4osa1 (asend sisAsend, std::set<valem> &lahendid);
 	void samm4osa2 (asend sisAsend, std::set<valem> &lahendid);
 private:
