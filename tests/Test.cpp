@@ -231,9 +231,19 @@ void testLeiaAlpha(){
 	tsykliPaarid.push_back("1357");
 	tsykliPaarid.push_back("24");
 	ThistleLahendaja thistle { };
-	int  alpha = thistle.leiaAlpha(tsykliPaarid,2);
-	std::cout << alpha << '\n';
-	ASSERTM("ei leitud õiget valemit", alpha == 5);
+	ALPHA  a = thistle.leiaAlpha(tsykliPaarid,B_15);
+	std::cout << a << '\n';
+	ASSERTM("ei leitud õiget valemit", a == A_24);
+}
+
+void testThistleSamm3osa2(){
+	kuubik sihtKuup { };
+	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F R R F B B R B*R R B R B L*U U ");
+	ThistleLahendaja thistle { };
+	std::set<valem> lahendid { };
+	thistle.samm3osa1(sihtKuup.kuup,lahendid);
+	valem tulem = *(lahendid.begin());
+	ASSERTM("ei leitud õiget valemit", tulem=="L*U U ");
 }
 
 /**

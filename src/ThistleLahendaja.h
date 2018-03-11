@@ -16,6 +16,22 @@
 #include "lahendaja.h"
 #include "valem.h"
 
+enum ALPHA {
+	A_0,
+	A_1468,
+	A_12,
+	A_14,
+	A_24
+};
+
+enum BETA {
+	B_0,
+	B_1278,
+	B_15,
+	B_13,
+	B_TEADMATA
+};
+
 class ThistleLahendaja: public lahendaja {
 public:
 	//ThistleLahendaja();
@@ -36,8 +52,9 @@ public:
 	std::string liidaCharid(char sis1, char sis2, char sis3);
 	std::vector<std::string> nurkadeTsyklid(asend sisAsend, int poore);
 	void samm3osa2 (asend sisAsend, std::set<valem> &lahendid);
-	int leiaAlpha(std::vector <std::string> tsyklid, int beta);
+	ALPHA leiaAlpha(std::vector <std::string> tsyklid, BETA beta);
 	void vahetaTsyklipaare(std::map<int,int> &tsykliPaarid, int val1, int val2);
+	std::string FBservaotsing(asend sisAsend, int poore);
 	void samm4osa1 (asend sisAsend, std::set<valem> &lahendid);
 	void samm4osa2 (asend sisAsend, std::set<valem> &lahendid);
 private:
@@ -70,6 +87,7 @@ private:
 			{3,1,4,6,2,0,7,5},
 			{0,7,5,2,1,4,6,3},
 			{4,6,3,1,7,5,2,0}};
+
 	unsigned int minuIndex2Tw(unsigned int val, int poore);
 };
 

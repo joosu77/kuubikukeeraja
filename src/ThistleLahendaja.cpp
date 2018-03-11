@@ -19,6 +19,7 @@
 #include "kuubik.h"
 #include "ThistleSamm2Map.h"
 #include "ThistleSamm3InitialMap.h"
+#include "ThistleSamm3TeineMap.h"
 
 //TODO: notes: tuleb alpha ja beta hulgast valida õiged liikmed millega korrutada, alpha ja beta järgi valitakse coset
 
@@ -512,7 +513,7 @@ void ThistleLahendaja::vahetaTsyklipaare(std::map<int,int> &tsykliPaarid, int va
 	}
 }
 
-int ThistleLahendaja::leiaAlpha(std::vector <std::string> tsyklid, int beta){
+ALPHA ThistleLahendaja::leiaAlpha(std::vector <std::string> tsyklid, BETA b){
 	std::map<int, int> tsykliPaarid { };
 	for (std::vector<std::string>::iterator ite = tsyklid.begin(); ite != tsyklid.end(); ++ite){
 		std::string tsykkel = *ite;
@@ -525,51 +526,68 @@ int ThistleLahendaja::leiaAlpha(std::vector <std::string> tsyklid, int beta){
 		}
 	}
 
-	if (beta == 2){
+	if (b == B_15){
 		vahetaTsyklipaare(tsykliPaarid, 1, 5);
-	} else if (beta == 1){
+	} else if (b == B_1278){
 		vahetaTsyklipaare(tsykliPaarid, 1, 8);
 		vahetaTsyklipaare(tsykliPaarid, 2, 7);
+	} else if (b == B_13){
+		vahetaTsyklipaare(tsykliPaarid, 1, 3);
 	}
 
 	unsigned int algPikkus = tsykliPaarid.size();
-	if (beta == 0 || beta == 1){
+	if (b == B_0 || b == B_1278){
 		vahetaTsyklipaare(tsykliPaarid, 1,4);
 		vahetaTsyklipaare(tsykliPaarid, 6,8);
 		if (algPikkus > tsykliPaarid.size()){
-			return 1;
+			return A_1468;
 		} else {
 			vahetaTsyklipaare(tsykliPaarid, 1,4);
 			vahetaTsyklipaare(tsykliPaarid, 6,8);
 		}
 	}
-	if (beta == 2){
+	if (b == B_15){
 		vahetaTsyklipaare(tsykliPaarid, 2,4);
 		if (algPikkus > tsykliPaarid.size()){
-			return 5;
+			return A_24;
 		} else {
 			vahetaTsyklipaare(tsykliPaarid, 2,4);
 		}
 	}
 	vahetaTsyklipaare(tsykliPaarid, 1,2);
 	if (algPikkus > tsykliPaarid.size()){
-		return 3;
+		return A_12;
 	} else {
 		vahetaTsyklipaare(tsykliPaarid, 1,2);
 	}
 	vahetaTsyklipaare(tsykliPaarid, 1,4);
 	if (algPikkus > tsykliPaarid.size()){
-		return 4;
+		return A_14;
 	} else {
 		vahetaTsyklipaare(tsykliPaarid, 1,4);
 	}
-	return 0;
+	return A_0;
+}
+
+std::string ThistleLahendaja::FBservaotsing(asend sisAsend, int poore){
+	std::string FBservad { };
+	std::string sisString = sisAsend.toString();
+
+	for(int i=0;i<12;i++){
+		int twNum = minuIndex2Tw(i,poore);
+		if ((sisString[twNum*3]=='U' || sisString[twNum*3]=='L' ||
+				sisString[twNum*3]=='D' || sisString[twNum*3]=='R') &&
+				(sisString[twNum*3+1]=='U' || sisString[twNum*3+1]=='L' ||
+				sisString[twNum*3+1]=='D' || sisString[twNum*3+1]=='R')){
+			FBservad += twNum;
+		}
+	}
+	return FBservad;
 }
 
 void ThistleLahendaja::samm3osa2 (asend sisAsend, std::set<valem> &lahendid){
 	int poore { 0 };
-	int juht {3}; // 0 - koik nurgad orbitaalil, 1 - (18)(27), 2 - (15)
-	//TODO: kas 3 - (13) peaks ka olema?
+	BETA juht {B_TEADMATA}; // 0 - koik nurgad orbitaalil, 1 - (18)(27), 2 - (15), 3 - (13)
 	for (poore=0;juht == 3;poore++){
 		if (poore > 24){
 			std::cout << "error: yhegi poordega pole sobivad nurgad orbiidil\n";
@@ -577,15 +595,20 @@ void ThistleLahendaja::samm3osa2 (asend sisAsend, std::set<valem> &lahendid){
 		}
 		std::string orbital = getNurgadOrbiidil(sisAsend, poore);
 		if (orbital.size()==0){
-			juht = 0;
+			juht = B_0;
 		} else if (orbital == "1278"){
-			juht = 1;
+			juht = B_1278;
 		} else if (orbital == "15"){
-			juht = 2;
+			juht = B_15;
+		} else if (orbital == "13"){
+			juht = B_13;
 		}
 	}
 	std::vector<std::string> tsyklid = nurkadeTsyklid(sisAsend, poore);
-
+	ALPHA a = leiaAlpha(tsyklid, juht);
+	std::string FBservad = FBservaotsing(sisAsend, 0);
+	ThistleSamm3TeineMap data {a, juht};
+	lahendid.insert(data.getValem(FBservad));
 }
 
 void ThistleLahendaja::samm4osa1 (asend sisAsend, std::set<valem> &lahendid){
