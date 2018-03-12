@@ -722,7 +722,7 @@ void ThistleLahendaja::samm3osa2 (asend sisAsend, std::set<valem> &lahendid){
 	}
 	std::vector<std::string> tsyklid = nurkadeTsyklid(sisAsend, poore);
 	ALPHA a = leiaAlpha(tsyklid, juht);
-	std::string FBservad = FBservaotsing(sisAsend, 0);
+	std::string FBservad = FBservaotsing(sisAsend, poore);
 	ThistleSamm3TeineMap data {a, juht};
 	valem tulevValem = data.getValem(FBservad);
 	valem tagurpidi = valemiMoondus(tulevValem, poore);
