@@ -205,6 +205,15 @@ void testNurgadOrbiidil(){
 	ASSERTM("nurkade orbiite ei määratud õigesti", nurgad == "1258");
 }
 
+void testNurgadOrbiidil2(){
+	kuubik sihtKuup {};
+	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F R R F B B R B*R R B R B L*U U");
+	ThistleLahendaja thistle {};
+	std::string nurgad = thistle.getNurgadOrbiidil(sihtKuup.kuup, 0);
+	std::cout << nurgad << '\n';
+	ASSERTM("nurkade orbiite ei määratud õigesti", nurgad == "1258");
+}
+
 void testThistleSamm3osa1(){
 	kuubik sihtKuup { };
 	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F R R F B B R B*R R B R B ");
@@ -238,7 +247,9 @@ void testLeiaAlpha(){
 
 void testThistleSamm3osa2(){
 	kuubik sihtKuup { };
+	engine vroom {9,12};
 	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F R R F B B R B*R R B R B L*U U ");
+	sihtKuup.ekraanile(vroom, "");
 	ThistleLahendaja thistle { };
 	std::set<valem> lahendid { };
 	thistle.samm3osa2(sihtKuup.kuup,lahendid);
@@ -350,6 +361,7 @@ void runAllTests(int argc, char const *argv[]){
 	s.push_back(CUTE(testNurkadeTsyklid));
 	s.push_back(CUTE(testLeiaAlpha));
 	s.push_back(CUTE(testThistleSamm3osa2));
+	s.push_back(CUTE(testNurgadOrbiidil2));
 
 
 	cute::xml_file_opener xmlfile(argc,argv);

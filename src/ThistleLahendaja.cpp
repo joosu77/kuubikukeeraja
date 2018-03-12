@@ -433,7 +433,6 @@ void ThistleLahendaja::samm2osa2(asend sisAsend, std::set<valem> &lahendid){
  */
 
 std::string ThistleLahendaja::getNurgadOrbiidil(asend sisAsend, int poore){
-	std::set<int> orbiidiltMaas {};
 	std::map<int, int> paarid { };
 	paarid[0] = 4;
 	paarid[4] = 0;
@@ -441,21 +440,19 @@ std::string ThistleLahendaja::getNurgadOrbiidil(asend sisAsend, int poore){
 	paarid[3] = 1;
 	paarid[2] = 5;
 	paarid[5] = 2;
+	std::string valjund { };
 	//int nurgad [2][2][2] = {{{1,5},{8,4}},{{2,6},{7,3}}};
 	int nurgad [2][2][2] = {{{2,3},{1,0}},{{5,6},{4,7}}};
 	for (int i = 0; i < 2; i++){
 		for (int y = 0; y < 2; y++){
 			for (int x = 0; x < 2; x++){
 				if (sisAsend.kuljed[i*4][y*2][x*2] != sisAsend.kuljed[i*4][1][1] && sisAsend.kuljed[i*4][y*2][x*2] != sisAsend.kuljed[paarid[i*4]][1][1]){
-					orbiidiltMaas.insert(minuNurgaIdx2Tw(nurgad[i][y][x],poore)+1);
+					valjund += (char)(minuNurgaIdx2Tw(nurgad[i][y][x],poore)+1+48);
 				}
 			}
 		}
 	}
-	std::string valjund { };
-	for (std::set<int>::iterator ite = orbiidiltMaas.begin();ite != orbiidiltMaas.end(); ++ite){
-		valjund += (char)(*ite+48);
-	}
+	std::sort(valjund.begin(),valjund.end());
 	return valjund;
 }
 
@@ -704,11 +701,8 @@ valem ThistleLahendaja::valemiMoondus(valem sisValem, int poore){
 void ThistleLahendaja::samm3osa2 (asend sisAsend, std::set<valem> &lahendid){
 	int poore { 0 };
 	BETA juht {B_TEADMATA}; // 0 - koik nurgad orbitaalil, 1 - (18)(27), 2 - (15), 3 - (13)
-	for (poore=0;juht == 3;poore++){
-		if (poore > 24){
-			std::cout << "error: yhegi poordega pole sobivad nurgad orbiidil\n";
-			break;
-		}
+	for (poore=0;poore < 25 && juht == B_TEADMATA;poore++){
+
 		std::string orbital = getNurgadOrbiidil(sisAsend, poore);
 		if (orbital.size()==0){
 			juht = B_0;
@@ -719,6 +713,9 @@ void ThistleLahendaja::samm3osa2 (asend sisAsend, std::set<valem> &lahendid){
 		} else if (orbital == "13"){
 			juht = B_13;
 		}
+	}
+	if (juht == B_TEADMATA){
+		std::cout << "error: yhegi poordega pole sobivad nurgad orbiidil\n";
 	}
 	std::vector<std::string> tsyklid = nurkadeTsyklid(sisAsend, poore);
 	ALPHA a = leiaAlpha(tsyklid, juht);
