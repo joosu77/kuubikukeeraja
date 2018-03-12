@@ -211,7 +211,7 @@ void testNurgadOrbiidil2(){
 	ThistleLahendaja thistle {};
 	std::string nurgad = thistle.getNurgadOrbiidil(sihtKuup.kuup, 0);
 	std::cout << nurgad << '\n';
-	ASSERTM("nurkade orbiite ei määratud õigesti", nurgad == "1258");
+	ASSERTM("nurkade orbiite ei määratud õigesti", nurgad == "25");
 }
 
 void testThistleSamm3osa1(){
