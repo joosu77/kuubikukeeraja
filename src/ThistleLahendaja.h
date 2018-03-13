@@ -38,30 +38,30 @@ public:
 	//virtual ~ThistleLahendaja();
 	valem lahenda(asend sisAsend);
 
-	std::set <int> servaKontroll(asend sisAsend);
+	std::set <int> servaKontroll(asend const &sisAsend);
 	bool serviKuljel(int kulg, std::set <int> servad);
 	bool nurkiKuljel(int kulg, std::set<int> nurgad);
-	void samm1(asend sisAsend, std::set<valem> &lahendid);
-	void samm1proovimiseta(asend sisAsend, std::set<valem> &lahendid);
-	std::set<int> LRservaotsing(asend sisAsend);
-	void samm2osa1(asend sisAsend, std::set<valem> &lahendid);
-	void samm2osa2(asend sisAsend, std::set<valem> &lahendid);
-	std::string nurkadePooreteLeidmine(asend sisAsend, std::string poore);
-	valem lahendiPeegeldus(valem sisValem, std::string poore);
-	void samm3osa1 (asend sisAsend, std::set<valem> &lahendid);
-	std::string getNurgadOrbiidil(asend sisAsend, int poore);
+	void samm1(asend const &sisAsend, std::set<valem> &lahendid);
+	void samm1proovimiseta(asend const &sisAsend, std::set<valem> &lahendid);
+	std::set<int> LRservaotsing(asend const &sisAsend);
+	void samm2osa1(asend const &sisAsend, std::set<valem> &lahendid);
+	void samm2osa2(asend const &sisAsend, std::set<valem> &lahendid);
+	std::string nurkadePooreteLeidmine(asend const &sisAsend, std::string poore);
+	valem lahendiPeegeldus(valem const &sisValem, std::string poore);
+	void samm3osa1 (asend const &sisAsend, std::set<valem> &lahendid);
+	std::string getNurgadOrbiidil(asend const &sisAsend, int poore);
 	std::string liidaCharid(char sis1, char sis2, char sis3);
-	std::vector<std::string> nurkadeTsyklid(asend sisAsend, int poore);
-	void samm3osa2 (asend sisAsend, std::set<valem> &lahendid);
-	ALPHA leiaAlpha(std::vector <std::string> tsyklid, BETA beta);
+	std::vector<std::string> nurkadeTsyklid(asend const &sisAsend, int poore);
+	void samm3osa2 (asend const &sisAsend, std::set<valem> &lahendid);
+	ALPHA leiaAlpha(std::vector <std::string> &tsyklid, BETA beta);
 	void vahetaTsyklipaare(std::map<int,int> &tsykliPaarid, int val1, int val2);
-	std::string FBservaotsing(asend sisAsend, int poore);
-	valem valemiMoondus(valem sisValem, int poore);
+	std::string FBservaotsing(asend const &sisAsend, int poore);
+	valem valemiMoondus(valem const &sisValem, int poore);
 	int leiaStringis(std::string sisString, char otsitav);
 	char pooraTeljel(char telg, int kogus, char taht);
-	std::set<int> paigastAraNurgad(asend sisAsend);
-	void samm4osa1 (asend sisAsend, std::set<valem> &lahendid);
-	void samm4osa2 (asend sisAsend, std::set<valem> &lahendid);
+	std::set<int> paigastAraNurgad(asend const &sisAsend);
+	void samm4osa1 (asend const &sisAsend, std::set<valem> &lahendid);
+	void samm4osa2 (asend const &sisAsend, std::set<valem> &lahendid);
 private:
 	/* indeks on nurga number TW süsteemis, väärtus nurga indeks minu süsteemis
 	 * kõik erinevad sümmeetriad; kõigepealt tavaline, siis päripäeva mööda F külge pööramine,

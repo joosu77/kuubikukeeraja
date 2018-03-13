@@ -58,7 +58,7 @@ void valem::append(kask k){
 	rida.push_back(k);
 }
 
-int valem::size() {
+int valem::size() const {
 	return rida.size();
 }
 
@@ -98,7 +98,7 @@ std::string valem::toString() const {
 	return res;
 }
 
-void valem::print(){
+void valem::print() const {
 	std::cout << "Prindin valemit: " << toString() << "\n";
 }
 

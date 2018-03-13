@@ -74,7 +74,10 @@ void testConversion4(){
 	ASSERTM("Asendit ei teisendatud õigesti", saadud == lahendatud);
 }
 
-void testReid(){
+/**
+ * Võtab hirmus palju aega kasuta ainult üksikuks käivitamiseks
+ *
+ void testReid(){
 	kuubik sihtKuup { };
 	engine vroom {9,12};
 	sihtKuup.scramble(17);
@@ -85,6 +88,7 @@ void testReid(){
 
 	ASSERTM("ei ole lahendatud",sihtKuup.isSolved());
 }
+*/
 
 void testThistleSamm1(){
 	kuubik sihtKuup { };
@@ -253,6 +257,7 @@ void testThistleSamm3osa2(){
 	ThistleLahendaja thistle { };
 	std::set<valem> lahendid { };
 	thistle.samm3osa2(sihtKuup.kuup,lahendid);
+	ASSERTM("Ei leidnud lahendit", lahendid.size() > 0);
 	valem tulem = *(lahendid.begin());
 	ASSERTM("ei leitud õiget valemit", tulem=="R*U U D D R R D D L*F F L D D L*");
 }

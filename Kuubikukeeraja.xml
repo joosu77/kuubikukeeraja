@@ -1,0 +1,9 @@
+<testsuites>
+	<testsuite name="AllTests" tests="1">
+		<testcase classname="AllTests" name="testThistleSamm3osa2">
+			<failure message="../tests/Test.cpp:256 testThistleSamm3osa2: Ei leidnud lahendit">
+testThistleSamm3osa2: Ei leidnud lahendit
+			</failure>
+		</testcase>
+	</testsuite>
+</testsuites>

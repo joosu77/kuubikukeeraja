@@ -51,11 +51,11 @@ class valem {
 		// lias valimile käsk
 		void append(kask k);
 		// trüki valem standardväljundisse
-		void print();
+		void print() const;
 		// trüki valem stringi
 		std::string toString() const;
 		// sammude arv valemis
-		int size();
+		int size() const;
 		// võrdle valemit teisega
 		bool operator==(const std::string &other) const;
 		bool operator<(const valem &other) const;
