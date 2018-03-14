@@ -50,6 +50,16 @@ void valem::append(char kylg, bool suund){
 }
 
 /**
+ * Lisa sama valemit kaks korda
+ * @param kask -- käsusümbol
+ * @param suund
+ */
+void valem::appendTopelt(char kylg, bool suund){
+	append(kylg, suund);
+	append(kylg, suund);
+}
+
+/**
  * Lisa valemi samm
  * @param kask -- käsusümbol
  * @param suund

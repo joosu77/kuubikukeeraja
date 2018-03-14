@@ -46,6 +46,8 @@ class valem {
 		valem(char kylg, bool suund);
 		// lisa valemile käsk
 		void append(char kylg, bool suund);
+		// lisa valemile sama käsk kaks korda
+		void appendTopelt(char kylg, bool suund);
 		// lisa valemile kõik stringis olevad käsud
 		void append(std::string valemStr);
 		// lias valimile käsk

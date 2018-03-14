@@ -17,38 +17,42 @@ valem ThistleSamm3TeineMap::getValem(std::string voti){
 	}
 	std::string numValem = data[voti];
 	valem tulevValem {};
+	// selle samu käsujadad on artiklis teismoodi kodeeritud
+	// teisenda numbriline jada valemiks
 	for (unsigned int i = 0; i < numValem.size(); i++){
 		if(numValem[i] == '0'){
-			tulevValem.append('D', true);
-			tulevValem.append('D', true);
+			tulevValem.appendTopelt('D', true);
 		} else if (numValem[i] == '1'){
 			tulevValem.append('L', true);
 		} else if (numValem[i] == '2'){
-			tulevValem.append('L', true);
-			tulevValem.append('L', true);
+			tulevValem.appendTopelt('L', true);
 		} else if (numValem[i] == '3'){
 			tulevValem.append('L', false);
 		} else if (numValem[i] == '4'){
-			tulevValem.append('F', true);
-			tulevValem.append('F', true);
+			tulevValem.appendTopelt('F', true);
 		} else if (numValem[i] == '5'){
 			tulevValem.append('R', true);
 		} else if (numValem[i] == '6'){
-			tulevValem.append('R', true);
-			tulevValem.append('R', true);
+			tulevValem.appendTopelt('R', true);
 		} else if (numValem[i] == '7'){
 			tulevValem.append('R', false);
 		} else if (numValem[i] == '8'){
-			tulevValem.append('B', true);
-			tulevValem.append('B', true);
+			tulevValem.appendTopelt('B', true);
 		} else if (numValem[i] == '9'){
-			tulevValem.append('U', true);
-			tulevValem.append('U', true);
+			tulevValem.appendTopelt('U', true);
 		}
 	}
 	return tulevValem;
 }
 
+/**
+ * Kolmanda sammu teise osa tabelid on mitmes osas
+ *
+ * Selleks hetkeks, kui tabelit vaja läheb, on
+ * alamtabeli valimise parameetrid alpha ja beta teada.
+ * Initisialiseerime tabeliobjekti kohe
+ * õige parameetri jaoks
+ */
 ThistleSamm3TeineMap::ThistleSamm3TeineMap (ALPHA a, BETA b) {
 	if (b == B_0 && a == A_0){
 		data["1234"]="";
