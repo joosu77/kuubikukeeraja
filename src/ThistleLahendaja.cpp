@@ -28,19 +28,52 @@
  *
  */
 valem ThistleLahendaja::lahenda(asend sisAsend){
-	kuubik kuup { };
-
+	// kuubik, kuhu valemeid järjest peale pannakse
+	kuubik liigutatavKuubik {sisAsend};
+	// siia pannakse tükkhaaval kogu lõplik valem kokku
+	valem koguLahend {};
+	// siia väljastab iga samm enda valemi
 	std::set<valem> lahendid { };
-	samm1(sisAsend, lahendid);
 
-	/*valem tulem { };
-	tulem.rida.reserve(val1.size()+val2.size()+...);
-	tulem.rida.insert(tulem.rida.end(),val1.rida.begin(),val1.rida.end());
-	tulem.rida.insert(tulem.rida.end(),val2.rida.begin(),val2.rida.end());
-	//...
-*/
-	valem tulem { };
-	return tulem;
+	// kutsutakse samm välja
+	samm1(sisAsend, lahendid);
+	// keeratakse valem kuubikule peale
+	liigutatavKuubik.turn(*(lahendid.begin()));
+	// lisatakse valem lõplikusse valemisse
+	koguLahend.append(*(lahendid.begin()));
+
+	// tühjendatakse ajutine lahendite hulk
+	lahendid = new std::set<valem>;
+	samm2osa1(liigutatavKuubik.kuup, lahendid);
+	liigutatavKuubik.turn(*(lahendid.begin()));
+	koguLahend.append(*(lahendid.begin()));
+
+	lahendid = new std::set<valem>;
+	samm2osa2(liigutatavKuubik.kuup, lahendid);
+	liigutatavKuubik.turn(*(lahendid.begin()));
+	koguLahend.append(*(lahendid.begin()));
+
+	lahendid = new std::set<valem>;
+	samm3osa1(liigutatavKuubik.kuup, lahendid);
+	liigutatavKuubik.turn(*(lahendid.begin()));
+	koguLahend.append(*(lahendid.begin()));
+
+	lahendid = new std::set<valem>;
+	samm3osa2(liigutatavKuubik.kuup, lahendid);
+	liigutatavKuubik.turn(*(lahendid.begin()));
+	koguLahend.append(*(lahendid.begin()));
+
+	lahendid = new std::set<valem>;
+	samm4osa1(liigutatavKuubik.kuup, lahendid);
+	liigutatavKuubik.turn(*(lahendid.begin()));
+	koguLahend.append(*(lahendid.begin()));
+
+	lahendid = new std::set<valem>;
+	samm4osa2(liigutatavKuubik.kuup, lahendid);
+	liigutatavKuubik.turn(*(lahendid.begin()));
+	koguLahend.append(*(lahendid.begin()));
+
+	return koguLahend;
 }
 
 /**
@@ -147,68 +180,75 @@ bool ThistleLahendaja::nurkiKuljel(int kulg, std::set<int> nurgad){
  * TODO: kui leitakse samasse positsiooni kiirem tee ei kasutata seda hetkel
  */
 void ThistleLahendaja::samm1(asend const &sisAsend, std::set<valem> &lahendid){
+	// jätab meelde, millised on "head" servad
 	std::set<int> headServad = servaKontroll(sisAsend);
-
-	int maxPoorded { 7 };
+	// selles sammus ei tohi üle 7 pöörde kuluda
+	int maxPoorded = 7;
+	// kuubik, kus kontrollitakse, kas servad on "heaks" tehtud
 	kuubik sisKuup {sisAsend};
+	// jätab meelde kõik läbi käidud asendid ja nendeni jõudmise pikkusi
 	std::unordered_map<asend, int> kaidud {};
-	std::vector<std::pair<valem, int> > pooleli { };
-	bool first { true };
+	// hulk, mis sisaldab kõiki valemeid ja nende pikkusi,
+	// millele lisatakse pöördeid, et jõuda lõpliku lahendini
+	std::vector<std::pair<valem, int> > pooleli {};
+	// ananab teada et on esimene iteratsioon
+	bool first = true;
+	// tsükkel kestab, kuni pooleli olevate hulk saab tühjaks
 	while (pooleli.size() || first){
+		// jätab meelde antud iteratsioonil töödeldava valemi
 		valem tee { };
+		// jätab meelde antud iteratsioonil töödeldava valemi pikkuse
 		int kaugus { 0 };
+		// jätab meelde antud iteratsioonil töödeldava valemiga saavutatud asendi
 		asend olek { };
 		if (first){
+			// esimesel iteratsioonil on algandmed tühjad
 			olek = sisKuup.kuup;
 		}else {
-			//tee = pooleli[pooleli.size()-1].first;
-			//kaugus = pooleli[pooleli.size() - 1].second;
-			//pooleli.pop_back();
+			// omistatakse pooleli olevate valemite hulga esimese
+			// elemendi andmed kohalikele muutujatele ja kustutatakse element
 			tee = pooleli[0].first;
 			kaugus = pooleli[0].second;
-			std::cout << "kaugus: " << kaugus << '\n';
-			std::cout << "alles: " << pooleli.size() << '\n';
 			pooleli.erase(pooleli.begin());
-
+			// luuakse kuubiku peal selline juht,
+			// jätetakse asend meelde ja keeratakse kuubik tagasi
 			sisKuup.turn(tee);
 			olek = sisKuup.kuup;
-			//engine vroom {9,12};
-			//sisKuup.ekraanile(vroom, " ");
 			sisKuup.rewind();
 		}
-
+		// leitakse "head" servad
 		headServad = servaKontroll(olek);
-
+		// kontrollitakse, kas kõik servad on "head"
 		bool korras { false };
 		if (headServad.size()==12){
 			korras = true;
+			// kui kuubik oli kohe lahendatud, pole vaja valemit väljastada
 			if (!first){
+				// pannakse valem lahendite hulka
 				lahendid.insert(tee);
 			}
+			// muudetakse maksimaalset käikude arvu, et ka kõik teised
+			// samapikadlahendid üles leitaks ja siis tsükkel seisma jääks
 			maxPoorded = tee.size();
 		}
-
+		// asendeid toodetakse juurde vaid siis, kui valemi pikkus ei ületa limiiti,
+		// asendit pole veel nähtud ja asendis pole kõik servad "head"
 		if (kaugus<maxPoorded && kaidud.count(olek) == 0 && korras == false){
 			for (int i=0;i<12;i++){
+				// proovitakse käike läbi, iga käigu juures kontrollitakse, et selle
+				// peal on vähemalt 1 "halb" serv, kuna "heade" servade keeramisest pole kasu
 				if (serviKuljel(i%6,headServad)){
-					if(i<6){
-						valem uus = tee;
-						uus.append("ULFRDB"[i],true);
-						pooleli.push_back(std::make_pair(uus, kaugus+1));
-					} else {
-						valem uus =tee;
-						uus.append("ULFRDB"[i-6], false);
-						pooleli.push_back(std::make_pair(uus, kaugus+1));
-					}
+					// lisataks pooleli olevate valemite hulka käesolev valem koos uue pöördega
+					valem uus = tee;
+					uus.append("ULFRDB"[i%6],i<6);
+					pooleli.push_back(std::make_pair(uus, kaugus+1));
 				}
 			}
 		}
+		// lisatakse nähtud asendite hulka töödeldava valemi
 		kaidud[olek]=kaugus;
 		first = false;
 	}
-	/*std::cout << lahendid.size() << '\n';
-	valem yks = *lahendid.begin();
-	printValem(yks);*/
 	return;
 }
 
@@ -341,6 +381,7 @@ std::string ThistleLahendaja::nurkadePooreteLeidmine(asend const &sisAsend, std:
 	} else if (poore == "FB"){
 		jarjekord = "70234136";
 	}
+
 	std::string valjund { };
 	for (int i=0;i<8;i++){
 		if (i<4){

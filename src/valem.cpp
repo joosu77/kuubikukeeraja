@@ -68,6 +68,10 @@ void valem::append(kask k){
 	rida.push_back(k);
 }
 
+void valem::append(valem v){
+	// TODO: koik
+}
+
 int valem::size() const {
 	return rida.size();
 }

@@ -16,20 +16,26 @@
 #include "kuubik.h"
 
 valem IDAlahendaja::lahenda(asend sisAsend) {
-	int attempts { 0 };
+	int attempts = 0;
+	// käidud asendite hulk, mis sisaldab kõiki
+	// juba nähtud asendeid, et neisse uuesti ei mindaks
 	std::unordered_set<asend> kaidud {};
-	std::vector<valem> pooleli { };
-
+	// pooleli olevate valem hulk,
+	// kust töödeldakse iga tsükli iteratsiooni jooksul ühte
+	std::vector<valem> pooleli {};
+	// muutuja, kuhu salvestatakse iga
+	// tsükli iteratsiooni alguses töödeldav valem
 	valem lahend {};
-
+	// kuubik, mis on sisse antud asendis, seda pöörates
+	// saab teada, kas valem lahendab kuubiku
 	kuubik *sisKuup = new kuubik {sisAsend};
-	bool korras { sisKuup->isSolved() };
+	// muutuja, kuhu salvestatakse, kas käesolev valem lahendab kuubiku
+	bool korras = sisKuup->isSolved();
+	// korratakse tsüklit, kuni leitakse lahendus
 	while (!korras)  {
 		attempts++;
-
 		if (pooleli.size() > 0) {
-			// võtame ettevalmistatud valemite hulgast esimese
-			// ja proovime sellega lahendada
+			// võetakse pooleli olevate valemite hulgast esimene liige välja
 			lahend = pooleli[0];
 			pooleli.erase(pooleli.begin());
 			sisKuup->turn(lahend);
@@ -37,40 +43,28 @@ valem IDAlahendaja::lahenda(asend sisAsend) {
 		}
 
 		if (!korras) {
-			// ei lahenenud, lisame praeguse oleku alamolekud hulka juurde
+			// võetud valem ei lahenda kuubikut ära
 			if (kaidud.count(sisKuup->kuup) == 0){
 				// seda olekut pole veel külastatud
 				for (int i=0;i<12;i++){
-					if(i<6){
-						valem uus = lahend;
-						uus.append("ULFRDB"[i],true);
-						pooleli.push_back(uus);
-					} else {
-						valem uus = lahend;
-						uus.append("ULFRDB"[i-6], false);
-						pooleli.push_back(uus);
-					}
+					// realiseeritakse antud asendi peal kõik 12 võimalikku pööret
+					// ja lisatakse saadud asend pooleldi olevate asendite hulka
+					valem uus = lahend;
+					uus.append("ULFRDB"[i%6],i<6);
+					pooleli.push_back(uus);
 				}
-
+				// lisatakse asend juba läbi käidud asendite hulka,
+				// et seda seda asendit edaspidi ei läbitaks
 				kaidud.insert(sisKuup->kuup);
-			} else if (pooleli.size() == 0) {
-				// jõudsime külastatud olekuni, ühtegi töötlemata valemit enam ei ole
-				// järelikult lahendit ei leitud
-				break;
 			}
 		}
-
-		// kerime kuubiku algolekusse tagasi
+		// kuubik viiakse algolekusse tagasi
 		delete sisKuup;
 		sisKuup = new kuubik {sisAsend};
 	}
-
+	// prinditakse välja iteratsioonide kogus
 	std::cout << "Kokku katseid: " << attempts << std::endl;
-	if (korras) {
-		return lahend;
-	} else {
-		std::cout << "Lahendit ei leitud!" << std::endl;
-		return *(new valem {});
-	}
+	// väljastatakse lahendusvalem
+	return lahend;
 }
 
