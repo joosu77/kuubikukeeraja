@@ -52,7 +52,7 @@ class valem {
 		void append(std::string valemStr);
 		// lias valimile käsk
 		void append(kask k);
-		void append(valem v);
+		void append(valem const &v);
 		// trüki valem standardväljundisse
 		void print() const;
 		// trüki valem stringi

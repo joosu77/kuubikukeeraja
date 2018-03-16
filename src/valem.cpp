@@ -68,8 +68,10 @@ void valem::append(kask k){
 	rida.push_back(k);
 }
 
-void valem::append(valem v){
-	// TODO: koik
+void valem::append(valem const &v){
+	for (std::vector<kask>::iterator it = rida.begin(); it!=rida.end(); ++it) {
+		append(*it);
+	}
 }
 
 int valem::size() const {

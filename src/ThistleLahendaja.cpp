@@ -43,32 +43,32 @@ valem ThistleLahendaja::lahenda(asend sisAsend){
 	koguLahend.append(*(lahendid.begin()));
 
 	// tühjendatakse ajutine lahendite hulk
-	lahendid = new std::set<valem>;
+	lahendid.clear();
 	samm2osa1(liigutatavKuubik.kuup, lahendid);
 	liigutatavKuubik.turn(*(lahendid.begin()));
 	koguLahend.append(*(lahendid.begin()));
 
-	lahendid = new std::set<valem>;
+	lahendid.clear();
 	samm2osa2(liigutatavKuubik.kuup, lahendid);
 	liigutatavKuubik.turn(*(lahendid.begin()));
 	koguLahend.append(*(lahendid.begin()));
 
-	lahendid = new std::set<valem>;
+	lahendid.clear();
 	samm3osa1(liigutatavKuubik.kuup, lahendid);
 	liigutatavKuubik.turn(*(lahendid.begin()));
 	koguLahend.append(*(lahendid.begin()));
 
-	lahendid = new std::set<valem>;
+	lahendid.clear();
 	samm3osa2(liigutatavKuubik.kuup, lahendid);
 	liigutatavKuubik.turn(*(lahendid.begin()));
 	koguLahend.append(*(lahendid.begin()));
 
-	lahendid = new std::set<valem>;
+	lahendid.clear();
 	samm4osa1(liigutatavKuubik.kuup, lahendid);
 	liigutatavKuubik.turn(*(lahendid.begin()));
 	koguLahend.append(*(lahendid.begin()));
 
-	lahendid = new std::set<valem>;
+	lahendid.clear();
 	samm4osa2(liigutatavKuubik.kuup, lahendid);
 	liigutatavKuubik.turn(*(lahendid.begin()));
 	koguLahend.append(*(lahendid.begin()));
