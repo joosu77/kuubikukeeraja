@@ -815,7 +815,8 @@ std::set<int> ThistleLahendaja::paigastAraNurgad(asend const &sisAsend){
 	std::string lahendatud = "UFR URB UBL ULF DRF DFL DLB DBR";
 	std::set<int> paigastAra {};
 	for (int i=0;i<8;i++){
-		if (sisString.substr(36+i*4,3) != lahendatud.substr(i*3,3)){
+		//std::cout << sisString.substr(36+i*4,3) << " : " << lahendatud.substr(i*4,3) << " : " << i <<  '\n';
+		if (sisString.substr(36+i*4,3) != lahendatud.substr(i*4,3)){
 			paigastAra.insert(i);
 		}
 	}
@@ -824,7 +825,7 @@ std::set<int> ThistleLahendaja::paigastAraNurgad(asend const &sisAsend){
 
 void ThistleLahendaja::samm4osa1 (asend const &sisAsend, std::set<valem> &lahendid){
 	std::set<int> halvadNurgad = paigastAraNurgad(sisAsend);
-	unsigned int maxPoorded { 4 };
+	unsigned int maxPoorded { 5 };
 	kuubik sisKuup {sisAsend};
 	std::unordered_set<asend> kaidud {};
 	std::vector<valem> pooleli { };
@@ -864,7 +865,10 @@ void ThistleLahendaja::samm4osa1 (asend const &sisAsend, std::set<valem> &lahend
 		kaidud.insert(olek);
 		first = false;
 	}
-	std::cout << "error: ei lahendatud nurki 4 kaiguga\n";
+	if (lahendid.size() ==0){
+		std::cout << "error: ei lahendatud nurki 4 kaiguga\n";
+	}
+	return;
 }
 
 void ThistleLahendaja::samm4osa2 (asend const &sisAsend, std::set<valem> &lahendid){

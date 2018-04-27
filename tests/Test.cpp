@@ -262,6 +262,35 @@ void testThistleSamm3osa2(){
 	ASSERTM("ei leitud õiget valemit", tulem=="R*U U D D R R D D L*F F L D D L*");
 }
 
+void testPaigastAraNurgad(){
+	kuubik sihtKuup {};
+	sihtKuup.turn("F D F*");
+	ThistleLahendaja thistle {};
+	std::set<int> nurgad = thistle.paigastAraNurgad(sihtKuup.kuup);
+	for (std::set<int>::iterator ite=nurgad.begin();ite!=nurgad.end();++ite){
+		std::cout << *ite;
+	}
+	std::cout << '\n';
+	//std::cout << nurgad << '\n';
+	ASSERTM("paigast ara nurki ei määratud õigesti", nurgad.count(0) && nurgad.count(4) && nurgad.count(6) && nurgad.count(7) && nurgad.size()==4); //minu - 7064, thistle - 3467
+}
+
+void testThistleSamm4osa1(){
+	kuubik sihtKuup { };
+	engine vroom {9,12};
+	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F R R F B B R B*R R B R B L*U U R*U U D D R R D D L*F F L D D L*");
+	sihtKuup.ekraanile(vroom, "");
+	ThistleLahendaja thistle { };
+	std::set<valem> lahendid { };
+	thistle.samm4osa1(sihtKuup.kuup,lahendid);
+	ASSERTM("Ei leidnud lahendit", lahendid.size() > 0);
+	valem tulem = *(lahendid.begin());
+	ASSERTM("ei leitud õiget valemit", tulem=="L L R R " || tulem=="L R R L " || tulem=="R R L L " || tulem=="R L L R " || tulem=="L R L R " || tulem=="R L R L "
+			|| tulem=="L*L*R R " || tulem=="L*R R L*" || tulem=="R R L*L*" || tulem=="R L*L*R " || tulem=="L*R L*R " || tulem=="R L*R L*"
+			|| tulem=="L L R*R*" || tulem=="L R*R*L " || tulem=="R*R*L L " || tulem=="R*L L R*" || tulem=="L R*L R*" || tulem=="R*L R*L "
+			|| tulem=="L*L*R*R*" || tulem=="L*R*R*L*" || tulem=="R*R*L*L*" || tulem=="R*L*L*R*" || tulem=="L*R*L*R*" || tulem=="R*L*R*L*"); // peab olema "L L R R " aga järjekord suva ja L L asemel võib olla L*L*
+}
+
 /**
  * Kontrolli, et IDAlahendaja saab ühe sammu segatud kuubi lahendatud
  */
@@ -367,6 +396,8 @@ void runAllTests(int argc, char const *argv[]){
 	s.push_back(CUTE(testLeiaAlpha));
 	s.push_back(CUTE(testThistleSamm3osa2));
 	s.push_back(CUTE(testNurgadOrbiidil2));
+	s.push_back(CUTE(testPaigastAraNurgad));
+	s.push_back(CUTE(testThistleSamm4osa1));
 
 
 	cute::xml_file_opener xmlfile(argc,argv);

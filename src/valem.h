@@ -35,7 +35,7 @@ class valem {
 		// valemi sammud paaridena
 		// * esimen eelement on täht hulgast TODO: pane hulk
 		// * teine element on suund TODO: kirjuta, mida true tähendab
-		std::vector<kask> rida;
+		std::vector<kask> rida{};
 
 		// valemiobjekt stringist mis koosneb pöördeid tähistatavate käskude jadast
 		// ja tärnidest. Muid sümboleid ognoreeritakse
