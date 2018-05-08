@@ -519,7 +519,7 @@ std::string sorditudAlamstring(std::string const  &str, int algus, int pikkus) {
 }
 
 /**
- * Võtab sisse minu süsteemi nurgaindeksi, tagastab TW süsteemi indeksi
+ * Võtab sisse minu süsteemi nurgaindeksi, tagastab TW süsteemi indeksipääret käsitletakse kui sisend = väljund + pööre
  */
 unsigned int ThistleLahendaja::minuNurgaIdx2Tw(unsigned int val, int poore) {
 	for (unsigned int i=0; i < 8; i++) {
@@ -675,12 +675,15 @@ std::string ThistleLahendaja::FBservaotsing(asend const &sisAsend, int poore){
 	std::string FBservad { };
 	std::string sisString = sisAsend.toString();
 	std::set<char> algKuljed = {'U','L','D','R'};
-	std::set<char> pooratudKuljed { };
+	std::set<char> pooratudKuljed { }; // pooratud kuljed voetakse eeldusega, et pooratud on algasend ja algkuljed on pooratud+temppoore
 
 	for (std::set<char>::iterator ite = algKuljed.begin(); ite != algKuljed.end(); ++ite){
 		valem muudetav {*ite, true};
 		pooratudKuljed.insert(valemiMoondus(muudetav, tempPoore).rida[0].kylg);
+		std::cout << valemiMoondus(muudetav, tempPoore).rida[0].kylg << " : ";
 	}
+	std::cout << "\n temp ja alg poore: " << tempPoore << " : " << poore << '\n';
+	std::cout << '\n' << sisString << '\n';
 	for(int i=0;i<12;i++){
 		int twNum = minuServaIdx2Tw(i,tempPoore);
 		char cA = sisString[i*3];
@@ -720,11 +723,11 @@ char ThistleLahendaja::pooraTeljel(char telg, int kogus, char taht){
 			{'R', "UBDF"}
 		};
 
-	if (!(taht != telg && taht != vastasKuljed[telg])){
+	if (taht != telg && taht != vastasKuljed[telg]){
 		std::string a = teljeLiikumised[telg];
 		int koht = leiaStringis(a,taht);
 		koht -= kogus;
-		if (koht<0){
+		while (koht<0){
 			koht += 4;
 		}
 		return a[koht];
@@ -766,10 +769,10 @@ valem ThistleLahendaja::valemiMoondus(valem const &sisValem, int poore){
 }
 
 void ThistleLahendaja::samm3osa2 (asend const &sisAsend, std::set<valem> &lahendid){
-	BETA juht {B_TEADMATA}; // 0 - koik nurgad orbitaalil, 1 - (18)(27), 2 - (15), 3 - (13)
+	BETA juht = B_TEADMATA; // 0 - koik nurgad orbitaalil, 1 - (18)(27), 2 - (15), 3 - (13)
 	std::vector<int> poorded {};
 	for (int poore=0;poore < 25;poore++){
-		BETA eelmineJuht {juht};
+		BETA eelmineJuht = juht;
 
 		std::string orbital = getNurgadOrbiidil(sisAsend, poore);
 		if (orbital.size()==0){
@@ -800,6 +803,7 @@ void ThistleLahendaja::samm3osa2 (asend const &sisAsend, std::set<valem> &lahend
 		std::vector<std::string> tsyklid = nurkadeTsyklid(sisAsend, poore);
 		ALPHA a = leiaAlpha(tsyklid, juht);
 		std::string FBservad = FBservaotsing(sisAsend, poore);
+		std::cout << FBservad << '\n';
 		ThistleSamm3TeineMap data {a, juht};
 		valem tulevValem = data.getValem(FBservad);
 		if (tulevValem.size() > 0) {

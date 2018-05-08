@@ -259,6 +259,8 @@ void testThistleSamm3osa2(){
 	thistle.samm3osa2(sihtKuup.kuup,lahendid);
 	ASSERTM("Ei leidnud lahendit", lahendid.size() > 0);
 	valem tulem = *(lahendid.begin());
+	sihtKuup.turn(tulem);
+	sihtKuup.ekraanile(vroom, "");
 	ASSERTM("ei leitud õiget valemit", tulem=="R*U U D D R R D D L*F F L D D L*");
 }
 
