@@ -232,7 +232,7 @@ void testNurkadeTsyklid(){
 	kuubik sihtKuup { };
 	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F R R F B B R B*R R B R B L*U U ");
 	ThistleLahendaja thistle { };
-	std::vector<std::string> lahendid = thistle.nurkadeTsyklid(sihtKuup.kuup,4);
+	std::vector<std::string> lahendid = thistle.nurkadeTsyklid(sihtKuup.kuup,4); // poore peaks vist tegelt olema 16, see on vastupidine
 	for (std::vector<std::string>::iterator ite = lahendid.begin(); ite != lahendid.end(); ++ite){
 		std::cout << *ite << '\n';
 	}
@@ -248,6 +248,16 @@ void testLeiaAlpha(){
 	std::cout << a << '\n';
 	ASSERTM("ei leitud õiget valemit", a == A_24);
 }
+
+void testFBservaotsing(){
+	kuubik sihtKuup { };
+	engine vroom {9,12};
+	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F R R F B B R B*R R B R B L*U U ");
+	ThistleLahendaja thistle { };
+	std::string valString = thistle.FBservaotsing(sihtKuup.kuup,4);
+	ASSERTM("ei leitud õigeid servi", valString==""); // TODO: siia vaja õige kontrollstring panna
+}
+
 
 void testThistleSamm3osa2(){
 	kuubik sihtKuup { };
