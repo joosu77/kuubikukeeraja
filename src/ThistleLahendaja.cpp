@@ -528,7 +528,7 @@ unsigned int ThistleLahendaja::minuNurgaIdx2Tw(unsigned int val, int poore) {
 		}
 	}
 
-	return 999;
+	throw std::runtime_error("minuNurgaIdx2Tw: ei leidnud pöördele vastavat nurka");
 }
 
 /**
@@ -541,7 +541,7 @@ unsigned int ThistleLahendaja::minuServaIdx2Tw(unsigned int val, int poore) {
 		}
 	}
 
-	return 999;
+	throw std::runtime_error("minuServaIdx2Tw: ei leidnud pöördele vastavat serva");
 }
 
 std::vector<std::string> ThistleLahendaja::nurkadeTsyklid(asend const &sisAsend, int poore){
@@ -675,8 +675,8 @@ std::string ThistleLahendaja::FBservaotsing(asend const &sisAsend, int poore){
 	std::string FBservad { };
 	std::string sisString = sisAsend.toString();
 	std::set<char> algKuljed = {'U','L','D','R'};
-	std::set<char> pooratudKuljed { }; // pooratud kuljed voetakse eeldusega, et pooratud on algasend ja algkuljed on pooratud+temppoore
-
+	// pooratud kuljed voetakse eeldusega, et pooratud on algasend ja algkuljed on pooratud+temppoore
+	std::set<char> pooratudKuljed { };
 	for (std::set<char>::iterator ite = algKuljed.begin(); ite != algKuljed.end(); ++ite){
 		valem muudetav {*ite, true};
 		pooratudKuljed.insert(valemiMoondus(muudetav, tempPoore).rida[0].kylg);
@@ -702,10 +702,18 @@ int ThistleLahendaja::leiaStringis(std::string sisString, char otsitav){
 			return i;
 		}
 	}
-	return -1;
+
+	throw;
 }
 
+/**
+ * @param telg -- külg, mida keeratakse
+ * @param kogus -- mitu korda päripäeva keeratakse
+ * @param taht -- külje tähis, mille asukohta peale pööramist tahetakse leida
+ */
 char ThistleLahendaja::pooraTeljel(char telg, int kogus, char taht){
+	// kui taht on kas sama mis telg või tema vastaskülg,
+	// siis pole vaja keerata
 	std::map<char, char> vastasKuljed {
 			{'F', 'B'},
 			{'B', 'F'},
@@ -714,6 +722,13 @@ char ThistleLahendaja::pooraTeljel(char telg, int kogus, char taht){
 			{'L', 'R'},
 			{'R', 'L'}
 		};
+	if (telg == taht || vastasKuljed[telg] == taht) {
+		return taht;
+	}
+
+	// otsi ettantud täht liikumist emassiivist ja
+	// liigu sellest edasi kogus%4 sammu. Jõudes stringi
+	// lõppu alustatakse algusest
 	std::map<char, std::string> teljeLiikumised {
 			{'F', "URDL"},
 			{'B', "DRUL"},
@@ -723,18 +738,17 @@ char ThistleLahendaja::pooraTeljel(char telg, int kogus, char taht){
 			{'R', "UBDF"}
 		};
 
-	if (taht != telg && taht != vastasKuljed[telg]){
-		std::string a = teljeLiikumised[telg];
-		int koht = leiaStringis(a,taht);
-		koht -= kogus;
-		while (koht<0){
-			koht += 4;
-		}
-		return a[koht];
-	}
-	return taht;
+	int poordeid {kogus % 4};
+	std::string a = teljeLiikumised[telg];
+	int koht = leiaStringis(a,taht);
+	int uusKoht { (koht + 4 - poordeid) % 4 };
+	return a[uusKoht];
 }
 
+/**
+ * Kui lahendamise käigus leitakse, pööratud kuubikule sobiv valem
+ * siis see funktsioon teisendab sama valemi pööramata kuubiku jaoks
+ */
 valem ThistleLahendaja::valemiMoondus(valem const &sisValem, int poore){
 	valem valjund { };
 	for (unsigned int i=0;i<sisValem.rida.size();i++){
@@ -760,6 +774,7 @@ valem ThistleLahendaja::valemiMoondus(valem const &sisValem, int poore){
 			valTaht = pooraTeljel('F',poore-16,valTaht);
 			valjund.append(valTaht, suund);
 		} else {
+			// FIXME: see peaks olema 'L' ja 2 (joosep 10.05)
 			char valTaht = pooraTeljel('R',1,taht);
 			valTaht = pooraTeljel('F',poore-20,valTaht);
 			valjund.append(valTaht, suund);

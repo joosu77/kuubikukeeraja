@@ -255,9 +255,31 @@ void testFBservaotsing(){
 	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F R R F B B R B*R R B R B L*U U ");
 	ThistleLahendaja thistle { };
 	std::string valString = thistle.FBservaotsing(sihtKuup.kuup,4);
-	ASSERTM("ei leitud õigeid servi", valString==""); // TODO: siia vaja õige kontrollstring panna
+	ASSERTM("ei leitud õigeid servi: " + valString, valString==""); // TODO: siia vaja õige kontrollstring panna
 }
 
+void testValemiMoondus() {
+	valem sisValem {"L "};
+	ThistleLahendaja thistle { };
+	valem tulem = thistle.valemiMoondus(sisValem, 13);
+	ASSERTM("Moondamine ebaõnnestus. Ootasin 'D*', tuli '" + tulem.toString() + "'",
+			tulem.toString() == "D*");
+}
+
+void testPooraTeljel() {
+	std::string msg {"Pööramine ebaõnnestus. Ootasin '%c', tuli '%c' (kogus=%d)"};
+	char telg {'F'};
+	char taht {'R'};
+	std::string tulemid {"ULDR"};
+	ThistleLahendaja thistle { };
+	for (unsigned int i=0; i < tulemid.size(); i++) {
+		char tulem = thistle.pooraTeljel(telg, i+1, taht);
+		char oodatud = tulemid[i];
+		char buf[msg.size()] { };
+		sprintf (buf, msg.c_str(), oodatud, tulem, i+1);
+		ASSERTM(buf, tulem == oodatud);
+	}
+}
 
 void testThistleSamm3osa2(){
 	kuubik sihtKuup { };
@@ -271,7 +293,7 @@ void testThistleSamm3osa2(){
 	valem tulem = *(lahendid.begin());
 	sihtKuup.turn(tulem);
 	sihtKuup.ekraanile(vroom, "");
-	ASSERTM("ei leitud õiget valemit", tulem=="R*U U D D R R D D L*F F L D D L*");
+	ASSERTM("ei leitud õiget valemit: " + tulem.toString(), tulem=="R*U U D D R R D D L*F F L D D L*");
 }
 
 void testPaigastAraNurgad(){
@@ -406,6 +428,9 @@ void runAllTests(int argc, char const *argv[]){
 	s.push_back(CUTE(testBruteForce0Step));
 	s.push_back(CUTE(testNurkadeTsyklid));
 	s.push_back(CUTE(testLeiaAlpha));
+	s.push_back(CUTE(testFBservaotsing));
+	s.push_back(CUTE(testValemiMoondus));
+	s.push_back(CUTE(testPooraTeljel));
 	s.push_back(CUTE(testThistleSamm3osa2));
 	s.push_back(CUTE(testNurgadOrbiidil2));
 	s.push_back(CUTE(testPaigastAraNurgad));
