@@ -653,7 +653,7 @@ ALPHA ThistleLahendaja::leiaAlpha(std::vector <std::string> &tsyklid, BETA b){
 
 std::string ThistleLahendaja::FBservaotsing(asend const &sisAsend, int poore){
 	int tempPoore {poore};
-	if (tempPoore%4 == 1){
+	/*if (tempPoore%4 == 1){
 		tempPoore +=2;
 	} else if (tempPoore%4 == 3){
 		tempPoore -=2;
@@ -670,7 +670,7 @@ std::string ThistleLahendaja::FBservaotsing(asend const &sisAsend, int poore){
 		tempPoore -= 12;
 	} else {
 		tempPoore -= 20;
-	}
+	}*/
 
 	std::string FBservad { };
 	std::string sisString = sisAsend.toString();
@@ -684,19 +684,19 @@ std::string ThistleLahendaja::FBservaotsing(asend const &sisAsend, int poore){
 	}
 	std::cout << "\n temp ja alg poore: " << tempPoore << " : " << poore << '\n';
 	std::cout << '\n' << sisString << '\n';
-	std::cout << "ilma uuesti pooramiseta servad ";
+	//std::cout << "ilma uuesti pooramiseta servad ";
 	for(int i=0;i<12;i++){
-		int twNum = minuServaIdx2Tw(i,tempPoore);
-		int testPoordetaServ = minuServaIdx2Tw(i,0);
+		//int twNum = minuServaIdx2Tw(i,tempPoore);
+		int twNum = minuServaIdx2Tw(i,0);
 		char cA = sisString[i*3];
 		char cB = sisString[i*3+1];
  		if (pooratudKuljed.count(cA) &&	pooratudKuljed.count(cB)){
 			FBservad += (char)(twNum+48+1);
-			std::cout << testPoordetaServ;
+			//std::cout << testPoordetaServ;
 		}
 	}
-	std::cout << "\nuuesti pooramisega servad " << FBservad;
-	std::cout << '\n';
+	//std::cout << "\nuuesti pooramisega servad " << FBservad;
+	//std::cout << '\n';
 	std::sort(FBservad.begin(), FBservad.end());
 	return FBservad;
 }
