@@ -684,14 +684,19 @@ std::string ThistleLahendaja::FBservaotsing(asend const &sisAsend, int poore){
 	}
 	std::cout << "\n temp ja alg poore: " << tempPoore << " : " << poore << '\n';
 	std::cout << '\n' << sisString << '\n';
+	std::cout << "ilma uuesti pooramiseta servad ";
 	for(int i=0;i<12;i++){
 		int twNum = minuServaIdx2Tw(i,tempPoore);
+		int testPoordetaServ = minuServaIdx2Tw(i,0);
 		char cA = sisString[i*3];
 		char cB = sisString[i*3+1];
  		if (pooratudKuljed.count(cA) &&	pooratudKuljed.count(cB)){
 			FBservad += (char)(twNum+48+1);
+			std::cout << testPoordetaServ;
 		}
 	}
+	std::cout << "\nuuesti pooramisega servad " << FBservad;
+	std::cout << '\n';
 	std::sort(FBservad.begin(), FBservad.end());
 	return FBservad;
 }
@@ -774,8 +779,7 @@ valem ThistleLahendaja::valemiMoondus(valem const &sisValem, int poore){
 			valTaht = pooraTeljel('F',poore-16,valTaht);
 			valjund.append(valTaht, suund);
 		} else {
-			// FIXME: see peaks olema 'L' ja 2 (joosep 10.05)
-			char valTaht = pooraTeljel('R',1,taht);
+			char valTaht = pooraTeljel('L',2,taht);
 			valTaht = pooraTeljel('F',poore-20,valTaht);
 			valjund.append(valTaht, suund);
 		}
