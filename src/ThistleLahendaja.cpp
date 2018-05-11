@@ -674,13 +674,14 @@ std::string ThistleLahendaja::FBservaotsing(asend const &sisAsend, int poore){
 
 	std::string FBservad { };
 	std::string sisString = sisAsend.toString();
-	std::set<char> algKuljed = {'U','L','D','R'};
+	std::string algKuljed = "ULDR";
 	// pooratud kuljed voetakse eeldusega, et pooratud on algasend ja algkuljed on pooratud+temppoore
 	std::set<char> pooratudKuljed { };
-	for (std::set<char>::iterator ite = algKuljed.begin(); ite != algKuljed.end(); ++ite){
-		valem muudetav {*ite, true};
-		pooratudKuljed.insert(valemiMoondus(muudetav, tempPoore).rida[0].kylg);
-		std::cout << valemiMoondus(muudetav, tempPoore).rida[0].kylg << " : ";
+	for (unsigned int i = 0; i < algKuljed.size(); i++){
+		valem muudetav {algKuljed[i], true};
+		valem pooratud = valemiMoondus(muudetav, tempPoore);
+		pooratudKuljed.insert(pooratud.rida[0].kylg);
+		std::cout << pooratud.rida[0].kylg << " : ";
 	}
 	std::cout << "\n temp ja alg poore: " << tempPoore << " : " << poore << '\n';
 	std::cout << '\n' << sisString << '\n';
@@ -759,30 +760,22 @@ valem ThistleLahendaja::valemiMoondus(valem const &sisValem, int poore){
 	for (unsigned int i=0;i<sisValem.rida.size();i++){
 		char taht { sisValem.rida[i].kylg };
 		char suund = sisValem.rida[i].edasi;
-		if (poore < 4){
-			char valTaht = pooraTeljel('F',poore,taht);
-			valjund.append(valTaht, suund);
-		} else if (poore < 8){
-			char valTaht = pooraTeljel('R',1,taht);
-			valTaht = pooraTeljel('F',poore-4,valTaht);
-			valjund.append(valTaht, suund);
+
+		char valTaht {taht};
+		if (poore >= 4 && poore < 8){
+			valTaht = pooraTeljel('R',1,taht);
 		} else if (poore < 12){
-			char valTaht = pooraTeljel('U',1,taht);
-			valTaht = pooraTeljel('F',poore-8,valTaht);
-			valjund.append(valTaht, suund);
+			valTaht = pooraTeljel('U',1,taht);
 		} else if (poore < 16){
-			char valTaht = pooraTeljel('D',1,taht);
-			valTaht = pooraTeljel('F',poore-12,valTaht);
-			valjund.append(valTaht, suund);
+			valTaht = pooraTeljel('D',1,taht);
 		} else if (poore < 20){
-			char valTaht = pooraTeljel('L',1,taht);
-			valTaht = pooraTeljel('F',poore-16,valTaht);
-			valjund.append(valTaht, suund);
+			valTaht = pooraTeljel('L',1,taht);
 		} else {
-			char valTaht = pooraTeljel('L',2,taht);
-			valTaht = pooraTeljel('F',poore-20,valTaht);
-			valjund.append(valTaht, suund);
+			valTaht = pooraTeljel('L',2,taht);
 		}
+
+		valTaht = pooraTeljel('F',poore,valTaht);
+		valjund.append(valTaht, suund);
 	}
 	return valjund;
 }

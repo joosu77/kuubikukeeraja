@@ -1,9 +1,37 @@
 <testsuites>
-	<testsuite name="AllTests" tests="1">
+	<testsuite name="AllTests" tests="25">
+		<testcase classname="AllTests" name="testAlgolek"/>
+		<testcase classname="AllTests" name="testBruteForce1Step"/>
+		<testcase classname="AllTests" name="testBruteForce2Step"/>
+		<testcase classname="AllTests" name="testBruteForce3Step"/>
+		<testcase classname="AllTests" name="testConversion"/>
+		<testcase classname="AllTests" name="testConversion2"/>
+		<testcase classname="AllTests" name="testConversion3"/>
+		<testcase classname="AllTests" name="testConversion4"/>
+		<testcase classname="AllTests" name="testThistleSamm1proovimiseta"/>
+		<testcase classname="AllTests" name="testThistleSamm2Map"/>
+		<testcase classname="AllTests" name="testNurkadePoordeLeidmine"/>
+		<testcase classname="AllTests" name="testKuubikuPeegeldamine"/>
+		<testcase classname="AllTests" name="testThistleSamm2osa2"/>
+		<testcase classname="AllTests" name="testNurgadOrbiidil"/>
+		<testcase classname="AllTests" name="testThistleSamm3osa1"/>
+		<testcase classname="AllTests" name="testBruteForce0Step"/>
+		<testcase classname="AllTests" name="testNurkadeTsyklid"/>
+		<testcase classname="AllTests" name="testLeiaAlpha"/>
+		<testcase classname="AllTests" name="testFBservaotsing"/>
 		<testcase classname="AllTests" name="testValemiMoondus">
-			<failure message="../tests/Test.cpp:266 testValemiMoondus: Moondamine ebaõnnestus. Ootasin &apos;D*&apos;, tuli &apos;B &apos;">
+			<failure message="../tests/Test.cpp:267 testValemiMoondus: Moondamine ebaõnnestus. Ootasin &apos;D*&apos;, tuli &apos;B &apos;">
 testValemiMoondus: Moondamine ebaõnnestus. Ootasin &apos;D*&apos;, tuli &apos;B &apos;
 			</failure>
 		</testcase>
+		<testcase classname="AllTests" name="testPooraTeljel"/>
+		<testcase classname="AllTests" name="testThistleSamm3osa2">
+			<failure message="../tests/Test.cpp:297 testThistleSamm3osa2: ei leitud õiget valemit: L*D*D*U*U*L*L*U*U*R*B*B*R U*U*R*">
+testThistleSamm3osa2: ei leitud õiget valemit: L*D*D*U*U*L*L*U*U*R*B*B*R U*U*R*
+			</failure>
+		</testcase>
+		<testcase classname="AllTests" name="testNurgadOrbiidil2"/>
+		<testcase classname="AllTests" name="testPaigastAraNurgad"/>
+		<testcase classname="AllTests" name="testThistleSamm4osa1"/>
 	</testsuite>
 </testsuites>
