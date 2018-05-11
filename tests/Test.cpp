@@ -255,7 +255,7 @@ void testFBservaotsing(){
 	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F R R F B B R B*R R B R B L*U U ");
 	ThistleLahendaja thistle { };
 	std::string valString = thistle.FBservaotsing(sihtKuup.kuup,4);
-	ASSERTM("ei leitud õigeid servi: " + valString, valString=="1378");
+	ASSERTM("ei leitud õigeid servi: " + valString, valString=="3458");
 }
 
 void testValemiMoondus() {
