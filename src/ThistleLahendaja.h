@@ -52,6 +52,7 @@ public:
 	std::string getNurgadOrbiidil(asend const &sisAsend, int poore);
 	std::string liidaCharid(char sis1, char sis2, char sis3);
 	std::vector<std::string> nurkadeTsyklid(asend const &sisAsend, int poore);
+	std::vector<std::string> servadeTsyklid(asend const &sisAsend, int poore);
 	void samm3osa2 (asend const &sisAsend, std::set<valem> &lahendid);
 	ALPHA leiaAlpha(std::vector <std::string> &tsyklid, BETA beta);
 	void vahetaTsyklipaare(std::map<int,int> &tsykliPaarid, int val1, int val2);
@@ -61,6 +62,7 @@ public:
 	char pooraTeljel(char telg, int kogus, char taht);
 	std::set<int> paigastAraNurgad(asend const &sisAsend);
 	void samm4osa1 (asend const &sisAsend, std::set<valem> &lahendid);
+	bool servKorras (asend const &sisAsend);
 	void samm4osa2 (asend const &sisAsend, std::set<valem> &lahendid);
 private:
 	/* indeks on nurga number TW süsteemis, väärtus nurga indeks minu süsteemis

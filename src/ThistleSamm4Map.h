@@ -11,8 +11,12 @@
 #include "ValemMap.h"
 
 class ThistleSamm4Map: public ValemMap {
+protected:
+	std::map<int,std::string> data;
 public:
-	ThistleSamm4Map();
+	valem getValem(int voti);
+	ThistleSamm4Map (bool kylgKorras, int kaksTsykleid, int kolmTsykleid, int neliTsykleid);
+	int suurus;
 };
 
 #endif /* THISTLESAMM4MAP_H_ */

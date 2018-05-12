@@ -21,6 +21,7 @@
 #include "ThistleSamm2Map.h"
 #include "ThistleSamm3InitialMap.h"
 #include "ThistleSamm3TeineMap.h"
+#include "ThistleSamm4Map.h"
 
 //TODO: notes: tuleb alpha ja beta hulgast valida õiged liikmed millega korrutada, alpha ja beta järgi valitakse coset
 
@@ -584,6 +585,43 @@ std::vector<std::string> ThistleLahendaja::nurkadeTsyklid(asend const &sisAsend,
 	return valjund;
 }
 
+std::vector<std::string> ThistleLahendaja::servadeTsyklid(asend const &sisAsend, int poore){
+	std::string sisString = sisAsend.toString();
+	std::string lahendatudServad = "UF UR UB UL DF DR DB DL FR FL BR BL";
+	std::vector<std::string> valjund { };
+	// servad, kus tsüklite kaudu on käidud
+	// number on serva indeks thistlethwaite süsteemis
+	std::set<int> kaidud { };
+	for (int i=0;i<8;i++){
+		std::string serv = sorditudAlamstring(sisString, twNurgaIdx2Minu[poore][i]*3, 2);
+		if (!kaidud.count(i) && lahendatudServad.find(serv) != twNurgaIdx2Minu[poore][i]*3){
+			std::string tsykkel {(char)(i+48+1)};
+			while (lahendatudServad.find(serv) != twNurgaIdx2Minu[poore][i]*3){
+				// antud serva asukoht minu systeemis
+				int num = lahendatudServad.find(serv)/3;
+
+				// antud nurga asukoht thistlethwaite'i systeemis
+				int kohtT = minuServaIdx2Tw(num, poore);
+				tsykkel += (char)(kohtT+48);
+				kaidud.insert(kohtT);
+				serv = sorditudAlamstring(sisString, num*3, 2);
+			}
+			std::string buffer { };
+			if (tsykkel.size()>0){
+				buffer.resize(tsykkel.size());
+				buffer[0]=tsykkel[0];
+				for (unsigned int o=1;o<tsykkel.size();o++){
+					buffer[o]=tsykkel[tsykkel.size()-o];
+				}
+			}
+			valjund.push_back(buffer);
+		}
+	}
+
+
+	return valjund;
+}
+
 void ThistleLahendaja::vahetaTsyklipaare(std::map<int,int> &tsykliPaarid, int val1, int val2){
 	int buffer = tsykliPaarid[val1];
 	tsykliPaarid[val1] = tsykliPaarid[val2];
@@ -889,6 +927,52 @@ void ThistleLahendaja::samm4osa1 (asend const &sisAsend, std::set<valem> &lahend
 	return;
 }
 
-void ThistleLahendaja::samm4osa2 (asend const &sisAsend, std::set<valem> &lahendid){
 
+// kontrollib, kas vähemalt 1 küljel on kõik tükid paigas,
+// eeldab et tükkidel pole valet pööret kuna seda kasutatakse 4ndal sammul
+bool ThistleLahendaja::servKorras (asend const &sisAsend){
+	for (int i=0;i<6;i++){
+		bool korras = true;
+		for (int o=0;o<3;o++){
+			for (int u=0;u<3;u++){
+				if (sisAsend.kuljed[i][o][u]!=i){
+					korras = false;
+					u=3;o=3;
+				}
+			}
+		}
+		if (korras){
+			return true;
+		}
+	}
+	return false;
+}
+
+void ThistleLahendaja::samm4osa2 (asend const &sisAsend, std::set<valem> &lahendid){
+	bool servPaigas = servKorras(sisAsend);
+	std::vector<std::string> tsyklid = servadeTsyklid(sisAsend,0);
+	int kaksTsyklid = 0;
+	int kolmTsyklid = 0;
+	int neliTsyklid = 0;
+	for(std::vector<std::string>::iterator ite = tsyklid.begin(); ite != tsyklid.end(); ++ite){
+		if ((*ite).size() == 2){
+			kaksTsyklid++;
+		} else if ((*ite).size() == 3){
+			kolmTsyklid++;
+		} else if ((*ite).size() == 4){
+			neliTsyklid++;
+		}
+	}
+	ThistleSamm4Map data {servPaigas, kaksTsyklid, kolmTsyklid, neliTsyklid};
+	kuubik testitavKuup {sisAsend};
+	valem katsealuneValem;
+	for (int i=0;i<data.suurus;i++){
+		katsealuneValem = data.getValem(i);
+		testitavKuup.turn(katsealuneValem);
+		if(testitavKuup.isSolved()){
+			lahendid.insert(katsealuneValem);
+			return;
+		}
+		testitavKuup.rewind();
+	}
 }
