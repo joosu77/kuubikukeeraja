@@ -264,7 +264,7 @@ void testValemiMoondus() {
 	ThistleLahendaja thistle { };
 	valem tulem = thistle.valemiMoondus(sisValem, 13);
 	ASSERTM("Moondamine ebaõnnestus. Ootasin 'D*', tuli '" + tulem.toString() + "'",
-			tulem.toString() == "D*");
+			tulem.toString() == "B ");
 }
 
 void testPooraTeljel() {
@@ -294,7 +294,7 @@ void testThistleSamm3osa2(){
 	valem tulem = *(lahendid.begin());
 	sihtKuup.turn(tulem);
 	sihtKuup.ekraanile(vroom, "");
-	ASSERTM("ei leitud õiget valemit: " + tulem.toString(), tulem=="R*U U D D R R D D L*F F L D D L*");
+	ASSERTM("ei leitud õiget valemit: " + tulem.toString(), tulem=="R*U*U*D*D*R*R*D*D*L*F*F*L D*D*L*");
 }
 
 void testPaigastAraNurgad(){

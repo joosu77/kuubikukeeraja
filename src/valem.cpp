@@ -173,6 +173,7 @@ kask kask::vastandKask(){
 			{'L', 'R'},
 			{'R', 'L'}
 		};
-	kask valjund {vastasKuljed[kylg],!edasi};
+	//kask valjund {vastasKuljed[kylg],!edasi};
+	kask valjund {kylg,!edasi};
 	return valjund;
 }

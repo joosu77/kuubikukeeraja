@@ -681,10 +681,10 @@ std::string ThistleLahendaja::FBservaotsing(asend const &sisAsend, int poore){
 		valem muudetav {algKuljed[i], true};
 		valem pooratud = valemiMoondus(muudetav, tempPoore);
 		pooratudKuljed.insert(pooratud.rida[0].kylg);
-		std::cout << pooratud.rida[0].kylg << " : ";
+		//std::cout << pooratud.rida[0].kylg << " : ";
 	}
-	std::cout << "\n temp ja alg poore: " << tempPoore << " : " << poore << '\n';
-	std::cout << '\n' << sisString << '\n';
+	//std::cout << "\n temp ja alg poore: " << tempPoore << " : " << poore << '\n';
+	//std::cout << '\n' << sisString << '\n';
 	//std::cout << "ilma uuesti pooramiseta servad ";
 	for(int i=0;i<12;i++){
 		int twNum = minuServaIdx2Tw(i,tempPoore);
@@ -696,9 +696,8 @@ std::string ThistleLahendaja::FBservaotsing(asend const &sisAsend, int poore){
 			//std::cout << testPoordetaServ;
 		}
 	}
-	//std::cout << "\nuuesti pooramisega servad " << FBservad;
-	//std::cout << '\n';
 	std::sort(FBservad.begin(), FBservad.end());
+	std::cout << "leitud fb servade asukohad: " << FBservad << '\n';
 	return FBservad;
 }
 
@@ -815,12 +814,15 @@ void ThistleLahendaja::samm3osa2 (asend const &sisAsend, std::set<valem> &lahend
 		std::vector<std::string> tsyklid = nurkadeTsyklid(sisAsend, poore);
 		ALPHA a = leiaAlpha(tsyklid, juht);
 		std::string FBservad = FBservaotsing(sisAsend, poore);
-		std::cout << FBservad << '\n';
 		ThistleSamm3TeineMap data {a, juht};
 		valem tulevValem = data.getValem(FBservad);
+		std::cout << "alpha: " << a << " juht: " << juht << " fbservad: " << FBservad << '\n';
 		if (tulevValem.size() > 0) {
+			tulevValem.print();
 			valem tagurpidi = valemiMoondus(tulevValem, poore);
+			tagurpidi.print();
 			tagurpidi.pooraYmber();
+			tagurpidi.print();
 			lahendid.insert(tagurpidi);
 		}
 	}
