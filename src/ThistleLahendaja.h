@@ -121,6 +121,11 @@ private:
 			{5,7,1,3,4,6,2,0,10,11,9,8}};
 	unsigned int minuNurgaIdx2Tw(unsigned int val, int poore);
 	unsigned int minuServaIdx2Tw(unsigned int val, int poore);
+
+	// tagastab indeksi mis ütleb, kus etteantud serv peaks asuma
+	// serv on kahetäheline serva kood, mis peab servade nimekrijas olemas olema
+	// kui serva ei leita katkestatakse veaga
+	unsigned int leiaServaKoht (std::string serv);
 };
 
 #endif /* THISTLELAHENDAJA_H_ */

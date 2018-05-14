@@ -7,15 +7,14 @@
 
 #include "ThistleLahendaja.h"
 
-#include <cstddef>
+#include <algorithm>
 #include <iostream>
-#include <map>
-#include <string>
+#include <iterator>
+#include <stdexcept>
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
 #include <vector>
-#include <algorithm>
 
 #include "kuubik.h"
 #include "ThistleSamm2Map.h"
@@ -585,34 +584,55 @@ std::vector<std::string> ThistleLahendaja::nurkadeTsyklid(asend const &sisAsend,
 	return valjund;
 }
 
+/**
+ * tagastab indeksi mis ütleb, kus etteantud serv peaks asuma
+ * serv on kahetäheline serva kood, mis peab servade nimekrijas olemas olema
+ * kui serva ei leita katkestatakse veaga
+ */
+unsigned int ThistleLahendaja::leiaServaKoht (std::string serv) {
+	static const std::string lahendatudServad = "UF UR UB UL DF DR DB DL FR FL BR BL";
+	std::string::size_type servaKoht = lahendatudServad.find(serv);
+	if (servaKoht == std::string::npos){
+		// serva ei leitud. kontrollime, kas on teistpidi
+		std::string ymberPooratud {serv[1], serv[0]};
+		servaKoht = lahendatudServad.find(ymberPooratud);
+		if (servaKoht == std::string::npos) {
+			// teistpidi ka ei leitud, midagi on viltu
+			std::cout << "Ei leidnud serva \"" << serv << "\"\n";
+			throw;
+		}
+	}
+
+	return servaKoht;
+}
 std::vector<std::string> ThistleLahendaja::servadeTsyklid(asend const &sisAsend, int poore){
 	std::string sisString = sisAsend.toString();
-	std::string lahendatudServad = "UF UR UB UL DF DR DB DL FR FL BR BL";
 	std::vector<std::string> valjund { };
 	// servad, kus tsüklite kaudu on käidud
 	// number on serva indeks thistlethwaite süsteemis
 	std::set<int> kaidud { };
 	for (int i=0;i<8;i++){
-		std::string serv = sorditudAlamstring(sisString, twNurgaIdx2Minu[poore][i]*3, 2);
-		if (!kaidud.count(i) && lahendatudServad.find(serv) != twNurgaIdx2Minu[poore][i]*3){
+		unsigned int nurgaIdxMinu { twNurgaIdx2Minu[poore][i] * 3 };
+		std::string serv = sorditudAlamstring(sisString, nurgaIdxMinu, 2);
+		std::cout << "Alustan serva " << serv << " lahendamist (" << i << ")\n";
+		// koht, kus antud serv peaks olema
+		std::string::size_type servaKoht = leiaServaKoht(serv);
+		if (!kaidud.count(i) && servaKoht != nurgaIdxMinu){
 			std::string tsykkel {(char)(i+48+1)};
-			while (lahendatudServad.find(serv) != twNurgaIdx2Minu[poore][i]*3){
-				// antud serva asukoht minu systeemis
-				int num = lahendatudServad.find(serv);
-				if (num == std::string::npos){
-					std::string ymberPooratud;
-					ymberPooratud += serv[1];
-					ymberPooratud += serv[0];
-					num = lahendatudServad.find(ymberPooratud);
-				}
-				std::cout << "serv: " << serv << " lahendatud: " << lahendatudServad << " num: " << num << '\n';
-				num = num/3;
+			while (servaKoht != nurgaIdxMinu){
+				std::cout << "serv: " << serv << " servaKoht: " << servaKoht << "\n";
+				unsigned int kohtM = servaKoht/3;
 				// antud serva asukoht thistlethwaite'i systeemis
-				int kohtT = minuServaIdx2Tw(num, poore);
+				int kohtT = minuServaIdx2Tw(kohtM, poore);
 				tsykkel += (char)(kohtT+48);
+				std::cout << "registreerin külastatud koha: " << kohtT << "\n";
+				// FIXME: siit tuleb ikkagi arv 0..11; ülal kontrollitakse i sisalduvust selles setis, mis on
+				// 0..8 Need on ikka eri süsteemides ....
 				kaidud.insert(kohtT);
-				serv = sorditudAlamstring(sisString, num*3, 2);
+				serv = sorditudAlamstring(sisString, servaKoht, 2);
+				servaKoht = leiaServaKoht(serv);
 			}
+
 			std::string buffer { };
 			if (tsykkel.size()>0){
 				buffer.resize(tsykkel.size());
