@@ -326,6 +326,22 @@ void testThistleSamm4osa1(){
 			|| tulem=="L*L*R*R*" || tulem=="L*R*R*L*" || tulem=="R*R*L*L*" || tulem=="R*L*L*R*" || tulem=="L*R*L*R*" || tulem=="R*L*R*L*"); // peab olema "L L R R " aga järjekord suva ja L L asemel võib olla L*L*
 }
 
+void testThistleSamm4osa2(){
+	kuubik sihtKuup { };
+	engine vroom {9,12};
+	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F R R F B B R B*R R B R B L*U U R*U U D D R R D D L*F F L D D L*L L R R ");
+	sihtKuup.ekraanile(vroom, "");
+	ThistleLahendaja thistle { };
+	std::set<valem> lahendid { };
+	thistle.samm4osa2(sihtKuup.kuup,lahendid);
+	ASSERTM("Ei leidnud lahendit", lahendid.size() > 0);
+	valem tulem = *(lahendid.begin());
+	std::cout << tulem.rida.size() << '\n';
+	sihtKuup.turn(tulem);
+	sihtKuup.ekraanile(vroom,"");
+	ASSERTM("ei leitud õiget valemit",sihtKuup.isSolved());
+}
+
 /**
  * Kontrolli, et IDAlahendaja saab ühe sammu segatud kuubi lahendatud
  */
@@ -436,6 +452,7 @@ void runAllTests(int argc, char const *argv[]){
 	s.push_back(CUTE(testNurgadOrbiidil2));
 	s.push_back(CUTE(testPaigastAraNurgad));
 	s.push_back(CUTE(testThistleSamm4osa1));
+	s.push_back(CUTE(testThistleSamm4osa2));
 
 
 	cute::xml_file_opener xmlfile(argc,argv);

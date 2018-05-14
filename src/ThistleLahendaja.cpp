@@ -598,9 +598,16 @@ std::vector<std::string> ThistleLahendaja::servadeTsyklid(asend const &sisAsend,
 			std::string tsykkel {(char)(i+48+1)};
 			while (lahendatudServad.find(serv) != twNurgaIdx2Minu[poore][i]*3){
 				// antud serva asukoht minu systeemis
-				int num = lahendatudServad.find(serv)/3;
-
-				// antud nurga asukoht thistlethwaite'i systeemis
+				int num = lahendatudServad.find(serv);
+				if (num == std::string::npos){
+					std::string ymberPooratud;
+					ymberPooratud += serv[1];
+					ymberPooratud += serv[0];
+					num = lahendatudServad.find(ymberPooratud);
+				}
+				std::cout << "serv: " << serv << " lahendatud: " << lahendatudServad << " num: " << num << '\n';
+				num = num/3;
+				// antud serva asukoht thistlethwaite'i systeemis
 				int kohtT = minuServaIdx2Tw(num, poore);
 				tsykkel += (char)(kohtT+48);
 				kaidud.insert(kohtT);
