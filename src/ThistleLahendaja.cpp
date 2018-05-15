@@ -999,16 +999,22 @@ void ThistleLahendaja::samm4osa2 (asend const &sisAsend, std::set<valem> &lahend
 			neliTsyklid++;
 		}
 	}
+	std::cout << "servpaigas: " << servPaigas << " 2tsüklid: " << kaksTsyklid << " 3tsyklid: " << kolmTsyklid << " 4tsyklid: " << neliTsyklid << '\n';
 	ThistleSamm4Map data {servPaigas, kaksTsyklid, kolmTsyklid, neliTsyklid};
 	kuubik testitavKuup {sisAsend};
 	valem katsealuneValem;
 	for (int i=0;i<data.suurus;i++){
 		katsealuneValem = data.getValem(i);
-		testitavKuup.turn(katsealuneValem);
-		if(testitavKuup.isSolved()){
-			lahendid.insert(katsealuneValem);
-			return;
+		for (int o=0;o<23;o++){
+			valem moondatudValem = valemiMoondus(katsealuneValem, o);
+			moondatudValem.pooraYmber();
+			moondatudValem.print();
+			testitavKuup.turn(moondatudValem);
+			if(testitavKuup.isSolved()){
+				lahendid.insert(moondatudValem);
+				return;
+			}
+			testitavKuup.rewind();
 		}
-		testitavKuup.rewind();
 	}
 }

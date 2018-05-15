@@ -4,7 +4,6 @@
  *  Created on: Apr 28, 2018
  *      Author: joosep
  */
-
 #include "ThistleSamm4Map.h"
 
 valem ThistleSamm4Map::getValem(int voti){
