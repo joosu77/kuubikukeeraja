@@ -626,8 +626,10 @@ std::vector<std::string> ThistleLahendaja::servadeTsyklid(asend const &sisAsend,
 		// koht, kus antud serv peaks olema
 		std::string::size_type servaKoht = leiaServaKoht(serv);
 
-		if (!kaidud.count(servaIdxTw) && servaKoht != servaIdxMinu){
+		// kui serv ei ole veel klastatud ja ei asu juba õiges kohas
+		if (servaKoht != servaIdxMinu && !kaidud.count(servaIdxTw)){
 			std::string tsykkel {(char)(servaIdxTw+48+1)};
+			// TODO: kas siin ei peaks kontrollima kaidud set'i juhuks, kui serva otsing tsüklisse läheb?
 			while (servaKoht != servaIdxMinu){
 				std::cout << "serv: " << serv << " servaKoht: " << servaKoht << "\n";
 				unsigned int kohtM = servaKoht/3;
