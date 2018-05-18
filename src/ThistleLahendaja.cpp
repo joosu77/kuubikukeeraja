@@ -41,37 +41,44 @@ valem ThistleLahendaja::lahenda(asend sisAsend){
 	liigutatavKuubik.turn(*(lahendid.begin()));
 	// lisatakse valem lõplikusse valemisse
 	koguLahend.append(*(lahendid.begin()));
+	std::cout << "samm1 valmis\n";
 
 	// tühjendatakse ajutine lahendite hulk
 	lahendid.clear();
 	samm2osa1(liigutatavKuubik.kuup, lahendid);
 	liigutatavKuubik.turn(*(lahendid.begin()));
 	koguLahend.append(*(lahendid.begin()));
+	std::cout << "samm2osa1 valmis\n";
 
 	lahendid.clear();
 	samm2osa2(liigutatavKuubik.kuup, lahendid);
 	liigutatavKuubik.turn(*(lahendid.begin()));
 	koguLahend.append(*(lahendid.begin()));
+	std::cout << "samm2osa2 valmis\n";
 
 	lahendid.clear();
 	samm3osa1(liigutatavKuubik.kuup, lahendid);
 	liigutatavKuubik.turn(*(lahendid.begin()));
 	koguLahend.append(*(lahendid.begin()));
+	std::cout << "samm3osa1 valmis\n";
 
 	lahendid.clear();
 	samm3osa2(liigutatavKuubik.kuup, lahendid);
 	liigutatavKuubik.turn(*(lahendid.begin()));
 	koguLahend.append(*(lahendid.begin()));
+	std::cout << "samm3osa2 valmis\n";
 
 	lahendid.clear();
 	samm4osa1(liigutatavKuubik.kuup, lahendid);
 	liigutatavKuubik.turn(*(lahendid.begin()));
 	koguLahend.append(*(lahendid.begin()));
+	std::cout << "samm4osa1 valmis\n";
 
 	lahendid.clear();
 	samm4osa2(liigutatavKuubik.kuup, lahendid);
 	liigutatavKuubik.turn(*(lahendid.begin()));
 	koguLahend.append(*(lahendid.begin()));
+	std::cout << "samm4osa2 valmis\n";
 
 	return koguLahend;
 }
@@ -324,8 +331,8 @@ void ThistleLahendaja::samm2osa1(asend const &sisAsend, std::set<valem> &lahendi
 			//pooleli.pop_back();
 			tee = pooleli[0].first;
 			kaugus = pooleli[0].second;
-			std::cout << "kaugus: " << kaugus << '\n';
-			std::cout << "alles: " << pooleli.size() << '\n';
+			//std::cout << "kaugus: " << kaugus << '\n';
+			//std::cout << "alles: " << pooleli.size() << '\n';
 			pooleli.erase(pooleli.begin());
 
 			sisKuup.turn(tee);
@@ -527,6 +534,8 @@ unsigned int ThistleLahendaja::minuNurgaIdx2Tw(unsigned int val, int poore) {
 			return i;
 		}
 	}
+
+	std::cout << "minuNurgaIdx2Tw: ei leidnud pöördele vastavat nurka, val: " << val << " poore: " << poore << '\n';
 
 	throw std::runtime_error("minuNurgaIdx2Tw: ei leidnud pöördele vastavat nurka");
 }
@@ -854,9 +863,13 @@ valem ThistleLahendaja::valemiMoondus(valem const &sisValem, int poore){
 }
 
 void ThistleLahendaja::samm3osa2 (asend const &sisAsend, std::set<valem> &lahendid){
+	kuubik kuup {sisAsend};
+	engine vroom {9,12};
+	kuup.ekraanile(vroom,"");
+
 	BETA juht = B_TEADMATA; // 0 - koik nurgad orbitaalil, 1 - (18)(27), 2 - (15), 3 - (13)
 	std::vector<int> poorded {};
-	for (int poore=0;poore < 25;poore++){
+	for (int poore=0;poore < 24;poore++){
 		BETA eelmineJuht = juht;
 
 		std::string orbital = getNurgadOrbiidil(sisAsend, poore);
@@ -999,7 +1012,6 @@ void ThistleLahendaja::samm4osa2 (asend const &sisAsend, std::set<valem> &lahend
 			neliTsyklid++;
 		}
 	}
-	std::cout << "servpaigas: " << servPaigas << " 2tsüklid: " << kaksTsyklid << " 3tsyklid: " << kolmTsyklid << " 4tsyklid: " << neliTsyklid << '\n';
 	ThistleSamm4Map data {servPaigas, kaksTsyklid, kolmTsyklid, neliTsyklid};
 	kuubik testitavKuup {sisAsend};
 	valem katsealuneValem;
@@ -1008,7 +1020,6 @@ void ThistleLahendaja::samm4osa2 (asend const &sisAsend, std::set<valem> &lahend
 		for (int o=0;o<23;o++){
 			valem moondatudValem = valemiMoondus(katsealuneValem, o);
 			moondatudValem.pooraYmber();
-			moondatudValem.print();
 			testitavKuup.turn(moondatudValem);
 			if(testitavKuup.isSolved()){
 				lahendid.insert(moondatudValem);

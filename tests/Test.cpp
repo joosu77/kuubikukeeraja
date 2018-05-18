@@ -342,6 +342,20 @@ void testThistleSamm4osa2(){
 	ASSERTM("ei leitud õiget valemit",sihtKuup.isSolved());
 }
 
+void testThistleLahenda(){
+	kuubik sihtKuup {};
+	engine vroom {9,12};
+	//valem algValem {"U U R R U U R R U U B B U U D D R R F F R R B B R R L L L D D L* F F L D D R R D D U U R U U L B* R* B* R R B R* B B F* R R F* R L* D D F F U* B B D D R L* F*"};
+	valem algValem {"U U R R U U R R U U B B U U D D R R F F R R B B R R L L L D D L* F F L D D R R D D U U R U U L B* R* B* R R B R* B B F* R R F* R L* U* R L*"};
+	sihtKuup.turn(algValem);
+	sihtKuup.ekraanile(vroom, "");
+	ThistleLahendaja thistle;
+	valem lahend;
+	lahend = thistle.lahenda(sihtKuup.kuup);
+	sihtKuup.turn(lahend);
+	ASSERTM("ei leitud õiget valemit",sihtKuup.isSolved());
+}
+
 /**
  * Kontrolli, et IDAlahendaja saab ühe sammu segatud kuubi lahendatud
  */
@@ -453,6 +467,7 @@ void runAllTests(int argc, char const *argv[]){
 	s.push_back(CUTE(testPaigastAraNurgad));
 	s.push_back(CUTE(testThistleSamm4osa1));
 	s.push_back(CUTE(testThistleSamm4osa2));
+	s.push_back(CUTE(testThistleLahenda));
 
 
 	cute::xml_file_opener xmlfile(argc,argv);
