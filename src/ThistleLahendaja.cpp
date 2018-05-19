@@ -35,49 +35,79 @@ valem ThistleLahendaja::lahenda(asend sisAsend){
 	// siia väljastab iga samm enda valemi
 	std::set<valem> lahendid { };
 
+	valem sammulahend;
+
 	// kutsutakse samm välja
 	samm1(sisAsend, lahendid);
 	// keeratakse valem kuubikule peale
-	liigutatavKuubik.turn(*(lahendid.begin()));
-	// lisatakse valem lõplikusse valemisse
-	koguLahend.append(*(lahendid.begin()));
+	if (lahendid.size() != 0){
+		liigutatavKuubik.turn(*(lahendid.begin()));
+		// lisatakse valem lõplikusse valemisse
+		koguLahend.append(*(lahendid.begin()));
+		sammulahend = *(lahendid.begin());
+		sammulahend.print();
+	}
 	std::cout << "samm1 valmis\n";
 
 	// tühjendatakse ajutine lahendite hulk
 	lahendid.clear();
 	samm2osa1(liigutatavKuubik.kuup, lahendid);
-	liigutatavKuubik.turn(*(lahendid.begin()));
-	koguLahend.append(*(lahendid.begin()));
+	if (lahendid.size() != 0){
+		liigutatavKuubik.turn(*(lahendid.begin()));
+		koguLahend.append(*(lahendid.begin()));
+		sammulahend = *(lahendid.begin());
+		sammulahend.print();
+	}
 	std::cout << "samm2osa1 valmis\n";
 
 	lahendid.clear();
 	samm2osa2(liigutatavKuubik.kuup, lahendid);
-	liigutatavKuubik.turn(*(lahendid.begin()));
-	koguLahend.append(*(lahendid.begin()));
+	if (lahendid.size() != 0){
+		liigutatavKuubik.turn(*(lahendid.begin()));
+		koguLahend.append(*(lahendid.begin()));
+		sammulahend = *(lahendid.begin());
+		sammulahend.print();
+	}
 	std::cout << "samm2osa2 valmis\n";
 
 	lahendid.clear();
 	samm3osa1(liigutatavKuubik.kuup, lahendid);
-	liigutatavKuubik.turn(*(lahendid.begin()));
-	koguLahend.append(*(lahendid.begin()));
+	if (lahendid.size() != 0){
+		liigutatavKuubik.turn(*(lahendid.begin()));
+		koguLahend.append(*(lahendid.begin()));
+		sammulahend = *(lahendid.begin());
+		sammulahend.print();
+	}
 	std::cout << "samm3osa1 valmis\n";
 
 	lahendid.clear();
 	samm3osa2(liigutatavKuubik.kuup, lahendid);
-	liigutatavKuubik.turn(*(lahendid.begin()));
-	koguLahend.append(*(lahendid.begin()));
+	if (lahendid.size() != 0){
+		liigutatavKuubik.turn(*(lahendid.begin()));
+		koguLahend.append(*(lahendid.begin()));
+		sammulahend = *(lahendid.begin());
+		sammulahend.print();
+	}
 	std::cout << "samm3osa2 valmis\n";
 
 	lahendid.clear();
 	samm4osa1(liigutatavKuubik.kuup, lahendid);
-	liigutatavKuubik.turn(*(lahendid.begin()));
-	koguLahend.append(*(lahendid.begin()));
+	if (lahendid.size() != 0){
+		liigutatavKuubik.turn(*(lahendid.begin()));
+		koguLahend.append(*(lahendid.begin()));
+		sammulahend = *(lahendid.begin());
+		sammulahend.print();
+	}
 	std::cout << "samm4osa1 valmis\n";
 
 	lahendid.clear();
 	samm4osa2(liigutatavKuubik.kuup, lahendid);
-	liigutatavKuubik.turn(*(lahendid.begin()));
-	koguLahend.append(*(lahendid.begin()));
+	if (lahendid.size() != 0){
+		liigutatavKuubik.turn(*(lahendid.begin()));
+		koguLahend.append(*(lahendid.begin()));
+		sammulahend = *(lahendid.begin());
+		sammulahend.print();
+	}
 	std::cout << "samm4osa2 valmis\n";
 
 	return koguLahend;
@@ -376,38 +406,99 @@ void ThistleLahendaja::samm2osa1(asend const &sisAsend, std::set<valem> &lahendi
 	return;
 }
 
-std::string ThistleLahendaja::nurkadePooreteLeidmine(asend const &sisAsend, std::string poore){
+
+/*
+ * peegeldus: 0-puudub
+ * 			  1-FB
+ * 			  2-LR
+ * 			  3-UD
+ */
+std::string ThistleLahendaja::nurkadePooreteLeidmine(asend const &sisAsend, int poore, int peegeldus){
 	std::string sisString = sisAsend.toString();
-	std::string jarjekord { };
-	if (poore == ""){
-		jarjekord = "25703641";
-	} else if (poore == "LR"){
-		jarjekord = "56076314";
-	} else if (poore == "UD"){
-		jarjekord = "07521463";
-	} else if (poore == "FB"){
-		jarjekord = "70234136";
+	std::map<int,int> peegeldatudNurgad;
+
+	if (peegeldus == 0){
+		peegeldatudNurgad = {
+				{0,0},
+				{1,1},
+				{2,2},
+				{3,3},
+				{4,4},
+				{5,5},
+				{6,6},
+				{7,7}
+		};
+	} else if (peegeldus == 1){
+		peegeldatudNurgad = {
+				{0,4},
+				{4,0},
+				{3,7},
+				{7,3},
+				{5,1},
+				{1,5},
+				{2,6},
+				{6,2}
+		};
+	} else if (peegeldus == 2){
+		peegeldatudNurgad = {
+				{0,7},
+				{7,0},
+				{3,4},
+				{4,3},
+				{5,2},
+				{2,5},
+				{1,6},
+				{6,1}
+		};
+	} else if (peegeldus == 3){
+		peegeldatudNurgad = {
+				{0,5},
+				{5,0},
+				{1,4},
+				{4,1},
+				{3,6},
+				{6,3},
+				{2,7},
+				{7,2}
+		};
 	}
 
 	std::string valjund { };
 	for (int i=0;i<8;i++){
-		if (i<4){
-			if(sisString[36+(jarjekord[i]-'0')*4+2] == 'L' || sisString[36+(jarjekord[i]-'0')*4+2] == 'R'){
+		int positsioonStringis = 36+(twNurgaIdx2Minu[poore][peegeldatudNurgad[i]])*4;
+		if (minuNurgaIdx2Tw(twNurgaIdx2Minu[poore][peegeldatudNurgad[i]],0)<4){
+			if(sisString[positsioonStringis+2] == 'L' || sisString[positsioonStringis+2] == 'R'){
 				valjund +='0';
-			} else if(sisString[36+(jarjekord[i]-'0')*4] == 'L' || sisString[36+(jarjekord[i]-'0')*4] == 'R'){
-				valjund +='2';
-			} else if(sisString[36+(jarjekord[i]-'0')*4+1] == 'L' || sisString[36+(jarjekord[i]-'0')*4+1] == 'R'){
-				valjund +='1';
+			} else if(sisString[positsioonStringis] == 'L' || sisString[positsioonStringis] == 'R'){
+				if (peegeldus != 0){
+					valjund +='1';
+				} else {
+					valjund +='2';
+				}
+			} else if(sisString[positsioonStringis+1] == 'L' || sisString[positsioonStringis+1] == 'R'){
+				if (peegeldus != 0){
+					valjund +='2';
+				} else {
+					valjund +='1';
+				}
 			} else {
 				std::cout << "error nurkadepöörde leidmises\n";
 			}
 		} else {
-			if(sisString[36+(jarjekord[i]-'0')*4+1] == 'L' || sisString[36+(jarjekord[i]-'0')*4+1] == 'R'){
+			if(sisString[positsioonStringis+1] == 'L' || sisString[positsioonStringis+1] == 'R'){
 				valjund +='0';
-			} else if(sisString[36+(jarjekord[i]-'0')*4+2] == 'L' || sisString[36+(jarjekord[i]-'0')*4+2] == 'R'){
-				valjund +='2';
-			} else if(sisString[36+(jarjekord[i]-'0')*4] == 'L' || sisString[36+(jarjekord[i]-'0')*4] == 'R'){
-				valjund +='1';
+			} else if(sisString[positsioonStringis+2] == 'L' || sisString[positsioonStringis+2] == 'R'){
+				if (peegeldus != 0){
+					valjund +='1';
+				} else {
+					valjund +='2';
+				}
+			} else if(sisString[positsioonStringis] == 'L' || sisString[positsioonStringis] == 'R'){
+				if (peegeldus != 0){
+					valjund +='2';
+				} else {
+					valjund +='1';
+				}
 			} else {
 				std::cout << "error nurkadepöörde leidmises\n";
 			}
@@ -416,19 +507,34 @@ std::string ThistleLahendaja::nurkadePooreteLeidmine(asend const &sisAsend, std:
 	return valjund;
 }
 
-valem ThistleLahendaja::lahendiPeegeldus(valem const &sisValem, std::string poore){
+valem ThistleLahendaja::lahendiPeegeldus(valem const &sisValem, int peegeldus){
+	sisValem.print();
 	valem valjund { };
-	std::map<char, char> vastasKuljed {
-		{'F', 'B'},
-		{'B', 'F'},
-		{'U', 'D'},
-		{'D', 'U'},
-		{'L', 'R'},
-		{'R', 'L'}
-	};
+	char peegeldatavad [2];
+	if (peegeldus == 0){
+		peegeldatavad[0] = '-';
+		peegeldatavad[1] = '-';
+	} else if (peegeldus == 1){
+		peegeldatavad[0] = 'F';
+		peegeldatavad[1] = 'B';
+	} else if (peegeldus == 2){
+		peegeldatavad[0] = 'L';
+		peegeldatavad[1] = 'R';
+	} else if (peegeldus == 3){
+		peegeldatavad[0] = 'U';
+		peegeldatavad[1] = 'D';
+	}
 
 	for (int i = 0; i < sisValem.size(); i++){
-		valjund.append(vastasKuljed[sisValem.rida[i].kylg],!sisValem.rida[i].edasi);
+		if (peegeldatavad[0] == '-'){
+			valjund.append(sisValem.rida[i].kylg,sisValem.rida[i].edasi);
+		} else if (sisValem.rida[i].kylg == peegeldatavad[0]){
+			valjund.append(peegeldatavad[1],!sisValem.rida[i].edasi);
+		} else if (sisValem.rida[i].kylg == peegeldatavad[1]){
+			valjund.append(peegeldatavad[0],!sisValem.rida[i].edasi);
+		} else {
+			valjund.append(sisValem.rida[i].kylg,!sisValem.rida[i].edasi);
+		}
 	}
 
 	return valjund;
@@ -442,33 +548,23 @@ void ThistleLahendaja::samm2osa2(asend const &sisAsend, std::set<valem> &lahendi
 	valem tulem { };
 	kuubik sihtKuup {sisAsend};
 
-	tulem = tabel.getValem(nurkadePooreteLeidmine(sisAsend, ""));
-	if (tulem.size() != 0){
-		lahendid.insert(tulem);
-		return;
-	}
-	sihtKuup.peegelda("LR");
-	tulem = tabel.getValem(nurkadePooreteLeidmine(sisAsend, "LR"));
-	sihtKuup.peegelda("LR");
+	for (int i=0;i<24;i++){
+		for (int p=0;p<4;p++){
+			tulem = tabel.getValem(nurkadePooreteLeidmine(sisAsend, i,p));
+			tulem.print();
+			tulem = valemiMoondus(tulem,i);
+			tulem = lahendiPeegeldus(tulem,p);
+			tulem.print();
+			if (tulem.size() != 0){
 
-	if (tulem.size() == 0){
-		lahendid.insert(tulem);
-		return;
+				std::cout << "i: " << i << " p: " << p << '\n';
+
+				lahendid.insert(tulem);
+				return;
+			}
+		}
 	}
-	sihtKuup.peegelda("UD");
-	tulem = tabel.getValem(nurkadePooreteLeidmine(sisAsend, "UD"));
-	sihtKuup.peegelda("UD");
-	if (tulem.size() == 0){
-		lahendid.insert(tulem);
-		return;
-	}
-	sihtKuup.peegelda("FB");
-	tulem = tabel.getValem(nurkadePooreteLeidmine(sisAsend, "FB"));
-	sihtKuup.peegelda("FB");
-	if (tulem.size() == 0){
-		lahendid.insert(tulem);
-		return;
-	}
+
 	lahendid.insert(tulem);
 	std::cout << "tundmatu sümmeetria";
 }
@@ -478,6 +574,8 @@ void ThistleLahendaja::samm2osa2(asend const &sisAsend, std::set<valem> &lahendi
  * millised nurgad on oma küljel või vastasküljel
  * (kui kõik nurgad on orbiidil on külje peale ainult
  * antud külje ja vastaskülje värvid, ignoreerides servi)
+ *
+ * väljastab need nurgad, mis ei ole orbiidil
  */
 
 std::string ThistleLahendaja::getNurgadOrbiidil(asend const &sisAsend, int poore){
@@ -506,8 +604,16 @@ std::string ThistleLahendaja::getNurgadOrbiidil(asend const &sisAsend, int poore
 
 void ThistleLahendaja::samm3osa1 (asend const &sisAsend, std::set<valem> &lahendid){
 	ThistleSamm3InitialMap data {};
-	std::string nurgad = getNurgadOrbiidil(sisAsend, 0);
-	lahendid.insert(data.getValem(nurgad));
+	valem valjund;
+	for (int i=0;i<24;i++){
+		std::string nurgad = getNurgadOrbiidil(sisAsend, i);
+		valjund = data.getValem(nurgad);
+		if (valjund.rida.size() != 0){
+			valjund = valemiMoondus(valjund,i);
+			lahendid.insert(valjund);
+			return;
+		}
+	}
 }
 
 std::string ThistleLahendaja::liidaCharid(char sis1, char sis2, char sis3){
@@ -836,6 +942,8 @@ char ThistleLahendaja::pooraTeljel(char telg, int kogus, char taht){
 /**
  * Kui lahendamise käigus leitakse, pööratud kuubikule sobiv valem
  * siis see funktsioon teisendab sama valemi pööramata kuubiku jaoks
+ *
+ *
  */
 valem ThistleLahendaja::valemiMoondus(valem const &sisValem, int poore){
 	valem valjund { };
@@ -844,7 +952,9 @@ valem ThistleLahendaja::valemiMoondus(valem const &sisValem, int poore){
 		char suund = sisValem.rida[i].edasi;
 
 		char valTaht {taht};
-		if (poore >= 4 && poore < 8){
+		if (poore < 4){
+			//do nothing
+		} else if (poore < 8){
 			valTaht = pooraTeljel('R',1,taht);
 		} else if (poore < 12){
 			valTaht = pooraTeljel('U',1,taht);

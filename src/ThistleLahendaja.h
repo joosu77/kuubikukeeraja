@@ -46,8 +46,8 @@ public:
 	std::set<int> LRservaotsing(asend const &sisAsend);
 	void samm2osa1(asend const &sisAsend, std::set<valem> &lahendid);
 	void samm2osa2(asend const &sisAsend, std::set<valem> &lahendid);
-	std::string nurkadePooreteLeidmine(asend const &sisAsend, std::string poore);
-	valem lahendiPeegeldus(valem const &sisValem, std::string poore);
+	std::string nurkadePooreteLeidmine(asend const &sisAsend, int poore, int peegeldus);
+	valem lahendiPeegeldus(valem const &sisValem, int peegeldus);
 	void samm3osa1 (asend const &sisAsend, std::set<valem> &lahendid);
 	std::string getNurgadOrbiidil(asend const &sisAsend, int poore);
 	std::string liidaCharid(char sis1, char sis2, char sis3);

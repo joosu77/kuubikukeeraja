@@ -54,6 +54,7 @@ class kuubik {
 		~kuubik();
 
 		// trükib kogu kuubiku välja
+		void ekraanile(char const*);
 		void ekraanile(engine &vroom, char const*);
 		// rakendab valemit ja jätab selle meelde
 		void turn(valem);

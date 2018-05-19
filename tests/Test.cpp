@@ -165,8 +165,19 @@ void testNurkadePoordeLeidmine(){
 	valem sisend {"B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F "};
 	kuubik sihtKuup { };
 	sihtKuup.turn(sisend);
-	std::cout << thistle.nurkadePooreteLeidmine(sihtKuup.kuup, "") << '\n';
-	ASSERTM("Pöördeid ei leitud õigesti",thistle.nurkadePooreteLeidmine(sihtKuup.kuup, "") == "02020011");
+	std::cout << thistle.nurkadePooreteLeidmine(sihtKuup.kuup, 0,0) << '\n';
+	ASSERTM("Pöördeid ei leitud õigesti",thistle.nurkadePooreteLeidmine(sihtKuup.kuup, 0,0) == "02020011");
+}
+
+void testNurkadePoordeLeidminePoordega(){
+	ThistleLahendaja thistle { };
+	valem sisend {"B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F "};
+	kuubik sihtKuup { };
+	sihtKuup.turn(sisend);
+	sihtKuup.ekraanile("");
+	std::cout << sihtKuup.kuup->toString() << '\n';
+	std::cout << thistle.nurkadePooreteLeidmine(sihtKuup.kuup, 5,0) << '\n';
+	ASSERTM("Pöördeid ei leitud õigesti",thistle.nurkadePooreteLeidmine(sihtKuup.kuup, 5,0) == "20020101"); //22000110
 }
 
 void testKuubikuPeegeldamine(){
@@ -189,15 +200,89 @@ void testThistleSamm2osa2(){
 	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F ");
 	sihtKuup.ekraanile(vroom, " ");
 	ThistleLahendaja thistle { };
+
+	std::cout << sihtKuup.kuup->toString() << '\n';
+	std::cout << "algsed nurgad " << thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,0) << '\n';
+
 	std::set<valem> lahendid { };
-	thistle.samm2osa1(sihtKuup.kuup,lahendid);
+	thistle.samm2osa2(sihtKuup.kuup,lahendid);
 	std::cout << lahendid.size() << '\n';
-	for (std::set<valem>::iterator ite = lahendid.begin();ite != lahendid.end();++ite){
-		valem val = *ite;
-		val.print();
-		sihtKuup.turn(val);
-		ASSERTM("valem ei lahenda ääri", thistle.nurkadePooreteLeidmine(sihtKuup.kuup,"")=="00000000");
-	}
+	valem val = *(lahendid.begin());
+	val.print();
+	sihtKuup.turn(val);
+
+	sihtKuup.ekraanile(vroom, " ");
+	std::cout << "pärastised nurgad " << thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,0) << '\n';
+
+	ASSERTM("valem ei lahenda nurki", thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,0)=="00000000");
+}
+
+void testThistleSamm2osa2Poordeta(){
+	kuubik sihtKuup { };
+	engine vroom {9,12};
+	//sihtKuup.scramble(500);
+	sihtKuup.turn("B*D*U L*L*B*B*R*D U*B R*R*B L*L*B*D*B*B*F*F*D*R*R*B*B*L*L*B*B*U*F*F*D*D*U*U*R*R*D*D*B*B*U*U*B*B*F*R*L D*D*B*B*U*F*F*D*D*R*L F*");
+	sihtKuup.ekraanile(vroom, " ");
+	ThistleLahendaja thistle { };
+
+	std::cout << sihtKuup.kuup->toString() << '\n';
+	std::cout << "algsed nurgad " << thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,0) << '\n';
+	std::cout << "pooratudnurgad " << thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,2) << '\n';
+
+	std::set<valem> lahendid { };
+	thistle.samm2osa2(sihtKuup.kuup,lahendid);
+	std::cout << lahendid.size() << '\n';
+	valem val = *(lahendid.begin());
+	val.print();
+	sihtKuup.turn(val);
+
+	sihtKuup.ekraanile(vroom, " ");
+	std::cout << "pärastised nurgad " << thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,0) << '\n';
+
+	ASSERTM("valem ei lahenda nurki", thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,0)=="00000000");
+}
+
+void testThistleSamm2osa2PariseltPoordeta(){
+	kuubik sihtKuup { };
+	engine vroom {9,12};
+	//sihtKuup.scramble(500);
+	sihtKuup.turn("U U R R U U R R U U B B U U D D R R F F R R B B R R L L L D D L* F F L D D R R D D U U R U U L");
+	sihtKuup.ekraanile(vroom, " ");
+	ThistleLahendaja thistle { };
+
+	std::cout << "algsed nurgad " << thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,0) << '\n';
+
+	std::set<valem> lahendid { };
+	thistle.samm2osa2(sihtKuup.kuup,lahendid);
+	valem val = *(lahendid.begin());
+
+	sihtKuup.ekraanile(vroom, " ");
+	std::cout << "pärastised nurgad " << thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,0) << '\n';
+
+	ASSERTM("valem ei lahenda nurki", thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,0)=="00000000");
+}
+
+void testNurkadePoordeLeidminePeegeldused(){
+	kuubik sihtKuup { };
+	kuubik BFKuup {};
+	kuubik UDKuup {};
+	kuubik LRKuup {};
+	engine vroom {9,12};
+	//sihtKuup.scramble(500);
+	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F ");
+	LRKuup.turn("B*D*U L*L*B*B*R*D U*B R*R*B L*L*B*D*B*B*F*F*D*R*R*B*B*L*L*B*B*U*F*F*D*D*U*U*R*R*D*D*B*B*U*U*B*B*F*R*L D*D*B*B*U*F*F*D*D*R*L F*");
+	BFKuup.turn("F*D*U R*R*F*F*L*D U*F L*L*F R*R*F*D*F*F*B*B*D*L*L*F*F*R*R*F*F*U*B*B*D*D*U*U*L*L*D*D*F*F*U*U*F*F*B*L*R D*D*F*F*U*B*B*D*D*L*R B'");
+	UDKuup.turn("B*U*D R*R*B*B*L*U D*B L*L*B R*R*B*U*B*B*F*F*U*L*L*B*B*R*R*B*B*D*F*F*U*U*D*D*L*L*U*U*B*B*D*D*B*B*F*L*R U*U*B*B*D*F*F*U*U*L*R F'");
+	sihtKuup.ekraanile(vroom, " ");
+	ThistleLahendaja thistle { };
+
+	std::cout << "BF peegeldatud: " << thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,1) << " BF keeratud: " << thistle.nurkadePooreteLeidmine(BFKuup.kuup,0,0) <<'\n';
+	std::cout << "LR peegeldatud: " << thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,2) << " LR keeratud: " << thistle.nurkadePooreteLeidmine(LRKuup.kuup,0,0) <<'\n';
+	std::cout << "UD peegeldatud: " << thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,3) << " UD keeratud: " << thistle.nurkadePooreteLeidmine(UDKuup.kuup,0,0) <<'\n';
+
+	ASSERTM("BF peegeldus on vale", thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,1)==thistle.nurkadePooreteLeidmine(BFKuup.kuup,0,0));
+	ASSERTM("LR peegeldus on vale", thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,2)==thistle.nurkadePooreteLeidmine(LRKuup.kuup,0,0));
+	ASSERTM("UD peegeldus on vale", thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,3)==thistle.nurkadePooreteLeidmine(UDKuup.kuup,0,0));
 }
 
 void testNurgadOrbiidil(){
@@ -220,7 +305,8 @@ void testNurgadOrbiidil2(){
 
 void testThistleSamm3osa1(){
 	kuubik sihtKuup { };
-	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F R R F B B R B*R R B R B ");
+	//sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F R R F B B R B*R R B R B ");
+	sihtKuup.turn("U U R R U U R R U U B B U U D D R R F F R R B B R R L L L D D L* F F L D D R R D D U U R U U L ");
 	ThistleLahendaja thistle { };
 	std::set<valem> lahendid { };
 	thistle.samm3osa1(sihtKuup.kuup,lahendid);
@@ -265,6 +351,14 @@ void testValemiMoondus() {
 	valem tulem = thistle.valemiMoondus(sisValem, 13);
 	ASSERTM("Moondamine ebaõnnestus. Ootasin 'D*', tuli '" + tulem.toString() + "'",
 			tulem.toString() == "B ");
+}
+
+void testValemiMoondusTeine() {
+	valem sisValem {"F "};
+	ThistleLahendaja thistle { };
+	valem tulem = thistle.valemiMoondus(sisValem, 13);
+	ASSERTM("Moondamine ebaõnnestus. Ootasin 'D', tuli '" + tulem.toString() + "'",
+			tulem.toString() == "D ");
 }
 
 void testPooraTeljel() {
@@ -346,7 +440,8 @@ void testThistleLahenda(){
 	kuubik sihtKuup {};
 	engine vroom {9,12};
 	//valem algValem {"U U R R U U R R U U B B U U D D R R F F R R B B R R L L L D D L* F F L D D R R D D U U R U U L B* R* B* R R B R* B B F* R R F* R L* D D F F U* B B D D R L* F*"};
-	valem algValem {"U U R R U U R R U U B B U U D D R R F F R R B B R R L L L D D L* F F L D D R R D D U U R U U L B* R* B* R R B R* B B F* R R F* R L* U* R L*"};
+	//valem algValem {"U U R R U U R R U U B B U U D D R R F F R R B B R R L D D L* F F L D D R R D D U U R U U L R* F* R R F F R* D D U U F F L L F* R L* U* R L*"};
+	valem algValem {"U U R R U U R R U U B B U U D D R R F F R R B B R R L L L D D L* F F L D D R R D D U U R U U L B* L* F* R* F* L F F L* F*"};
 	sihtKuup.turn(algValem);
 	sihtKuup.ekraanile(vroom, "");
 	ThistleLahendaja thistle;
@@ -452,8 +547,12 @@ void runAllTests(int argc, char const *argv[]){
 	//s.push_back(CUTE(testThistleSamm2osa1));
 	s.push_back(CUTE(testThistleSamm2Map));
 	s.push_back(CUTE(testNurkadePoordeLeidmine));
+	s.push_back(CUTE(testNurkadePoordeLeidminePoordega));
 	s.push_back(CUTE(testKuubikuPeegeldamine));
 	s.push_back(CUTE(testThistleSamm2osa2));
+	s.push_back(CUTE(testThistleSamm2osa2PariseltPoordeta));
+	s.push_back(CUTE(testThistleSamm2osa2Poordeta));
+	s.push_back(CUTE(testNurkadePoordeLeidminePeegeldused));
 	s.push_back(CUTE(testNurgadOrbiidil));
 	s.push_back(CUTE(testThistleSamm3osa1));
 	s.push_back(CUTE(testBruteForce0Step));
@@ -461,6 +560,7 @@ void runAllTests(int argc, char const *argv[]){
 	s.push_back(CUTE(testLeiaAlpha));
 	s.push_back(CUTE(testFBservaotsing));
 	s.push_back(CUTE(testValemiMoondus));
+	s.push_back(CUTE(testValemiMoondusTeine));
 	s.push_back(CUTE(testPooraTeljel));
 	s.push_back(CUTE(testThistleSamm3osa2));
 	s.push_back(CUTE(testNurgadOrbiidil2));

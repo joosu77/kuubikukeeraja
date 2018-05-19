@@ -65,6 +65,11 @@ void kuubik::scramble(int korrad) {
 	turn(segu, false);
 }
 
+void kuubik::ekraanile(char const *msg) {
+	engine vroom {9,12};
+	ekraanile (vroom, msg);
+}
+
 void kuubik::ekraanile(engine &vroom, char const *msg) {
 	for (int y = 0; y < 3; y++) {
 		for (int x = 0; x < 3; x++) {
