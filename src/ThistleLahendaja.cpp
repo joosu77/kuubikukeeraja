@@ -436,7 +436,8 @@ char leiaLRNihe(std::string const &sisStr, int pos, int peegeldus) {
 	}
 
 	if (lrLahendatud < 0 || lrOtsitav < 0) {
-		throw std::runtime_error("leiaLRNihe: üks stringidest ei sisaldanud ei L'i ega R'i");
+		std::cout << "leiaLRNihe: \"" << sisStr << ", " << pos << ", " << peegeldus << "\n";
+		throw std::runtime_error("leiaLRNihe: üks stringidest ei sisaldanud ei L'i ega R'i " + sisStr.substr(pos, 3));
 	}
 
 
@@ -461,12 +462,13 @@ char leiaLRNihe(std::string const &sisStr, int pos, int peegeldus) {
  *
  */
 std::string ThistleLahendaja::nurkadePooreteLeidmine(asend const &sisAsend, int poore, int peegeldus){
-	std::string sisString = sisAsend.toString();
-	std::map<int,int> peegeldatudNurgad {};
+	// std::string sisString = sisAsend.toString();
+	// std::map<int,int> peegeldatudNurgad {};
 	kuubik peegeldatav {sisAsend};
 	std::string arr [] = {"","FB","LR","UD"};
 	peegeldatav.peegelda(arr[peegeldus]);
-	/*
+	std::string sisString = peegeldatav.kuup->toString();
+/*
 	if (peegeldus == 0){
 		peegeldatudNurgad = {
 				{0,0},

@@ -275,13 +275,21 @@ void testNurkadePoordeLeidminePeegeldused(){
 	sihtKuup.ekraanile("");
 	ThistleLahendaja thistle { };
 
-	std::cout << "BF peegeldatud: " << thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,1) << " BF keeratud: " << thistle.nurkadePooreteLeidmine(BFKuup.kuup,0,0) <<'\n';
-	std::cout << "LR peegeldatud: " << thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,2) << " LR keeratud: " << thistle.nurkadePooreteLeidmine(LRKuup.kuup,0,0) <<'\n';
-	std::cout << "UD peegeldatud: " << thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,3) << " UD keeratud: " << thistle.nurkadePooreteLeidmine(UDKuup.kuup,0,0) <<'\n';
+	std::string BFPoore {thistle.nurkadePooreteLeidmine(BFKuup.kuup,0,0)};
+	std::string LRPoore {thistle.nurkadePooreteLeidmine(LRKuup.kuup,0,0)};
+	std::string UDPoore {thistle.nurkadePooreteLeidmine(UDKuup.kuup,0,0)};
 
-	ASSERTM("BF peegeldus on vale", thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,1)==thistle.nurkadePooreteLeidmine(BFKuup.kuup,0,0));
-	ASSERTM("LR peegeldus on vale", thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,2)==thistle.nurkadePooreteLeidmine(LRKuup.kuup,0,0));
-	ASSERTM("UD peegeldus on vale", thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,3)==thistle.nurkadePooreteLeidmine(UDKuup.kuup,0,0));
+	std::string LRPeegeldus {thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,2)};
+	std::string UDPeegeldus {thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,3)};
+	std::string BFPeegeldus {thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,1)};
+
+	std::cout << "BF peegeldatud: " << BFPeegeldus << " BF keeratud: " << BFPoore <<'\n';
+	std::cout << "LR peegeldatud: " << LRPeegeldus << " LR keeratud: " << LRPoore <<'\n';
+	std::cout << "UD peegeldatud: " << UDPeegeldus << " UD keeratud: " << UDPoore <<'\n';
+
+	ASSERTM("BF peegeldus on vale", BFPeegeldus == BFPoore);
+	ASSERTM("LR peegeldus on vale", LRPeegeldus == LRPoore);
+	ASSERTM("UD peegeldus on vale", UDPeegeldus == UDPoore);
 }
 
 void testNurgadOrbiidil(){

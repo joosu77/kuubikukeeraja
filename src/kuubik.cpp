@@ -153,6 +153,14 @@ void kuubik::tervePoore(std::string suund){
  */
 
 void kuubik::peegelda(std::string suund){
+	if (suund.empty()) {
+		return;
+	}
+
+	if (suund.length() > 2) {
+		throw std::runtime_error("kuubik::peegelda: vigane suund \"" + suund + "\"");
+	}
+
 	std::string kuljed = "ULFRDB";
 	int kulg1 = kuljed.find(suund[0]);
 	int kulg2 = kuljed.find(suund[1]);
