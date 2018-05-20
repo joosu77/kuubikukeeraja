@@ -69,9 +69,7 @@ void valem::append(kask k){
 }
 
 void valem::append(valem const &v){
-	for (std::vector<kask>::iterator it = rida.begin(); it!=rida.end(); ++it) {
-		append(*it);
-	}
+	rida.insert(rida.end(),v.rida.begin(),v.rida.end());
 }
 
 int valem::size() const {

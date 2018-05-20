@@ -375,6 +375,21 @@ void testPooraTeljel() {
 	}
 }
 
+void testPeegeldus(){
+	kuubik sihtKuup {};
+	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F R R F B B R B*R R B R B L*U U ");
+	std::cout << "peegeldamata :  " << sihtKuup.kuup->toString() << '\n';
+	sihtKuup.peegelda("LR");
+	std::cout << "peegeldamatud: " << sihtKuup.kuup->toString() << '\n';
+
+	kuubik nurkKeeratud  {};
+	nurkKeeratud.turn("R*D*RDR*D*RD");
+	std::cout << "nurk keeratud  :  " << nurkKeeratud.kuup->toString() << '\n';
+	nurkKeeratud.peegelda("LR");
+	std::cout << "keeratud peegel:  " << nurkKeeratud.kuup->toString() << '\n';
+
+}
+
 void testThistleSamm3osa2(){
 	kuubik sihtKuup { };
 	engine vroom {9,12};
@@ -447,6 +462,18 @@ void testThistleLahenda(){
 	valem lahend;
 	lahend = thistle.lahenda(sihtKuup.kuup);
 	sihtKuup.turn(lahend);
+	lahend.print();
+	ASSERTM("ei leitud õiget valemit",sihtKuup.isSolved());
+}
+
+void testThistleLahendaLahendatudKuubikuga(){
+	kuubik sihtKuup {};
+	engine vroom {9,12};
+	ThistleLahendaja thistle;
+	valem lahend;
+	lahend = thistle.lahenda(sihtKuup.kuup);
+	sihtKuup.turn(lahend);
+	lahend.print();
 	ASSERTM("ei leitud õiget valemit",sihtKuup.isSolved());
 }
 
@@ -567,6 +594,8 @@ void runAllTests(int argc, char const *argv[]){
 	s.push_back(CUTE(testThistleSamm4osa1));
 	s.push_back(CUTE(testThistleSamm4osa2));
 	s.push_back(CUTE(testThistleLahenda));
+	s.push_back(CUTE(testThistleLahendaLahendatudKuubikuga));
+	s.push_back(CUTE(testPeegeldus));
 
 
 	cute::xml_file_opener xmlfile(argc,argv);

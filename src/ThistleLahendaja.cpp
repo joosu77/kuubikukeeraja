@@ -64,9 +64,11 @@ valem ThistleLahendaja::lahenda(asend sisAsend){
 	samm2osa2(liigutatavKuubik.kuup, lahendid);
 	if (lahendid.size() != 0){
 		liigutatavKuubik.turn(*(lahendid.begin()));
-		koguLahend.append(*(lahendid.begin()));
 		sammulahend = *(lahendid.begin());
+		koguLahend.append(sammulahend);
 		sammulahend.print();
+		std::cout << "kogu: ";
+		koguLahend.print();
 	}
 	std::cout << "samm2osa2 valmis\n";
 
@@ -109,6 +111,8 @@ valem ThistleLahendaja::lahenda(asend sisAsend){
 		sammulahend.print();
 	}
 	std::cout << "samm4osa2 valmis\n";
+
+	koguLahend.print();
 
 	return koguLahend;
 }
@@ -361,8 +365,6 @@ void ThistleLahendaja::samm2osa1(asend const &sisAsend, std::set<valem> &lahendi
 			//pooleli.pop_back();
 			tee = pooleli[0].first;
 			kaugus = pooleli[0].second;
-			//std::cout << "kaugus: " << kaugus << '\n';
-			//std::cout << "alles: " << pooleli.size() << '\n';
 			pooleli.erase(pooleli.begin());
 
 			sisKuup.turn(tee);
@@ -419,22 +421,21 @@ void ThistleLahendaja::samm2osa1(asend const &sisAsend, std::set<valem> &lahendi
  * 	st, kui lahendatud stringis on L viimane, siis temast "Ühe võrra paremal" on puhvri
  * 	esimene
  */
-char leiaLRNihe(std::string const &sisStr, int pos, int poore) {
+char leiaLRNihe(std::string const &sisStr, int pos, int peegeldus) {
 	static const std::string lahendatudStr =
 			"UF UR UB UL DF DR DB DL FR FL BR BL UFR URB UBL ULF DRF DFL DLB DBR";
 	int lrLahendatud {-1};
 	int lrOtsitav {-1};
 	for (int i = 0; i < 3; i++) {
-		if (lrOtsitav < 0 && (sisStr[i] == 'L' || sisStr[i] == 'R')) {
-			lrOtsitav = (i - pos);
+		if (lrOtsitav < 0 && (sisStr[pos+i] == 'L' || sisStr[pos+i] == 'R')) {
+			lrOtsitav = (i);
 		}
-		if (lrLahendatud < 0 && (lahendatudStr[i] == 'L' || lahendatudStr[i] == 'R')) {
-			lrLahendatud = (i - pos);
+		if (lrLahendatud < 0 && (lahendatudStr[pos+i] == 'L' || lahendatudStr[pos+i] == 'R')) {
+			lrLahendatud = (i);
 		}
 	}
 
 	if (lrLahendatud < 0 || lrOtsitav < 0) {
-		std::cout << "\"" << sisStr << "\", " << pos << ", " << poore << "\n";
 		throw std::runtime_error("leiaLRNihe: üks stringidest ei sisaldanud ei L'i ega R'i");
 	}
 
@@ -442,9 +443,9 @@ char leiaLRNihe(std::string const &sisStr, int pos, int poore) {
 	if (lrLahendatud == lrOtsitav) {
 		return '0';
 	} else if ((lrLahendatud == 0 && lrOtsitav == 2) || lrOtsitav == lrLahendatud - 1) {
-		return poore ? '2' : '1';
+		return peegeldus ? '2' : '1';
 	} else if ((lrLahendatud == 2 && lrOtsitav == 0) || lrOtsitav == lrLahendatud + 1) {
-		return poore ? '1' : '2';
+		return peegeldus ? '1' : '2';
 	} else {
 		// siia ei tohiks kunagi sattuda
 		throw std::runtime_error("leiaLRNihe: viga LR nihke leidmisel");
@@ -462,7 +463,10 @@ char leiaLRNihe(std::string const &sisStr, int pos, int poore) {
 std::string ThistleLahendaja::nurkadePooreteLeidmine(asend const &sisAsend, int poore, int peegeldus){
 	std::string sisString = sisAsend.toString();
 	std::map<int,int> peegeldatudNurgad {};
-
+	kuubik peegeldatav {sisAsend};
+	std::string arr [] = {"","FB","LR","UD"};
+	peegeldatav.peegelda(arr[peegeldus]);
+	/*
 	if (peegeldus == 0){
 		peegeldatudNurgad = {
 				{0,0},
@@ -508,11 +512,12 @@ std::string ThistleLahendaja::nurkadePooreteLeidmine(asend const &sisAsend, int 
 				{7,2}
 		};
 	}
-
+*/
 	std::string valjund { };
 	for (int i=0;i<8;i++){
-		int positsioonStringis {36+(twNurgaIdx2Minu[poore][peegeldatudNurgad[i]])*4};
-		valjund += leiaLRNihe(sisString, positsioonStringis, poore);
+		//unsigned int positsioonStringis {36+(twNurgaIdx2Minu[poore][peegeldatudNurgad[i]])*4};
+		unsigned int positsioonStringis {36+(twNurgaIdx2Minu[poore][i])*4};
+		valjund += leiaLRNihe(sisString, positsioonStringis, peegeldus);
 	}
 	return valjund;
 }
@@ -564,6 +569,7 @@ void ThistleLahendaja::samm2osa2(asend const &sisAsend, std::set<valem> &lahendi
 			tulem.print();
 			tulem = valemiMoondus(tulem,i);
 			tulem = lahendiPeegeldus(tulem,p);
+			tulem.pooraYmber();
 			tulem.print();
 			if (tulem.size() != 0){
 
@@ -747,7 +753,6 @@ std::vector<std::string> ThistleLahendaja::servadeTsyklid(asend const &sisAsend,
 		unsigned int servaIdxMinu { twServaIdx2Minu[poore][servaIdxTw] * 3 };
 
 		std::string serv = sorditudAlamstring(sisString, servaIdxMinu, 2);
-		std::cout << "Alustan serva " << serv << " lahendamist (" << servaIdxTw << ")\n";
 		// koht, kus antud serv peaks olema
 		std::string::size_type servaKoht = leiaServaKoht(serv);
 
@@ -756,7 +761,6 @@ std::vector<std::string> ThistleLahendaja::servadeTsyklid(asend const &sisAsend,
 			std::string tsykkel {(char)(servaIdxTw+48+1)};
 			// TODO: kas siin ei peaks kontrollima kaidud set'i juhuks, kui serva otsing tsüklisse läheb?
 			while (servaKoht != servaIdxMinu){
-				std::cout << "serv: " << serv << " servaKoht: " << servaKoht << "\n";
 				unsigned int kohtM = servaKoht/3;
 				// antud serva asukoht thistlethwaite'i systeemis
 				int kohtT = minuServaIdx2Tw(kohtM, poore);
@@ -880,11 +884,7 @@ std::string ThistleLahendaja::FBservaotsing(asend const &sisAsend, int poore){
 		valem muudetav {algKuljed[i], true};
 		valem pooratud = valemiMoondus(muudetav, tempPoore);
 		pooratudKuljed.insert(pooratud.rida[0].kylg);
-		//std::cout << pooratud.rida[0].kylg << " : ";
 	}
-	//std::cout << "\n temp ja alg poore: " << tempPoore << " : " << poore << '\n';
-	//std::cout << '\n' << sisString << '\n';
-	//std::cout << "ilma uuesti pooramiseta servad ";
 	for(int i=0;i<12;i++){
 		int twNum = minuServaIdx2Tw(i,tempPoore);
 		//int twNum = minuServaIdx2Tw(i,0);
@@ -892,7 +892,6 @@ std::string ThistleLahendaja::FBservaotsing(asend const &sisAsend, int poore){
 		char cB = sisString[i*3+1];
  		if (pooratudKuljed.count(cA) &&	pooratudKuljed.count(cB)){
 			FBservad += (char)(twNum+48+1);
-			//std::cout << testPoordetaServ;
 		}
 	}
 	std::sort(FBservad.begin(), FBservad.end());
@@ -1015,21 +1014,52 @@ void ThistleLahendaja::samm3osa2 (asend const &sisAsend, std::set<valem> &lahend
 	if (juht == B_TEADMATA){
 		std::cout << "error: yhegi poordega pole sobivad nurgad orbiidil\n";
 	}
+/*
+	ALPHA a;
+	for (unsigned int i = 0; i < poorded.size(); i++) {
+	for (int aNum = 0; aNum<5;aNum++){
+		if (aNum==0){
+			a = A_0;
+		} else if (aNum==1){
+			a = A_1468;
+		} else if (aNum==2){
+			a = A_12;
+		} else if (aNum==3){
+			a = A_14;
+		} else if (aNum==4){
+			a = A_24;
+		}
+		std::string FBservad = FBservaotsing(sisAsend, i);
+		ThistleSamm3TeineMap data {a, juht};
+		valem tulevValem = data.getValem(FBservad);
+		if (tulevValem.size() > 0) {
+			valem tagurpidi = valemiMoondus(tulevValem, i);
+			tagurpidi.pooraYmber();
+			kuup.turn(tagurpidi);
+			std::string orbital = getNurgadOrbiidil(kuup.kuup, i);
+			if (orbital.size() == 0){
+				lahendid.insert(tagurpidi);
+			}
+		}
+	}
+	}
+	std::cout << "error: ei leitud orbitaale ja asju\n";
 
+*/
 	for (unsigned int i = 0; i < poorded.size(); i++) {
 		int poore = poorded[i];
 		std::vector<std::string> tsyklid = nurkadeTsyklid(sisAsend, poore);
+		for (std::vector<std::string>::iterator ite = tsyklid.begin(); ite != tsyklid.end(); ++ite){
+			std::cout << "tsykkel: " << *ite << '\n';
+		}
 		ALPHA a = leiaAlpha(tsyklid, juht);
 		std::string FBservad = FBservaotsing(sisAsend, poore);
 		ThistleSamm3TeineMap data {a, juht};
 		valem tulevValem = data.getValem(FBservad);
-		std::cout << "alpha: " << a << " juht: " << juht << " fbservad: " << FBservad << '\n';
+		std::cout << "alpha: " << a << " juht (beta): " << juht << " fbservad: " << FBservad << " poore: " << poore << '\n';
 		if (tulevValem.size() > 0) {
-			tulevValem.print();
 			valem tagurpidi = valemiMoondus(tulevValem, poore);
-			tagurpidi.print();
 			tagurpidi.pooraYmber();
-			tagurpidi.print();
 			lahendid.insert(tagurpidi);
 		}
 	}
@@ -1040,7 +1070,6 @@ std::set<int> ThistleLahendaja::paigastAraNurgad(asend const &sisAsend){
 	std::string lahendatud = "UFR URB UBL ULF DRF DFL DLB DBR";
 	std::set<int> paigastAra {};
 	for (int i=0;i<8;i++){
-		//std::cout << sisString.substr(36+i*4,3) << " : " << lahendatud.substr(i*4,3) << " : " << i <<  '\n';
 		if (sisString.substr(36+i*4,3) != lahendatud.substr(i*4,3)){
 			paigastAra.insert(i);
 		}
