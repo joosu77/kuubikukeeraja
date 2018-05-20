@@ -406,16 +406,62 @@ void ThistleLahendaja::samm2osa1(asend const &sisAsend, std::set<valem> &lahendi
 	return;
 }
 
+/**
+ * Sisse lahendatava kuubiku string, postisioon kontrollitava nurga asukohaga
+ * ja pööre. Eeldame, et igas nurga kirjelduses on kas L või R
+ *
+ * Välja:
+ * 	* '0' Kui L|R on otsitavas stringis ja lahendatud stringis sama koha peal
+ * 	* '1' kui L|R on otsitavas stringis ühe võrra vasakul lahendatud stringi asukohast
+ * 	* '2' kui L|R on otsitavas stringis ühe võrra paremal lahendatud stringi asukohast
+ *
+ * 	Vasaku ja parema arvutamisel eeldatakse, et tegemist on kolmese pikkusega ringpuhvriga
+ * 	st, kui lahendatud stringis on L viimane, siis temast "Ühe võrra paremal" on puhvri
+ * 	esimene
+ */
+char leiaLRNihe(std::string const &sisStr, int pos, int poore) {
+	static const std::string lahendatudStr =
+			"UF UR UB UL DF DR DB DL FR FL BR BL UFR URB UBL ULF DRF DFL DLB DBR";
+	int lrLahendatud {-1};
+	int lrOtsitav {-1};
+	for (int i = 0; i < 3; i++) {
+		if (lrOtsitav < 0 && (sisStr[i] == 'L' || sisStr[i] == 'R')) {
+			lrOtsitav = (i - pos);
+		}
+		if (lrLahendatud < 0 && (lahendatudStr[i] == 'L' || lahendatudStr[i] == 'R')) {
+			lrLahendatud = (i - pos);
+		}
+	}
+
+	if (lrLahendatud < 0 || lrOtsitav < 0) {
+		std::cout << "\"" << sisStr << "\", " << pos << ", " << poore << "\n";
+		throw std::runtime_error("leiaLRNihe: üks stringidest ei sisaldanud ei L'i ega R'i");
+	}
+
+
+	if (lrLahendatud == lrOtsitav) {
+		return '0';
+	} else if ((lrLahendatud == 0 && lrOtsitav == 2) || lrOtsitav == lrLahendatud - 1) {
+		return poore ? '2' : '1';
+	} else if ((lrLahendatud == 2 && lrOtsitav == 0) || lrOtsitav == lrLahendatud + 1) {
+		return poore ? '1' : '2';
+	} else {
+		// siia ei tohiks kunagi sattuda
+		throw std::runtime_error("leiaLRNihe: viga LR nihke leidmisel");
+	}
+}
 
 /*
  * peegeldus: 0-puudub
  * 			  1-FB
  * 			  2-LR
  * 			  3-UD
+ * Lahendtud kuubik:
+ *
  */
 std::string ThistleLahendaja::nurkadePooreteLeidmine(asend const &sisAsend, int poore, int peegeldus){
 	std::string sisString = sisAsend.toString();
-	std::map<int,int> peegeldatudNurgad;
+	std::map<int,int> peegeldatudNurgad {};
 
 	if (peegeldus == 0){
 		peegeldatudNurgad = {
@@ -465,44 +511,8 @@ std::string ThistleLahendaja::nurkadePooreteLeidmine(asend const &sisAsend, int 
 
 	std::string valjund { };
 	for (int i=0;i<8;i++){
-		int positsioonStringis = 36+(twNurgaIdx2Minu[poore][peegeldatudNurgad[i]])*4;
-		if (minuNurgaIdx2Tw(twNurgaIdx2Minu[poore][peegeldatudNurgad[i]],0)<4){
-			if(sisString[positsioonStringis+2] == 'L' || sisString[positsioonStringis+2] == 'R'){
-				valjund +='0';
-			} else if(sisString[positsioonStringis] == 'L' || sisString[positsioonStringis] == 'R'){
-				if (peegeldus != 0){
-					valjund +='1';
-				} else {
-					valjund +='2';
-				}
-			} else if(sisString[positsioonStringis+1] == 'L' || sisString[positsioonStringis+1] == 'R'){
-				if (peegeldus != 0){
-					valjund +='2';
-				} else {
-					valjund +='1';
-				}
-			} else {
-				std::cout << "error nurkadepöörde leidmises\n";
-			}
-		} else {
-			if(sisString[positsioonStringis+1] == 'L' || sisString[positsioonStringis+1] == 'R'){
-				valjund +='0';
-			} else if(sisString[positsioonStringis+2] == 'L' || sisString[positsioonStringis+2] == 'R'){
-				if (peegeldus != 0){
-					valjund +='1';
-				} else {
-					valjund +='2';
-				}
-			} else if(sisString[positsioonStringis] == 'L' || sisString[positsioonStringis] == 'R'){
-				if (peegeldus != 0){
-					valjund +='2';
-				} else {
-					valjund +='1';
-				}
-			} else {
-				std::cout << "error nurkadepöörde leidmises\n";
-			}
-		}
+		int positsioonStringis {36+(twNurgaIdx2Minu[poore][peegeldatudNurgad[i]])*4};
+		valjund += leiaLRNihe(sisString, positsioonStringis, poore);
 	}
 	return valjund;
 }

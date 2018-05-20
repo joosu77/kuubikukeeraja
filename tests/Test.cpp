@@ -267,13 +267,12 @@ void testNurkadePoordeLeidminePeegeldused(){
 	kuubik BFKuup {};
 	kuubik UDKuup {};
 	kuubik LRKuup {};
-	engine vroom {9,12};
-	//sihtKuup.scramble(500);
+	//sihtKuup.scrambl<e(500);
 	sihtKuup.turn("B D U*R R B B L D*U B*L L B*R R B D B B F F D L L B B R R B B U F F D D U U L L D D B B U U B B F L R*D D B B U F F D D L R*F ");
 	LRKuup.turn("B*D*U L*L*B*B*R*D U*B R*R*B L*L*B*D*B*B*F*F*D*R*R*B*B*L*L*B*B*U*F*F*D*D*U*U*R*R*D*D*B*B*U*U*B*B*F*R*L D*D*B*B*U*F*F*D*D*R*L F*");
 	BFKuup.turn("F*D*U R*R*F*F*L*D U*F L*L*F R*R*F*D*F*F*B*B*D*L*L*F*F*R*R*F*F*U*B*B*D*D*U*U*L*L*D*D*F*F*U*U*F*F*B*L*R D*D*F*F*U*B*B*D*D*L*R B'");
 	UDKuup.turn("B*U*D R*R*B*B*L*U D*B L*L*B R*R*B*U*B*B*F*F*U*L*L*B*B*R*R*B*B*D*F*F*U*U*D*D*L*L*U*U*B*B*D*D*B*B*F*L*R U*U*B*B*D*F*F*U*U*L*R F'");
-	sihtKuup.ekraanile(vroom, " ");
+	sihtKuup.ekraanile("");
 	ThistleLahendaja thistle { };
 
 	std::cout << "BF peegeldatud: " << thistle.nurkadePooreteLeidmine(sihtKuup.kuup,0,1) << " BF keeratud: " << thistle.nurkadePooreteLeidmine(BFKuup.kuup,0,0) <<'\n';
